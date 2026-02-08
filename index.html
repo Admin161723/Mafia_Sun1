@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MafiaSun | بازی</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: url('https://s8.uupload.ir/files/img_20260208_152349_053_b8yg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- فقط عکس پس‌زمینه نمایش داده می‌شود -->
+    
+    <script>
+        // لاگ ساده در کنسول برای اطلاعات کاربر
+        window.onload = function() {
+            const userData = localStorage.getItem('mafiaSun_user');
+            if (userData) {
+                try {
+                    const user = JSON.parse(userData);
+                    console.log('👤 کاربر وارد شده:', user.displayName || 'کاربر');
+                } catch(e) {
+                    console.log('کاربر جدید وارد شده است');
+                }
+            } else {
+                console.log('🔗 کاربر مستقیماً به صفحه بازی وارد شده است');
+            }
+        };
+    </script>
+</body>
+</html>
