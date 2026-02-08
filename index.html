@@ -11,36 +11,132 @@
             box-sizing: border-box;
         }
         
-        body {
-            background: url('https://s8.uupload.ir/files/img_20260208_152349_053_b8yg.jpg') no-repeat center center fixed;
-            background-size: cover;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
+        /* صفحه اصلی بازی */
+        #main-game-page {
             position: fixed;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://s8.uupload.ir/files/img_20260208_152349_053_b8yg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: block;
+        }
+        
+        /* صفحه تالار دوستانه */
+        #friendly-hall-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://s8.uupload.ir/files/img_20260208_174730_422_inei.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: none;
+        }
+        
+        /* نوار سیاه پایین صفحه (صفحه اصلی) */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* عکس خانه - بدون هیچ حاشیه یا border */
+        .house-img {
+            width: 50px;
+            height: 50px;
+        }
+        
+        .house-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        /* دکمه شروع (صفحه اصلی) */
+        .start-button {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: pointer;
+            width: 180px;
+            height: 180px;
+        }
+        
+        .start-button img {
+            width: 180px;
+            height: 180px;
+        }
+        
+        /* دکمه ضربدر (صفحه تالار) - جدید با عکس */
+        .close-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        
+        .close-button img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
     </style>
 </head>
 <body>
-    <!-- فقط عکس پس‌زمینه نمایش داده می‌شود -->
+    <!-- صفحه اصلی بازی -->
+    <div id="main-game-page">
+        <!-- دکمه شروع -->
+        <div class="start-button" onclick="openFriendlyHall()">
+            <img src="https://s8.uupload.ir/files/inshot_20260208_175011014_dlkk.png" alt="شروع بازی">
+        </div>
+        
+        <!-- نوار سیاه پایین صفحه -->
+        <div class="bottom-bar">
+            <div class="house-img">
+                <img src="https://s8.uupload.ir/files/inshot_20260208_175045137_2eb2.png" alt="خانه">
+            </div>
+        </div>
+    </div>
     
+    <!-- صفحه تالار دوستانه -->
+    <div id="friendly-hall-page">
+        <!-- دکمه ضربدر برای بازگشت -->
+        <div class="close-button" onclick="goBackToGame()">
+            <img src="https://s8.uupload.ir/files/inshot_20260208_175500060_irk3.png" alt="بازگشت">
+        </div>
+    </div>
+
     <script>
-        // لاگ ساده در کنسول برای اطلاعات کاربر
-        window.onload = function() {
-            const userData = localStorage.getItem('mafiaSun_user');
-            if (userData) {
-                try {
-                    const user = JSON.parse(userData);
-                    console.log('👤 کاربر وارد شده:', user.displayName || 'کاربر');
-                } catch(e) {
-                    console.log('کاربر جدید وارد شده است');
-                }
-            } else {
-                console.log('🔗 کاربر مستقیماً به صفحه بازی وارد شده است');
+        // باز کردن صفحه تالار دوستانه
+        function openFriendlyHall() {
+            document.getElementById('main-game-page').style.display = 'none';
+            document.getElementById('friendly-hall-page').style.display = 'block';
+        }
+        
+        // بازگشت به صفحه اصلی بازی
+        function goBackToGame() {
+            document.getElementById('friendly-hall-page').style.display = 'none';
+            document.getElementById('main-game-page').style.display = 'block';
+        }
+        
+        // کلید ESC برای بازگشت از تالار
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('friendly-hall-page').style.display === 'block') {
+                goBackToGame();
             }
-        };
+        });
     </script>
 </body>
 </html>
