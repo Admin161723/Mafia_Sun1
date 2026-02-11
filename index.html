@@ -1,9 +1,9 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MafiaSun | بازی آنلاین</title>
+    <title>MafiaSun | پروفایل کاربر</title>
     <style>
         * {
             margin: 0;
@@ -23,7 +23,7 @@
             display: block;
         }
         
-        /* صفحه تالار دوستانه */
+        /* صفحه تالار دوستانه - عکس پس‌زمینه فقط */
         #friendly-hall-page {
             position: fixed;
             top: 0;
@@ -35,18 +35,6 @@
             display: none;
         }
         
-        /* صفحه لابی */
-        #lobby-page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #0c3461 0%, #0d47a1 100%);
-            display: none;
-            overflow: hidden;
-        }
-        
         /* پروفایل در صفحه اصلی */
         .profile-container {
             position: fixed;
@@ -54,1347 +42,867 @@
             left: 20px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 12px 20px;
-            border-radius: 25px;
-            border: 2px solid #FF9800;
+            gap: 10px;
+            background: rgba(10, 14, 23, 0.85);
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1.5px solid #d4a373;
             cursor: pointer;
             z-index: 1000;
-            transition: transform 0.3s;
-        }
-        
-        .profile-container:hover {
-            transform: scale(1.05);
-            background: rgba(0, 0, 0, 0.8);
+            max-width: 200px;
+            backdrop-filter: blur(4px);
         }
         
         .profile-avatar {
-            width: 50px;
-            height: 50px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            border: 2px solid white;
-            background: transparent;
+            border: 1.5px solid #e9c46a;
+            flex-shrink: 0;
         }
         
         .profile-avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 50%;
         }
         
         .profile-info {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 2px;
         }
         
         .profile-name {
-            color: white;
-            font-family: sans-serif;
-            font-size: 16px;
-            font-weight: bold;
+            color: #f1faee;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .profile-name-text {
+            display: inline-block;
+            max-width: 80px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #f1faee;
+            font-size: 12px;
         }
         
         .profile-level {
-            color: #FF9800;
-            font-family: sans-serif;
-            font-size: 14px;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 2px 10px;
-            border-radius: 10px;
-            text-align: center;
+            color: #e9c46a;
+            font-size: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 8px;
+            border-radius: 20px;
+            align-self: flex-start;
+            border: 0.5px solid #d4a373;
         }
         
-        /* نوار سیاه پایین صفحه (صفحه اصلی) */
+        /* نوار پایین */
         .bottom-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 70px;
-            background-color: rgba(0, 0, 0, 0.9);
+            height: 65px;
+            background: rgba(8, 12, 19, 0.95);
+            backdrop-filter: blur(4px);
             display: flex;
             align-items: center;
             justify-content: center;
+            border-top: 1px solid #d4a373;
         }
         
-        /* عکس خانه */
         .house-img {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
+            opacity: 0.9;
         }
         
         .house-img img {
             width: 100%;
             height: 100%;
             object-fit: contain;
+            filter: brightness(0.9);
         }
         
         /* دکمه شروع */
         .start-button {
             position: fixed;
-            bottom: 90px;
+            bottom: 85px;
             left: 50%;
             transform: translateX(-50%);
             cursor: pointer;
-            width: 180px;
-            height: 180px;
+            width: 160px;
+            height: 160px;
+            transition: all 0.2s;
+        }
+        
+        .start-button:hover {
+            transform: translateX(-50%) scale(1.02);
         }
         
         .start-button img {
-            width: 180px;
-            height: 180px;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
         
-        /* دکمه ضربدر */
-        .close-button {
+        /* دکمه ضربدر خوشگل */
+        .close-btn {
             position: fixed;
             top: 20px;
             right: 20px;
-            width: 50px;
-            height: 50px;
+            width: 44px;
+            height: 44px;
+            background: rgba(18, 22, 30, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            z-index: 1000;
+            border: 1.2px solid rgba(212, 163, 115, 0.6);
+            color: #e9ecef;
+            font-size: 26px;
+            font-weight: 300;
+            transition: all 0.2s ease;
+            z-index: 2000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
         
-        .close-button img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+        .close-btn:hover {
+            background: rgba(38, 45, 58, 0.8);
+            border-color: #d4a373;
+            color: white;
+            transform: rotate(90deg);
         }
         
-        /* دکمه ایجاد لابی */
-        .create-lobby-btn {
+        .close-btn::before {
+            content: "✕";
+            line-height: 1;
+        }
+        
+        /* دکمه بازگشت */
+        .back-btn {
             position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 60px;
-            cursor: pointer;
-        }
-        
-        .create-lobby-btn img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-        
-        /* لیست لابی‌ها */
-        #lobbies-container {
-            position: fixed;
-            top: 100px;
-            left: 20px;
+            top: 20px;
             right: 20px;
-            bottom: 180px;
-            overflow-y: auto;
-            display: none;
-        }
-        
-        .lobby-card {
-            background: linear-gradient(135deg, rgba(13, 71, 161, 0.9), rgba(21, 101, 192, 0.9));
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 2px solid #FF9800;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            width: 44px;
+            height: 44px;
+            background: rgba(18, 22, 30, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 50%;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: center;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1.2px solid rgba(212, 163, 115, 0.6);
+            color: #e9ecef;
+            font-size: 26px;
+            font-weight: 300;
+            transition: all 0.2s ease;
+            z-index: 2000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
         
-        .lobby-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-        }
-        
-        .lobby-info {
-            flex: 1;
-        }
-        
-        .lobby-name {
+        .back-btn:hover {
+            background: rgba(38, 45, 58, 0.8);
+            border-color: #d4a373;
             color: white;
-            font-family: sans-serif;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .lobby-details {
-            color: #E0E0E0;
-            font-family: sans-serif;
-            font-size: 14px;
-        }
-        
-        .lobby-players {
-            color: #4CAF50;
-            font-weight: bold;
-        }
-        
-        .join-button {
-            background: linear-gradient(135deg, #FF9800, #F57C00);
-            color: black;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 25px;
-            font-weight: bold;
-            font-size: 14px;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-        
-        /* منوی ایجاد لابی */
-        .lobby-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.95);
-            border: 2px solid #FF9800;
-            border-radius: 15px;
-            padding: 30px;
-            width: 90%;
-            max-width: 400px;
-            display: none;
-            z-index: 10000;
-        }
-        
-        /* دکمه ضربدر منو */
-        .modal-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 25px;
-            height: 25px;
-            cursor: pointer;
-        }
-        
-        .modal-close img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: invert(1);
-        }
-        
-        /* فرم ایجاد لابی */
-        .lobby-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .form-group label {
-            color: white;
-            font-family: sans-serif;
-            font-size: 16px;
-        }
-        
-        .form-group input {
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #FF9800;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 16px;
-        }
-        
-        .checkbox-group {
-            flex-direction: row;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .checkbox-group input {
-            width: 20px;
-            height: 20px;
-        }
-        
-        /* دکمه ایجاد لابی در منو */
-        .create-btn {
-            background: linear-gradient(135deg, #FF9800, #F57C00);
-            color: black;
-            border: none;
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 18px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: transform 0.2s;
-        }
-        
-        .create-btn:hover {
             transform: scale(1.05);
         }
         
-        /* منوی پروفایل */
-        .profile-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.97);
-            border: 2px solid #FF9800;
-            border-radius: 15px;
-            padding: 0;
-            width: 90%;
-            max-width: 500px;
-            display: none;
-            z-index: 10001;
-            overflow: hidden;
-            box-shadow: 0 0 30px rgba(255, 152, 0, 0.3);
+        .back-btn::before {
+            content: "←";
+            line-height: 1;
         }
         
-        .profile-modal-header {
-            background: linear-gradient(135deg, #E65100, #BF360C);
-            padding: 20px;
-            text-align: center;
-            border-bottom: 2px solid #FF9800;
-            position: relative;
-        }
-        
-        .profile-modal-title {
-            color: white;
-            font-family: sans-serif;
-            font-size: 22px;
-            font-weight: bold;
-        }
-        
-        /* دکمه ضربدر در منوی پروفایل */
-        .profile-modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            border: 2px solid white;
-        }
-        
-        .profile-modal-close:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
-        
-        .profile-modal-close::before, .profile-modal-close::after {
-            content: '';
-            position: absolute;
-            width: 18px;
-            height: 2px;
-            background: white;
-        }
-        
-        .profile-modal-close::before {
-            transform: rotate(45deg);
-        }
-        
-        .profile-modal-close::after {
-            transform: rotate(-45deg);
-        }
-        
-        .profile-tabs {
-            display: flex;
-            background: rgba(255, 152, 0, 0.1);
-            border-bottom: 1px solid #FF9800;
-        }
-        
-        .profile-tab {
-            flex: 1;
-            padding: 15px;
-            text-align: center;
-            color: white;
-            font-family: sans-serif;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-bottom: 3px solid transparent;
-        }
-        
-        .profile-tab.active {
-            background: rgba(255, 152, 0, 0.2);
-            border-bottom: 3px solid #FF9800;
-            color: #FF9800;
-        }
-        
-        .profile-tab-content {
-            padding: 25px;
-            display: none;
-            min-height: 300px;
-        }
-        
-        .profile-tab-content.active {
-            display: block;
-        }
-        
-        /* تب آواتار من */
-        .avatars-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .avatar-item {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-        
-        .avatar-item:hover {
-            background: rgba(255, 152, 0, 0.1);
-            transform: translateY(-5px);
-        }
-        
-        .avatar-item.selected {
-            border: 2px solid #FF9800;
-            background: rgba(255, 152, 0, 0.15);
-        }
-        
-        .avatar-preview {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 15px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            border: 3px solid white;
-            background: transparent;
-        }
-        
-        .avatar-preview img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-        
-        .avatar-name {
-            color: white;
-            font-family: sans-serif;
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .avatar-select-btn {
-            background: linear-gradient(135deg, #FF9800, #F57C00);
-            color: black;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: transform 0.2s;
-        }
-        
-        .avatar-select-btn:hover {
-            transform: scale(1.05);
-        }
-        
-        /* تب خرید آواتار */
-        .coming-soon {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.5);
-            font-family: sans-serif;
-            font-size: 20px;
-            margin-top: 100px;
-        }
-        
-        /* نوار تیره تیره پایین در صفحه لابی */
-        .dark-bottom-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 90px;
-            background: rgba(5, 15, 30, 0.95);
-            border-top: 2px solid #E65100;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            z-index: 10;
-        }
-        
-        /* دایره‌های بازیکنان */
-        .players-container {
-            position: fixed;
-            bottom: 110px;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            z-index: 5;
-            padding: 0 20px;
-        }
-        
-        /* ساختار دو ستونی برای دایره‌ها */
-        .circles-columns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px 120px;
-            width: 100%;
-            max-width: 600px;
-        }
-        
-        /* دایره بازیکن */
-        .player-circle {
-            width: 85px;
-            height: 85px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-        }
-        
-        /* آواتار بزرگ داخل دایره */
-        .player-avatar {
-            width: 85px;
-            height: 85px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            border: 3px solid #E65100;
-            background: linear-gradient(135deg, #0c3461, #0d47a1);
-        }
-        
-        .player-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-        
-        /* شماره بازیکن در کنار دایره */
-        .player-number {
-            position: absolute;
-            top: -5px;
-            right: -10px;
-            background: #E65100;
-            color: white;
-            font-family: sans-serif;
-            font-size: 14px;
-            font-weight: bold;
-            padding: 4px 8px;
-            border-radius: 50%;
-            min-width: 28px;
-            height: 28px;
-            text-align: center;
-            z-index: 10;
-            border: 2px solid white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-        }
-        
-        /* ستون سمت راست */
-        .player-circle:nth-child(odd) {
-            justify-self: end;
-            margin-right: 10px;
-        }
-        
-        /* ستون سمت چپ */
-        .player-circle:nth-child(even) {
-            justify-self: start;
-            margin-left: 10px;
-        }
-        
-        /* اسم بازیکن زیر دایره */
-        .player-name {
-            font-size: 12px;
-            text-align: center;
-            max-width: 100px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            color: white;
-            font-family: sans-serif;
-            font-weight: bold;
-            background: rgba(0, 0, 0, 0.4);
-            padding: 4px 10px;
-            border-radius: 10px;
-            margin-top: 8px;
-        }
-        
-        /* آیکون‌های کنار دایره */
-        .player-icons {
-            position: absolute;
-            top: -5px;
-            left: -10px;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            z-index: 10;
-        }
-        
-        .player-icon {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .like-icon {
-            background: #4CAF50;
-            color: white;
-        }
-        
-        .dislike-icon {
-            background: #F44336;
-            color: white;
-        }
-        
-        .mic-icon {
-            background: #2196F3;
-            color: white;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.5); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(33, 150, 243, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(33, 150, 243, 0); }
-        }
-        
-        .like-icon.fade-out {
-            animation: fadeOut 0.5s ease forwards;
-        }
-        
-        @keyframes fadeOut {
-            from { opacity: 1; transform: scale(1); }
-            to { opacity: 0; transform: scale(0.5); }
-        }
-        
-        /* وضعیت آنلاین */
-        .online-status {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            width: 12px;
-            height: 12px;
-            background: #4CAF50;
-            border-radius: 50%;
-            border: 2px solid white;
-            z-index: 10;
-        }
-        
-        /* دکمه‌های کنترل در نوار پایین */
-        .control-buttons {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-        
-        .control-btn {
-            width: 70px;
-            height: 70px;
-            cursor: pointer;
-            transition: transform 0.2s;
-            background: transparent;
-            border: none;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .control-btn img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: brightness(1);
-        }
-        
-        /* دکمه میکروفون */
-        .mic-btn {
-            background: linear-gradient(135deg, #666, #444);
-            border-radius: 50%;
-            width: 70px;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 2px solid #777;
-        }
-        
-        .mic-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-        }
-        
-        .mic-btn.active {
-            background: linear-gradient(135deg, #2196F3, #1976D2);
-            border-color: #64B5F6;
-            box-shadow: 0 4px 20px rgba(33, 150, 243, 0.5);
-        }
-        
-        .mic-btn.active:hover {
-            box-shadow: 0 6px 25px rgba(33, 150, 243, 0.6);
-        }
-        
-        .mic-icon-design {
-            position: relative;
-            width: 35px;
-            height: 35px;
-            transition: all 0.3s ease;
-        }
-        
-        .mic-base {
-            position: absolute;
-            bottom: 2px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 18px;
-            height: 10px;
-            background: #FFF;
-            border-radius: 3px;
-            transition: all 0.3s ease;
-        }
-        
-        .mic-stem {
-            position: absolute;
-            bottom: 11px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 6px;
-            height: 15px;
-            background: #FFF;
-            border-radius: 2px;
-            transition: all 0.3s ease;
-        }
-        
-        .mic-head {
-            position: absolute;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 22px;
-            height: 22px;
-            background: #FFF;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-        
-        .mic-head::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 14px;
-            height: 14px;
-            background: #666;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-        
-        .mic-btn.active .mic-base,
-        .mic-btn.active .mic-stem,
-        .mic-btn.active .mic-head {
-            background: #FFF;
-        }
-        
-        .mic-btn.active .mic-head::before {
-            background: #2196F3;
-        }
-        
-        .mic-off {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(45deg);
-            width: 30px;
-            height: 4px;
-            background: #F44336;
-            border-radius: 2px;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-        
-        .mic-btn:not(.active) .mic-off {
-            opacity: 1;
-            background: #F44336;
-        }
-        
-        .mic-btn:not(.active) .mic-base,
-        .mic-btn:not(.active) .mic-stem,
-        .mic-btn:not(.active) .mic-head {
-            background: #AAA;
-        }
-        
-        .mic-btn:not(.active) .mic-head::before {
-            background: #777;
-        }
-        
-        /* دکمه شروع بازی */
-        .start-game-btn {
-            position: fixed;
-            bottom: 35px;
-            left: 25px;
-            width: 100px;
-            height: 100px;
-            cursor: pointer;
-            transition: transform 0.2s;
-            z-index: 11;
-        }
-        
-        .start-game-btn:hover {
-            transform: scale(1.05);
-        }
-        
-        .start-game-btn img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
-        }
-        
-        /* نوار بالای لابی */
-        .lobby-top-bar {
+        /* ========== صفحه پروفایل ========== */
+        #profile-page {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 60px;
-            background: linear-gradient(135deg, #E65100, #BF360C);
-            border-bottom: 2px solid #FF9800;
+            height: 100%;
+            background: url('https://s8.uupload.ir/files/img_20260212_001408_558_g4g9.jpg') no-repeat center center;
+            background-size: cover;
+            display: none;
+            padding: 24px;
+            direction: rtl;
+            overflow-y: auto;
+        }
+        
+        .profile-content {
+            max-width: 480px;
+            margin: 30px auto 0;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            padding: 0 15px;
-            z-index: 1000;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            gap: 20px;
         }
         
-        .lobby-title {
-            color: white;
-            font-family: sans-serif;
-            font-size: 20px;
-            font-weight: bold;
-            text-align: center;
-            flex: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        /* کارت پروفایل */
+        .profile-card {
+            background: rgba(12, 16, 24, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 28px;
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            border: 1px solid rgba(212, 163, 115, 0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            width: 100%;
         }
         
-        /* ضربدر بستن */
-        .lobby-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-            z-index: 1001;
-            background: rgba(255, 255, 255, 0.1);
+        .avatar-circle {
+            width: 96px;
+            height: 96px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
-            border: 2px solid white;
-        }
-        
-        .lobby-close:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
-        
-        .lobby-close::before, .lobby-close::after {
-            content: '';
-            position: absolute;
-            width: 18px;
-            height: 2px;
-            background: white;
-        }
-        
-        .lobby-close::before {
-            transform: rotate(45deg);
-        }
-        
-        .lobby-close::after {
-            transform: rotate(-45deg);
-        }
-        
-        /* مخفی کردن اسکرولبار */
-        body {
             overflow: hidden;
-        }
-        
-        /* استایل برای اسکرولبار در تالار */
-        #lobbies-container::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        #lobbies-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
-        
-        #lobbies-container::-webkit-scrollbar-thumb {
-            background: #FF9800;
-            border-radius: 4px;
-        }
-        
-        .empty-state {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.7);
-            font-family: sans-serif;
-            font-size: 18px;
-            margin-top: 50px;
-        }
-        
-        /* آواتار خالی */
-        .empty-avatar {
-            font-size: 32px;
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        /* تنظیمات نام کاربر */
-        .name-input-container {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .name-input-title {
-            color: white;
-            font-family: sans-serif;
-            margin-bottom: 15px;
-            font-size: 16px;
-        }
-        
-        .current-name {
-            color: #FF9800;
-            font-weight: bold;
-        }
-        
-        .name-form {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .name-input {
-            flex: 1;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #FF9800;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 14px;
-        }
-        
-        .name-submit-btn {
-            background: linear-gradient(135deg, #FF9800, #F57C00);
-            color: black;
-            border: none;
-            padding: 0 20px;
-            border-radius: 8px;
-            font-weight: bold;
+            border: 2px solid #d4a373;
+            margin-top: -12px;
             cursor: pointer;
-            white-space: nowrap;
+            transition: all 0.2s;
+            background: #1e1e2a;
         }
         
-        /* نوتیفیکیشن ورود کاربر جدید */
-        .player-joined-notification {
-            position: fixed;
-            top: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(76, 175, 80, 0.9);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 25px;
-            font-family: sans-serif;
-            font-size: 14px;
-            font-weight: bold;
-            z-index: 1002;
-            animation: slideDown 0.5s ease, fadeOut 0.5s ease 2.5s forwards;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            border: 2px solid white;
+        .avatar-circle:hover {
+            border-color: #e9c46a;
+            transform: scale(1.03);
         }
         
-        @keyframes slideDown {
-            from { top: 50px; opacity: 0; }
-            to { top: 80px; opacity: 1; }
+        .avatar-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
-        /* وضعیت سازنده */
-        .creator-badge {
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            background: #FF9800;
-            color: black;
-            font-family: sans-serif;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 2px 6px;
-            border-radius: 10px;
-            z-index: 11;
-            border: 1px solid white;
+        .name-box {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 40px;
+            padding: 12px 22px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #d4a373;
+            cursor: pointer;
+            transition: all 0.2s;
         }
         
-        /* وضعیت میکروفون در دایره */
-        .player-mic-status {
-            position: absolute;
-            bottom: 0;
-            left: 0;
+        .name-box:hover {
+            background: rgba(0, 0, 0, 0.65);
+            border-color: #e9c46a;
+        }
+        
+        .user-name {
+            color: #f1faee;
+            font-size: 18px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             width: 20px;
             height: 20px;
-            background: #2196F3;
+            background: #2c6e9c;
             border-radius: 50%;
+            border: 1px solid #e9ecef;
+        }
+        
+        .verified-badge::before {
+            content: "✓";
+            color: white;
+            font-size: 12px;
+            font-weight: 400;
+        }
+        
+        .level-badge {
+            background: #d4a373;
+            color: #0a0e17;
+            padding: 5px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 500;
+            border: none;
+        }
+        
+        .edit-status {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
-            color: white;
-            z-index: 11;
-            border: 1px solid white;
+            gap: 12px;
+            width: 100%;
+            margin-top: 4px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(212, 163, 115, 0.3);
+            font-size: 12px;
         }
         
-        /* چت لابی */
-        .chat-container {
-            position: fixed;
-            top: 70px;
-            right: 20px;
-            width: 300px;
-            height: 300px;
-            background: rgba(0, 0, 0, 0.85);
-            border: 2px solid #FF9800;
-            border-radius: 10px;
-            display: none;
-            flex-direction: column;
-            z-index: 1000;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        .free-badge {
+            background: #2f4f4f;
+            color: #e9ecef;
+            padding: 5px 14px;
+            border-radius: 30px;
+            border: 0.5px solid #6b8e7c;
         }
         
-        .chat-header {
-            background: linear-gradient(135deg, #E65100, #BF360C);
-            padding: 10px;
-            border-radius: 8px 8px 0 0;
+        .coin-badge {
+            background: #5e503f;
+            color: #e9ecef;
+            padding: 5px 14px;
+            border-radius: 30px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 5px;
+            border: 0.5px solid #a88b6e;
         }
         
-        .chat-title {
-            color: white;
-            font-family: sans-serif;
-            font-weight: bold;
+        .coin-icon {
+            font-size: 14px;
         }
         
-        .chat-close {
-            color: white;
-            cursor: pointer;
-            font-size: 20px;
+        /* ========== کارت آمار ========== */
+        .stats-section {
+            background: rgba(12, 16, 24, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 28px;
+            padding: 24px;
+            border: 1px solid rgba(212, 163, 115, 0.5);
+            width: 100%;
         }
         
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
+        /* کد کاربری - قابل کپی */
+        .user-id-block {
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 16px;
+            padding: 14px 18px;
+            margin-bottom: 24px;
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            border: 0.5px solid #5f6b7a;
+            border-right: 4px solid #d4a373;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .user-id-block:hover {
+            background: rgba(0, 0, 0, 0.5);
+            border-right-color: #e9c46a;
+        }
+        
+        .user-id-label {
+            color: #adb5bd;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
             gap: 8px;
         }
         
-        .message {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 12px;
-            border-radius: 10px;
-            max-width: 85%;
+        .user-id-icon {
+            font-size: 20px;
+            color: #d4a373;
         }
         
-        .message.sent {
-            align-self: flex-end;
-            background: rgba(33, 150, 243, 0.3);
-            border: 1px solid #2196F3;
+        .user-id-value {
+            color: #e9ecef;
+            font-size: 15px;
+            font-weight: 400;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1.5px;
+            background: rgba(0,0,0,0.3);
+            padding: 5px 16px;
+            border-radius: 30px;
+            border: 0.5px solid #5f6b7a;
         }
         
-        .message.received {
-            align-self: flex-start;
-            background: rgba(255, 152, 0, 0.3);
-            border: 1px solid #FF9800;
-        }
-        
-        .message-sender {
-            font-weight: bold;
-            color: #FF9800;
-            font-size: 12px;
-            margin-bottom: 2px;
-        }
-        
-        .message-text {
-            color: white;
-            font-size: 14px;
-        }
-        
-        .chat-input-container {
-            display: flex;
-            padding: 10px;
-            gap: 10px;
-        }
-        
-        .chat-input {
-            flex: 1;
-            padding: 8px 12px;
-            border-radius: 20px;
-            border: 1px solid #FF9800;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 14px;
-        }
-        
-        .chat-send-btn {
-            background: linear-gradient(135deg, #FF9800, #F57C00);
-            color: black;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        /* دکمه چت */
-        .chat-toggle-btn {
+        /* نوتیفیکیشن کپی */
+        .copy-notification {
             position: fixed;
-            top: 70px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #FF9800, #F57C00);
-            border-radius: 50%;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2c3e50;
+            color: #e9ecef;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 13px;
+            border: 0.5px solid #d4a373;
+            backdrop-filter: blur(4px);
+            z-index: 3000;
+            display: none;
+            animation: fadeInOut 1.5s ease;
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+            15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            85% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+        }
+        
+        /* گرید آمار */
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .stat-cell {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 14px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 0.5px solid #495057;
+            transition: all 0.2s;
+        }
+        
+        .stat-cell:hover {
+            background: rgba(0, 0, 0, 0.5);
+            border-color: #6c757d;
+        }
+        
+        .stat-icon {
+            font-size: 24px;
+            min-width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: rgba(33, 37, 41, 0.6);
+            border-radius: 12px;
+            color: #d4a373;
+        }
+        
+        .stat-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .stat-label {
+            color: #adb5bd;
+            font-size: 11px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-figure {
+            color: #f1faee;
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 1;
+        }
+        
+        .stat-unit {
+            color: #adb5bd;
+            font-size: 11px;
+            margin-right: 3px;
+        }
+        
+        /* باکس مقام - فقط ادمین و مدیر ارشد */
+        .rank-section {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 18px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 0.5px solid #495057;
+            margin-top: 16px;
+        }
+        
+        .rank-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        
+        .rank-icon {
+            font-size: 26px;
+            background: rgba(33, 37, 41, 0.6);
+            padding: 6px;
+            border-radius: 12px;
+            color: #d4a373;
+        }
+        
+        .rank-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .rank-label {
+            color: #adb5bd;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+        
+        .rank-name {
+            color: #f1faee;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        .rank-tag {
+            background: #2c3e50;
+            color: #e9ecef;
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 400;
+            border: 0.5px solid #5f6b7a;
+        }
+        
+        /* ========== صفحه انتخاب آواتار ========== */
+        #avatar-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://s8.uupload.ir/files/img_20260212_001408_558_g4g9.jpg') no-repeat center center;
+            background-size: cover;
+            display: none;
+            padding: 24px;
+            direction: rtl;
+            overflow-y: auto;
+        }
+        
+        .avatar-container {
+            max-width: 480px;
+            margin: 50px auto 0;
+        }
+        
+        .avatar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+        }
+        
+        .avatar-header h2 {
+            color: #e9ecef;
+            font-size: 22px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+        
+        .avatar-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 28px;
+            background: rgba(10, 14, 23, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 8px;
+            border-radius: 50px;
+            border: 0.5px solid #495057;
+        }
+        
+        .avatar-tab {
+            flex: 1;
+            padding: 10px 16px;
+            text-align: center;
+            color: #adb5bd;
+            font-size: 14px;
+            font-weight: 400;
+            border-radius: 40px;
             cursor: pointer;
-            z-index: 999;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            border: 2px solid white;
+            transition: all 0.2s;
         }
         
-        .chat-toggle-btn img {
-            width: 24px;
-            height: 24px;
-            filter: brightness(0) invert(1);
+        .avatar-tab.active {
+            background: #2c3e50;
+            color: #e9ecef;
+            border: 0.5px solid #d4a373;
         }
         
-        /* پاپ‌آپ رمز */
-        .password-popup {
+        .tab-panel {
+            display: none;
+            background: rgba(12, 16, 24, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 28px;
+            padding: 24px;
+            border: 1px solid rgba(212, 163, 115, 0.5);
+        }
+        
+        .tab-panel.active {
+            display: block;
+        }
+        
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .avatar-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+        
+        .avatar-card:hover {
+            background: rgba(0, 0, 0, 0.5);
+            border-color: #6c757d;
+        }
+        
+        .avatar-card.selected {
+            border: 1.5px solid #d4a373;
+            background: rgba(44, 62, 80, 0.5);
+        }
+        
+        .avatar-thumb {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #495057;
+        }
+        
+        .avatar-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .avatar-title {
+            color: #e9ecef;
+            font-size: 14px;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+        
+        .select-button {
+            background: #2c3e50;
+            color: #e9ecef;
+            border: 0.5px solid #5f6b7a;
+            padding: 6px 20px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .select-button:hover {
+            background: #34495e;
+            border-color: #d4a373;
+        }
+        
+        .shop-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .shop-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 18px;
+            text-align: center;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .shop-card:hover {
+            border-color: #6c757d;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .shop-thumb {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #495057;
+        }
+        
+        .shop-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .shop-title {
+            color: #e9ecef;
+            font-size: 14px;
+            font-weight: 400;
+            margin-bottom: 6px;
+        }
+        
+        .shop-price {
+            color: #d4a373;
+            font-size: 14px;
+            font-weight: 400;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .buy-button {
+            background: #2f4f4f;
+            color: #e9ecef;
+            border: 0.5px solid #6b8e7c;
+            padding: 6px 20px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .buy-button:hover {
+            background: #3b5e5e;
+            border-color: #a88b6e;
+        }
+        
+        /* مودال ویرایش */
+        .edit-modal {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.95);
-            border: 2px solid #FF9800;
-            border-radius: 15px;
-            padding: 30px;
+            background: rgba(18, 22, 30, 0.98);
+            backdrop-filter: blur(12px);
+            border: 1px solid #d4a373;
+            border-radius: 28px;
+            padding: 32px;
             width: 90%;
-            max-width: 350px;
-            z-index: 10002;
+            max-width: 380px;
             display: none;
+            z-index: 10000;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
         }
         
-        .password-title {
-            color: white;
-            font-family: sans-serif;
-            font-size: 18px;
-            margin-bottom: 20px;
+        .edit-modal h3 {
+            color: #e9ecef;
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 24px;
             text-align: center;
+            letter-spacing: 0.5px;
         }
         
-        .password-input {
+        .edit-input {
             width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #FF9800;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            padding: 14px 18px;
+            border-radius: 40px;
+            border: 0.5px solid #5f6b7a;
+            background: rgba(0,0,0,0.3);
+            color: #e9ecef;
             font-size: 16px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            direction: rtl;
         }
         
-        .password-buttons {
+        .edit-input:focus {
+            outline: none;
+            border-color: #d4a373;
+            background: rgba(0,0,0,0.5);
+        }
+        
+        .modal-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
         
-        .password-btn {
-            flex: 1;
-            padding: 12px;
-            border-radius: 8px;
-            border: none;
-            font-weight: bold;
+        .save-action {
+            flex: 2;
+            background: #2f4f4f;
+            color: #e9ecef;
+            border: 0.5px solid #6b8e7c;
+            padding: 14px;
+            border-radius: 40px;
+            font-weight: 400;
+            font-size: 15px;
             cursor: pointer;
+            transition: all 0.2s;
         }
         
-        .password-submit {
-            background: linear-gradient(135deg, #4CAF50, #2E7D32);
-            color: white;
+        .save-action:hover {
+            background: #3b5e5e;
         }
         
-        .password-cancel {
-            background: linear-gradient(135deg, #F44336, #C62828);
-            color: white;
+        .cancel-action {
+            flex: 1;
+            background: transparent;
+            color: #e9ecef;
+            border: 0.5px solid #7a5c4a;
+            padding: 14px;
+            border-radius: 40px;
+            font-weight: 400;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
         }
         
-        /* پیام سیستم */
-        .system-message {
-            position: fixed;
-            top: 130px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(33, 150, 243, 0.9);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-family: sans-serif;
+        .cancel-action:hover {
+            background: rgba(122, 92, 74, 0.2);
+        }
+        
+        .coin-message {
+            color: #d4a373;
             font-size: 14px;
-            z-index: 1002;
-            display: none;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            border: 2px solid white;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         
-        /* Video Grid */
-        .video-grid {
-            position: fixed;
-            top: 70px;
-            left: 20px;
-            right: 20px;
-            bottom: 200px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            overflow-y: auto;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            border: 2px solid #FF9800;
-            z-index: 5;
-        }
-        
-        .video-item {
-            background: #000;
-            border-radius: 10px;
+        body {
             overflow: hidden;
-            position: relative;
-        }
-        
-        .video-item video {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-        }
-        
-        .video-name {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 5px;
-            font-size: 12px;
-            text-align: center;
-        }
-        
-        .video-local video {
-            transform: rotateY(180deg);
-        }
-        
-        /* ویدیوچت */
-        .video-chat-container {
-            position: fixed;
-            top: 70px;
-            left: 20px;
-            right: 20px;
-            bottom: 200px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            border: 2px solid #FF9800;
-            z-index: 5;
-            padding: 15px;
-            overflow: hidden;
-        }
-        
-        .video-chat-title {
-            color: white;
-            font-family: sans-serif;
-            font-size: 16px;
-            margin-bottom: 15px;
-            text-align: center;
-            background: rgba(255, 152, 0, 0.3);
-            padding: 8px;
-            border-radius: 8px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
     </style>
 </head>
 <body>
     <!-- صفحه اصلی بازی -->
     <div id="main-game-page">
-        <!-- پروفایل کاربر -->
-        <div class="profile-container" onclick="openProfileModal()">
-            <div class="profile-avatar" id="mainProfileAvatar">
-                <!-- آواتار کاربر -->
-            </div>
+        <div class="profile-container" onclick="openProfilePage()">
+            <div class="profile-avatar" id="mainProfileAvatar"></div>
             <div class="profile-info">
-                <div class="profile-name" id="mainProfileName">بازیکن</div>
+                <div class="profile-name" id="mainProfileName"></div>
                 <div class="profile-level">سطح 1</div>
             </div>
         </div>
         
-        <!-- دکمه شروع -->
         <div class="start-button" onclick="openFriendlyHall()">
             <img src="https://s8.uupload.ir/files/inshot_20260208_175011014_dlkk.png" alt="شروع بازی">
         </div>
         
-        <!-- نوار سیاه پایین صفحه -->
         <div class="bottom-bar">
             <div class="house-img">
                 <img src="https://s8.uupload.ir/files/inshot_20260208_175045137_2eb2.png" alt="خانه">
@@ -1402,1237 +910,493 @@
         </div>
     </div>
     
-    <!-- صفحه تالار دوستانه -->
+    <!-- صفحه تالار دوستانه - فقط عکس پس‌زمینه، بدون متن -->
     <div id="friendly-hall-page">
-        <!-- دکمه ضربدر برای بازگشت -->
-        <div class="close-button" onclick="goBackToGame()">
-            <img src="https://s8.uupload.ir/files/inshot_20260208_175500060_irk3.png" alt="بازگشت">
-        </div>
-        
-        <!-- دکمه ایجاد لابی -->
-        <div class="create-lobby-btn" onclick="openLobbyModal()">
-            <img src="https://s8.uupload.ir/files/inshot_20260208_184908314_wlkw.png" alt="ایجاد لابی">
-        </div>
-        
-        <!-- لیست لابی‌های موجود -->
-        <div id="lobbies-container">
-            <!-- لابی‌ها به صورت دینامیک اضافه می‌شوند -->
-        </div>
+        <div class="close-btn" onclick="goBackToGame()"></div>
     </div>
     
-    <!-- صفحه لابی -->
-    <div id="lobby-page">
-        <!-- نوتیفیکیشن ورود کاربر جدید -->
-        <div id="playerJoinedNotification" class="player-joined-notification" style="display: none;"></div>
+    <!-- صفحه پروفایل -->
+    <div id="profile-page">
+        <div class="back-btn" onclick="closeProfilePage()"></div>
         
-        <!-- پیام سیستم -->
-        <div id="systemMessage" class="system-message" style="display: none;"></div>
-        
-        <!-- ویدیوچت -->
-        <div class="video-chat-container" id="videoChatContainer" style="display: none;">
-            <div class="video-chat-title">🎥 ویدیوچت لابی</div>
-            <div class="video-grid" id="videoGrid">
-                <!-- ویدیوها اینجا اضافه می‌شوند -->
-            </div>
-        </div>
-        
-        <!-- دکمه چت -->
-        <div class="chat-toggle-btn" onclick="toggleChat()">
-            💬
-        </div>
-        
-        <!-- پنجره چت -->
-        <div class="chat-container" id="chatContainer">
-            <div class="chat-header">
-                <div class="chat-title">💬 چت لابی</div>
-                <div class="chat-close" onclick="toggleChat()">×</div>
-            </div>
-            <div class="chat-messages" id="chatMessages">
-                <!-- پیام‌ها اینجا نمایش داده می‌شوند -->
-            </div>
-            <div class="chat-input-container">
-                <input type="text" class="chat-input" id="chatInput" placeholder="پیام خود را بنویسید...">
-                <button class="chat-send-btn" onclick="sendChatMessage()">ارسال</button>
-            </div>
-        </div>
-        
-        <!-- نوار بالای لابی -->
-        <div class="lobby-top-bar">
-            <div class="lobby-title" id="lobbyTitle">نام لابی</div>
-            <!-- ضربدر بستن -->
-            <div class="lobby-close" onclick="closeLobby()"></div>
-        </div>
-        
-        <!-- دایره‌های بازیکنان -->
-        <div class="players-container">
-            <div class="circles-columns" id="playersGrid">
-                <!-- دایره‌ها به صورت دینامیک اضافه می‌شوند -->
-            </div>
-        </div>
-        
-        <!-- نوار تیره تیره پایین با دکمه‌ها -->
-        <div class="dark-bottom-bar">
-            <!-- دکمه شروع بازی در سمت چپ -->
-            <div class="start-game-btn" onclick="startGame()">
-                <img src="https://s8.uupload.ir/files/inshot_20260208_202015303_bu6y.png" alt="شروع بازی">
-            </div>
-            
-            <!-- دکمه‌های کنترل سمت راست -->
-            <div class="control-buttons">
-                <button class="control-btn like-btn" onclick="toggleLike()">
-                    <img src="https://s8.uupload.ir/files/inshot_20260208_174410945_l9ef.png" alt="لایک">
-                </button>
-                <button class="control-btn dislike-btn" onclick="toggleDislike()">
-                    <img src="https://s8.uupload.ir/files/inshot_20260208_174516362_oz8n.png" alt="دیسلایک">
-                </button>
-                <div class="mic-btn" id="micButton" onclick="toggleMic()">
-                    <div class="mic-icon-design">
-                        <div class="mic-base"></div>
-                        <div class="mic-stem"></div>
-                        <div class="mic-head"></div>
-                        <div class="mic-off"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- منوی ایجاد لابی -->
-    <div class="lobby-modal" id="lobbyModal">
-        <!-- دکمه ضربدر منو -->
-        <div class="modal-close" onclick="closeLobbyModal()">
-            <img src="https://s8.uupload.ir/files/inshot_20260208_175500060_irk3.png" alt="بستن">
-        </div>
-        
-        <!-- فرم ایجاد لابی -->
-        <form class="lobby-form" id="lobbyForm" onsubmit="event.preventDefault(); createLobby();">
-            <div class="form-group">
-                <label for="lobbyName">اسم لابی</label>
-                <input type="text" id="lobbyName" placeholder="مثال: لابی حرفه‌ای" required>
-            </div>
-            
-            <div class="form-group checkbox-group">
-                <input type="checkbox" id="hasPassword" onclick="togglePasswordField()">
-                <label for="hasPassword">لابی رمزدار</label>
-            </div>
-            
-            <div class="form-group" id="passwordGroup" style="display: none;">
-                <label for="lobbyPassword">رمز لابی</label>
-                <input type="password" id="lobbyPassword" placeholder="رمز دلخواه">
-            </div>
-            
-            <div class="form-group">
-                <label>نقش: تکاور - ظرفیت: 10 نفر</label>
-            </div>
-            
-            <button type="submit" class="create-btn">ایجاد لابی</button>
-        </form>
-    </div>
-    
-    <!-- منوی پروفایل -->
-    <div class="profile-modal" id="profileModal">
-        <div class="profile-modal-header">
-            <div class="profile-modal-title">پروفایل کاربر</div>
-            <!-- ضربدر بستن -->
-            <div class="profile-modal-close" onclick="closeProfileModal()"></div>
-        </div>
-        
-        <div class="profile-tabs">
-            <div class="profile-tab active" onclick="switchProfileTab('avatars')">آواتار من</div>
-            <div class="profile-tab" onclick="switchProfileTab('buy')">خرید آواتار</div>
-        </div>
-        
-        <!-- تب آواتار من -->
-        <div class="profile-tab-content active" id="avatarsTab">
-            <h3 style="color: white; font-family: sans-serif; text-align: center; margin-bottom: 20px;">آواتار خود را انتخاب کنید</h3>
-            
-            <div class="avatars-container">
-                <!-- آواتار 1 -->
-                <div class="avatar-item" id="avatar1" onclick="selectAvatar('avatar1')">
-                    <div class="avatar-preview">
-                        <img src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png" alt="آواتار 1">
-                    </div>
-                    <div class="avatar-name">آواتار مرد</div>
-                    <button class="avatar-select-btn" onclick="selectAvatar('avatar1'); event.stopPropagation();">انتخاب</button>
+        <div class="profile-content">
+            <!-- کارت پروفایل -->
+            <div class="profile-card">
+                <div class="avatar-circle" id="profileAvatarCircle" onclick="openAvatarPage()">
+                    <img id="profileAvatarImg" src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png">
                 </div>
                 
-                <!-- آواتار 2 -->
-                <div class="avatar-item" id="avatar2" onclick="selectAvatar('avatar2')">
-                    <div class="avatar-preview">
-                        <img src="https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png" alt="آواتار 2">
+                <div class="name-box" onclick="openEditModal()">
+                    <div class="user-name" id="profileUserName">
+                        بازیکن
+                        <span class="verified-badge"></span>
                     </div>
-                    <div class="avatar-name">آواتار زن</div>
-                    <button class="avatar-select-btn" onclick="selectAvatar('avatar2'); event.stopPropagation();">انتخاب</button>
+                    <span class="level-badge">سطح ۱</span>
+                </div>
+                
+                <div class="edit-status" id="editStatus">
+                    <span class="free-badge">۱ بار رایگان</span>
+                    <span class="coin-badge">
+                        <span class="coin-icon">🪙</span>
+                        ۵ سکه
+                    </span>
                 </div>
             </div>
             
-            <!-- تنظیم نام کاربر -->
-            <div class="name-input-container">
-                <div class="name-input-title">
-                    نام کاربری فعلی: <span class="current-name" id="currentUserName">بازیکن</span>
+            <!-- بخش آمار -->
+            <div class="stats-section">
+                <!-- کد کاربری - قابل کپی -->
+                <div class="user-id-block" onclick="copyUserId()">
+                    <span class="user-id-label">
+                        <span class="user-id-icon">🆔</span>
+                        کد کاربری
+                    </span>
+                    <span class="user-id-value" id="userIdDisplay">MF-2847-5931</span>
                 </div>
-                <div class="name-form">
-                    <input type="text" class="name-input" id="userNameInput" placeholder="نام جدید را وارد کنید">
-                    <button class="name-submit-btn" onclick="saveUserName()">تغییر</button>
+                
+                <!-- ردیف ۱: برد و باخت (شکلک باخت تغییر کرد) -->
+                <div class="stats-row">
+                    <div class="stat-cell">
+                        <span class="stat-icon">🏆</span>
+                        <div class="stat-detail">
+                            <span class="stat-label">تعداد برد</span>
+                            <span class="stat-figure">۱۲۸</span>
+                        </div>
+                    </div>
+                    <div class="stat-cell">
+                        <span class="stat-icon">🕊️</span>
+                        <div class="stat-detail">
+                            <span class="stat-label">تعداد باخت</span>
+                            <span class="stat-figure">۸۹</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ردیف ۲: ساعت و ناظر -->
+                <div class="stats-row">
+                    <div class="stat-cell">
+                        <span class="stat-icon">⏳</span>
+                        <div class="stat-detail">
+                            <span class="stat-label">ساعت بازی</span>
+                            <span class="stat-figure">۳۴۲</span>
+                            <span class="stat-unit">h</span>
+                        </div>
+                    </div>
+                    <div class="stat-cell">
+                        <span class="stat-icon">👁️</span>
+                        <div class="stat-detail">
+                            <span class="stat-label">تعداد ناظر</span>
+                            <span class="stat-figure">۱۵۶</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- مقام بازی - ادمین / مدیر ارشد -->
+                <div class="rank-section">
+                    <div class="rank-info">
+                        <span class="rank-icon">⚙️</span>
+                        <div class="rank-detail">
+                            <span class="rank-label">مقام</span>
+                            <span class="rank-name">ادمین</span>
+                        </div>
+                    </div>
+                    <span class="rank-tag">مدیر ارشد</span>
                 </div>
             </div>
         </div>
-        
-        <!-- تب خرید آواتار -->
-        <div class="profile-tab-content" id="buyTab">
-            <div class="coming-soon">به زودی...</div>
+    </div>
+    
+    <!-- نوتیفیکیشن کپی -->
+    <div id="copyNotification" class="copy-notification">✅ کد کاربری کپی شد</div>
+    
+    <!-- صفحه انتخاب آواتار -->
+    <div id="avatar-page">
+        <div class="avatar-container">
+            <div class="avatar-header">
+                <h2>انتخاب آواتار</h2>
+                <div class="close-btn" onclick="closeAvatarPage()"></div>
+            </div>
+            
+            <div class="avatar-tabs">
+                <div class="avatar-tab active" onclick="switchAvatarTab('my')">آواتار من</div>
+                <div class="avatar-tab" onclick="switchAvatarTab('shop')">خرید آواتار</div>
+            </div>
+            
+            <div class="tab-panel active" id="myAvatarsPanel">
+                <div class="avatar-grid">
+                    <div class="avatar-card selected" id="avatar1" onclick="selectAvatar('avatar1')">
+                        <div class="avatar-thumb">
+                            <img src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png">
+                        </div>
+                        <div class="avatar-title">آواتار مرد</div>
+                        <button class="select-button" onclick="selectAvatar('avatar1'); event.stopPropagation();">انتخاب</button>
+                    </div>
+                    <div class="avatar-card" id="avatar2" onclick="selectAvatar('avatar2')">
+                        <div class="avatar-thumb">
+                            <img src="https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png">
+                        </div>
+                        <div class="avatar-title">آواتار زن</div>
+                        <button class="select-button" onclick="selectAvatar('avatar2'); event.stopPropagation();">انتخاب</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-panel" id="shopPanel">
+                <div class="shop-grid">
+                    <div class="shop-card">
+                        <div class="shop-thumb">
+                            <img src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png">
+                        </div>
+                        <div class="shop-title">آواتار طلایی</div>
+                        <div class="shop-price">
+                            <span>🪙</span> ۱۰۰
+                        </div>
+                        <button class="buy-button" onclick="buyAvatar('gold')">خرید</button>
+                    </div>
+                    <div class="shop-card">
+                        <div class="shop-thumb">
+                            <img src="https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png">
+                        </div>
+                        <div class="shop-title">آواتار الماسی</div>
+                        <div class="shop-price">
+                            <span>🪙</span> ۲۰۰
+                        </div>
+                        <button class="buy-button" onclick="buyAvatar('diamond')">خرید</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     
-    <!-- پاپ‌آپ رمز -->
-    <div class="password-popup" id="passwordPopup">
-        <div class="password-title">🔒 لابی رمزدار است</div>
-        <input type="password" class="password-input" id="passwordInput" placeholder="رمز لابی را وارد کنید">
-        <div class="password-buttons">
-            <button class="password-btn password-submit" onclick="submitPassword()">ورود</button>
-            <button class="password-btn password-cancel" onclick="cancelPassword()">لغو</button>
+    <!-- مودال ویرایش نام -->
+    <div class="edit-modal" id="editModal">
+        <h3 id="modalTitle">تغییر نام</h3>
+        <div id="coinRequiredMessage" class="coin-message" style="display: none;">
+            <span>🪙</span> ۵ سکه نیاز است
+        </div>
+        <input type="text" class="edit-input" id="editNameInput" maxlength="12" placeholder="نام جدید">
+        <div class="modal-actions">
+            <button class="save-action" onclick="saveUserName()">ذخیره</button>
+            <button class="cancel-action" onclick="closeEditModal()">لغو</button>
         </div>
     </div>
 
     <script>
-        // ==================== متغیرهای اصلی ====================
-        let lobbies = [];
-        let currentLobby = null;
-        let userLiked = false;
-        let userDisliked = false;
-        let userMicOn = false;
+        // متغیرها
         let currentAvatar = 'avatar1';
-        let userName = 'بازیکن_' + Math.floor(Math.random() * 1000);
-        let playerStates = {};
-        let currentUser = null;
-        let currentSeat = null;
-        let isCreator = false;
-        let chatMessages = [];
-        let localStream = null;
-        let peerConnections = {};
-        let pendingPasswordLobby = null;
+        let userName = 'بازیکن';
+        let isVerified = true;
+        let editCount = 0;
+        let userCoins = 500;
+        let userId = 'MF-2847-5931';
         
-        // ==================== سیستم کاربر ====================
+        window.onload = function() {
+            loadUserData();
+        };
+        
         function loadUserData() {
             try {
-                // تولید ID کاربر
-                currentUser = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                
-                // بارگذاری از localStorage اگر موجود باشد
                 if (typeof localStorage !== 'undefined') {
                     const savedAvatar = localStorage.getItem('mafiaUserAvatar');
                     const savedName = localStorage.getItem('mafiaUserName');
-                    const savedId = localStorage.getItem('mafiaUserId');
+                    const savedEditCount = localStorage.getItem('mafiaEditCount');
+                    const savedCoins = localStorage.getItem('mafiaUserCoins');
+                    const savedUserId = localStorage.getItem('mafiaUserId');
                     
                     if (savedAvatar) currentAvatar = savedAvatar;
-                    if (savedName) userName = savedName;
-                    if (savedId) currentUser = savedId;
-                    
-                    localStorage.setItem('mafiaUserId', currentUser);
+                    if (savedName) userName = savedName.slice(0, 12);
+                    if (savedEditCount) editCount = parseInt(savedEditCount);
+                    if (savedCoins) userCoins = parseInt(savedCoins);
+                    if (savedUserId) userId = savedUserId;
                 }
-            } catch (error) {
-                console.log('⚠️ localStorage در دسترس نیست');
+            } catch (error) {}
+            
+            if (!userId || userId === 'MF-2847-5931') {
+                const random1 = Math.floor(1000 + Math.random() * 9000);
+                const random2 = Math.floor(1000 + Math.random() * 9000);
+                userId = `MF-${random1}-${random2}`;
+                try {
+                    if (typeof localStorage !== 'undefined') {
+                        localStorage.setItem('mafiaUserId', userId);
+                    }
+                } catch(e) {}
             }
             
             updateMainProfile();
-            
-            // ایجاد لابی‌های نمونه
-            createSampleLobbies();
-            
-            // به‌روزرسانی لیست لابی‌ها
-            setTimeout(() => updateLobbiesList(), 500);
+            updateProfilePage();
+            updateEditStatus();
+            updateSelectedAvatar();
+            document.getElementById('userIdDisplay').textContent = userId;
+        }
+        
+        function getVerifiedBadge() {
+            return '<span class="verified-badge"></span>';
         }
         
         function updateMainProfile() {
             const profileAvatar = document.getElementById('mainProfileAvatar');
-            const profileName = document.getElementById('mainProfileName');
-            
             if (profileAvatar) {
                 profileAvatar.innerHTML = '';
-                const avatarImg = document.createElement('img');
-                avatarImg.src = currentAvatar === 'avatar1' 
+                const img = document.createElement('img');
+                img.src = currentAvatar === 'avatar1' 
                     ? 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png'
                     : 'https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png';
-                avatarImg.alt = 'آواتار کاربر';
-                avatarImg.style.width = '100%';
-                avatarImg.style.height = '100%';
-                avatarImg.style.borderRadius = '50%';
-                profileAvatar.appendChild(avatarImg);
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.borderRadius = '50%';
+                profileAvatar.appendChild(img);
             }
             
+            const profileName = document.getElementById('mainProfileName');
             if (profileName) {
-                profileName.textContent = userName;
+                let displayName = userName;
+                if (displayName.length > 10) {
+                    displayName = displayName.slice(0, 9) + '...';
+                }
+                profileName.innerHTML = `
+                    ${getVerifiedBadge()}
+                    <span class="profile-name-text" title="${userName}">${displayName}</span>
+                `;
             }
         }
         
-        // ==================== مدیریت صفحات ====================
+        function updateProfilePage() {
+            const profileImg = document.getElementById('profileAvatarImg');
+            if (profileImg) {
+                profileImg.src = currentAvatar === 'avatar1' 
+                    ? 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png'
+                    : 'https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png';
+            }
+            
+            const profileName = document.getElementById('profileUserName');
+            if (profileName) {
+                profileName.innerHTML = `
+                    ${userName}
+                    <span class="verified-badge"></span>
+                `;
+            }
+        }
+        
+        function updateSelectedAvatar() {
+            document.getElementById('avatar1')?.classList.remove('selected');
+            document.getElementById('avatar2')?.classList.remove('selected');
+            const selectedAvatar = document.getElementById(currentAvatar);
+            if (selectedAvatar) selectedAvatar.classList.add('selected');
+        }
+        
+        function updateEditStatus() {
+            const editStatus = document.getElementById('editStatus');
+            if (editStatus) {
+                if (editCount === 0) {
+                    editStatus.innerHTML = `
+                        <span class="free-badge">۱ بار رایگان</span>
+                        <span class="coin-badge">
+                            <span class="coin-icon">🪙</span>
+                            ۵ سکه
+                        </span>
+                    `;
+                } else {
+                    editStatus.innerHTML = `
+                        <span class="coin-badge">
+                            <span class="coin-icon">🪙</span>
+                            ۵ سکه
+                        </span>
+                    `;
+                }
+            }
+        }
+        
+        // کپی کردن کد کاربری
+        function copyUserId() {
+            const userIdElement = document.getElementById('userIdDisplay');
+            const userIdText = userIdElement.textContent;
+            
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(userIdText).then(() => {
+                    showCopyNotification();
+                }).catch(() => {
+                    fallbackCopy(userIdText);
+                });
+            } else {
+                fallbackCopy(userIdText);
+            }
+        }
+        
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showCopyNotification();
+        }
+        
+        function showCopyNotification() {
+            const notification = document.getElementById('copyNotification');
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 1500);
+        }
+        
+        function openProfilePage() {
+            document.getElementById('main-game-page').style.display = 'none';
+            document.getElementById('friendly-hall-page').style.display = 'none';
+            document.getElementById('profile-page').style.display = 'block';
+            document.getElementById('avatar-page').style.display = 'none';
+            updateProfilePage();
+        }
+        
+        function closeProfilePage() {
+            document.getElementById('profile-page').style.display = 'none';
+            document.getElementById('main-game-page').style.display = 'block';
+        }
+        
+        function openAvatarPage() {
+            document.getElementById('avatar-page').style.display = 'block';
+            updateSelectedAvatar();
+        }
+        
+        function closeAvatarPage() {
+            document.getElementById('avatar-page').style.display = 'none';
+        }
+        
+        function switchAvatarTab(tab) {
+            const tabs = document.querySelectorAll('.avatar-tab');
+            const panels = document.querySelectorAll('.tab-panel');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            panels.forEach(p => p.classList.remove('active'));
+            
+            if (tab === 'my') {
+                tabs[0].classList.add('active');
+                document.getElementById('myAvatarsPanel').classList.add('active');
+            } else {
+                tabs[1].classList.add('active');
+                document.getElementById('shopPanel').classList.add('active');
+            }
+        }
+        
+        function selectAvatar(avatarId) {
+            currentAvatar = avatarId;
+            
+            try {
+                if (typeof localStorage !== 'undefined') {
+                    localStorage.setItem('mafiaUserAvatar', currentAvatar);
+                }
+            } catch (e) {}
+            
+            updateSelectedAvatar();
+            updateMainProfile();
+            updateProfilePage();
+        }
+        
+        function buyAvatar(type) {
+            let price = type === 'gold' ? 100 : 200;
+            
+            if (userCoins < price) {
+                alert(`سکه کافی نیست. نیاز به ${price} سکه`);
+                return;
+            }
+            
+            userCoins -= price;
+            
+            try {
+                if (typeof localStorage !== 'undefined') {
+                    localStorage.setItem('mafiaUserCoins', userCoins.toString());
+                }
+            } catch (e) {}
+            
+            alert(`آواتار ${type === 'gold' ? 'طلایی' : 'الماسی'} خریداری شد`);
+        }
+        
+        function openEditModal() {
+            const modal = document.getElementById('editModal');
+            const coinMessage = document.getElementById('coinRequiredMessage');
+            const modalTitle = document.getElementById('modalTitle');
+            const nameInput = document.getElementById('editNameInput');
+            
+            nameInput.value = userName;
+            
+            if (editCount === 0) {
+                modalTitle.innerHTML = 'تغییر نام (رایگان)';
+                coinMessage.style.display = 'none';
+            } else {
+                modalTitle.innerHTML = 'تغییر نام (۵ سکه)';
+                coinMessage.style.display = 'flex';
+            }
+            
+            modal.style.display = 'block';
+        }
+        
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+        
+        function saveUserName() {
+            const nameInput = document.getElementById('editNameInput');
+            let newName = nameInput.value.trim();
+            
+            if (!newName) {
+                alert('نام جدید را وارد کنید');
+                return;
+            }
+            
+            if (newName.length < 2) {
+                alert('حداقل ۲ حرف');
+                return;
+            }
+            
+            if (newName.length > 12) {
+                alert('حداکثر ۱۲ حرف');
+                return;
+            }
+            
+            if (editCount > 0) {
+                if (userCoins < 5) {
+                    alert('۵ سکه نیاز است');
+                    return;
+                }
+                userCoins -= 5;
+                try {
+                    if (typeof localStorage !== 'undefined') {
+                        localStorage.setItem('mafiaUserCoins', userCoins.toString());
+                    }
+                } catch(e) {}
+            }
+            
+            userName = newName;
+            editCount++;
+            
+            try {
+                if (typeof localStorage !== 'undefined') {
+                    localStorage.setItem('mafiaUserName', userName);
+                    localStorage.setItem('mafiaEditCount', editCount.toString());
+                }
+            } catch (e) {}
+            
+            updateMainProfile();
+            updateProfilePage();
+            updateEditStatus();
+            closeEditModal();
+        }
+        
         function openFriendlyHall() {
             document.getElementById('main-game-page').style.display = 'none';
             document.getElementById('friendly-hall-page').style.display = 'block';
-            
-            // بارگذاری لیست لابی‌ها
-            updateLobbiesList();
+            document.getElementById('profile-page').style.display = 'none';
+            document.getElementById('avatar-page').style.display = 'none';
         }
         
         function goBackToGame() {
             document.getElementById('friendly-hall-page').style.display = 'none';
             document.getElementById('main-game-page').style.display = 'block';
+            document.getElementById('profile-page').style.display = 'none';
+            document.getElementById('avatar-page').style.display = 'none';
         }
-        
-        // ==================== سیستم لابی ====================
-        function createSampleLobbies() {
-            console.log('🔄 ایجاد لابی‌های نمونه');
-            
-            lobbies = [
-                {
-                    id: 'sample_lobby_1',
-                    name: 'لابی تست عمومی',
-                    hasPassword: false,
-                    password: null,
-                    maxPlayers: 10,
-                    creatorId: 'admin_1',
-                    creatorName: 'سیستم',
-                    creatorAvatar: 'avatar1',
-                    players: {
-                        1: {
-                            userId: 'admin_1',
-                            name: 'سیستم',
-                            avatar: 'avatar1',
-                            like: false,
-                            dislike: false,
-                            mic: false,
-                            online: true,
-                            seat: 1
-                        }
-                    },
-                    chat: [],
-                    createdAt: new Date().toISOString(),
-                    lastActivity: new Date().toISOString()
-                },
-                {
-                    id: 'sample_lobby_2',
-                    name: 'لابی دوستانه',
-                    hasPassword: false,
-                    password: null,
-                    maxPlayers: 8,
-                    creatorId: 'admin_2',
-                    creatorName: 'مهمان',
-                    creatorAvatar: 'avatar2',
-                    players: {
-                        1: {
-                            userId: 'admin_2',
-                            name: 'مهمان',
-                            avatar: 'avatar2',
-                            like: true,
-                            dislike: false,
-                            mic: true,
-                            online: true,
-                            seat: 1
-                        },
-                        2: {
-                            userId: 'user_sample',
-                            name: 'بازیکن',
-                            avatar: 'avatar1',
-                            like: false,
-                            dislike: true,
-                            mic: false,
-                            online: true,
-                            seat: 2
-                        }
-                    },
-                    chat: [
-                        {
-                            userId: 'admin_2',
-                            username: 'مهمان',
-                            text: 'سلام به همه!',
-                            timestamp: new Date().toISOString()
-                        }
-                    ],
-                    createdAt: new Date().toISOString(),
-                    lastActivity: new Date().toISOString()
-                }
-            ];
-            
-            console.log('✅ لابی‌های نمونه ایجاد شدند');
-        }
-        
-        function updateLobbiesList() {
-            const container = document.getElementById('lobbies-container');
-            if (!container) return;
-            
-            console.log('📋 به‌روزرسانی لیست لابی‌ها. تعداد:', lobbies.length);
-            
-            if (lobbies.length === 0) {
-                container.innerHTML = '<div class="empty-state">هیچ لابی‌ای موجود نیست<br>اولین لابی را ایجاد کنید!</div>';
-                container.style.display = 'block';
-                return;
-            }
-            
-            let html = '';
-            
-            // نمایش لابی‌ها
-            lobbies.forEach(lobby => {
-                if (!lobby) return;
-                
-                const players = Object.values(lobby.players || {}).filter(p => p && p.online).length;
-                const maxPlayers = lobby.maxPlayers || 10;
-                
-                // فقط لابی‌های با بازیکن آنلاین نشان داده شود
-                if (players === 0) return;
-                
-                html += `
-                    <div class="lobby-card" onclick="requestJoinLobby('${lobby.id}')">
-                        <div class="lobby-info">
-                            <div class="lobby-name">${lobby.name}</div>
-                            <div class="lobby-details">
-                                سازنده: ${lobby.creatorName || 'نامشخص'} | 
-                                بازیکنان: <span class="lobby-players">${players}/${maxPlayers}</span>
-                                ${lobby.hasPassword ? ' | 🔐 رمزدار' : ''}
-                            </div>
-                        </div>
-                        <button class="join-button" onclick="requestJoinLobby('${lobby.id}'); event.stopPropagation();">
-                            ورود
-                        </button>
-                    </div>
-                `;
-            });
-            
-            if (html === '') {
-                html = '<div class="empty-state">هیچ لابی فعالی موجود نیست<br>اولین لابی را ایجاد کنید!</div>';
-            }
-            
-            container.innerHTML = html;
-            container.style.display = 'block';
-        }
-        
-        // ==================== منوی ایجاد لابی ====================
-        function openLobbyModal() {
-            const modal = document.getElementById('lobbyModal');
-            if (modal) {
-                modal.style.display = 'block';
-                const input = document.getElementById('lobbyName');
-                if (input) input.focus();
-            }
-        }
-        
-        function closeLobbyModal() {
-            const modal = document.getElementById('lobbyModal');
-            if (modal) {
-                modal.style.display = 'none';
-                const form = document.getElementById('lobbyForm');
-                if (form) form.reset();
-                const passwordGroup = document.getElementById('passwordGroup');
-                if (passwordGroup) passwordGroup.style.display = 'none';
-            }
-        }
-        
-        function togglePasswordField() {
-            const passwordGroup = document.getElementById('passwordGroup');
-            const hasPassword = document.getElementById('hasPassword');
-            if (passwordGroup && hasPassword) {
-                passwordGroup.style.display = hasPassword.checked ? 'flex' : 'none';
-            }
-        }
-        
-        // ==================== ایجاد لابی جدید ====================
-        function createLobby() {
-            const lobbyNameInput = document.getElementById('lobbyName');
-            const hasPasswordInput = document.getElementById('hasPassword');
-            const lobbyPasswordInput = document.getElementById('lobbyPassword');
-            
-            const lobbyName = lobbyNameInput ? lobbyNameInput.value.trim() : '';
-            const hasPassword = hasPasswordInput ? hasPasswordInput.checked : false;
-            const lobbyPassword = lobbyPasswordInput ? lobbyPasswordInput.value : '';
-            
-            if (!lobbyName) {
-                showSystemMessage('لطفا اسم لابی را وارد کنید', 'error');
-                return;
-            }
-            
-            if (hasPassword && !lobbyPassword) {
-                showSystemMessage('لطفا رمز لابی را وارد کنید', 'error');
-                return;
-            }
-            
-            console.log('🚀 ایجاد لابی جدید با نام:', lobbyName);
-            
-            // ایجاد لابی جدید
-            const newLobby = {
-                id: 'lobby_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
-                name: lobbyName,
-                hasPassword: hasPassword,
-                password: hasPassword ? lobbyPassword : null,
-                maxPlayers: 10,
-                creatorId: currentUser,
-                creatorName: userName,
-                creatorAvatar: currentAvatar,
-                players: {
-                    1: {
-                        userId: currentUser,
-                        name: userName,
-                        avatar: currentAvatar,
-                        like: false,
-                        dislike: false,
-                        mic: false,
-                        online: true,
-                        seat: 1
-                    }
-                },
-                chat: [
-                    {
-                        userId: currentUser,
-                        username: userName,
-                        text: 'لابی ایجاد شد!',
-                        timestamp: new Date().toISOString()
-                    }
-                ],
-                createdAt: new Date().toISOString(),
-                lastActivity: new Date().toISOString()
-            };
-            
-            lobbies.push(newLobby);
-            
-            closeLobbyModal();
-            showSystemMessage(`لابی "${lobbyName}" با موفقیت ایجاد شد!`, 'success');
-            
-            // به‌روزرسانی لیست لابی‌ها
-            updateLobbiesList();
-            
-            // ورود به لابی
-            setTimeout(() => {
-                enterLobby(newLobby);
-            }, 500);
-        }
-        
-        // ==================== ورود به لابی ====================
-        function requestJoinLobby(lobbyId) {
-            console.log('🔍 درخواست ورود به لابی:', lobbyId);
-            
-            const lobby = lobbies.find(l => l && l.id === lobbyId);
-            if (!lobby) {
-                showSystemMessage('لابی یافت نشد!', 'error');
-                return;
-            }
-            
-            console.log('✅ لابی پیدا شد:', lobby.name);
-            
-            // بررسی ظرفیت
-            const players = Object.values(lobby.players || {}).filter(p => p && p.online).length;
-            if (players >= (lobby.maxPlayers || 10)) {
-                showSystemMessage('این لابی پر شده است!', 'error');
-                return;
-            }
-            
-            // اگر لابی رمزدار است
-            if (lobby.hasPassword) {
-                pendingPasswordLobby = lobby;
-                showPasswordPopup();
-            } else {
-                joinLobby(lobby);
-            }
-        }
-        
-        function showPasswordPopup() {
-            const popup = document.getElementById('passwordPopup');
-            if (popup) {
-                popup.style.display = 'block';
-                const input = document.getElementById('passwordInput');
-                if (input) input.focus();
-            }
-        }
-        
-        function submitPassword() {
-            const passwordInput = document.getElementById('passwordInput');
-            const password = passwordInput ? passwordInput.value : '';
-            
-            if (!pendingPasswordLobby) return;
-            
-            if (password !== pendingPasswordLobby.password) {
-                showSystemMessage('رمز اشتباه است!', 'error');
-                if (passwordInput) passwordInput.value = '';
-                return;
-            }
-            
-            joinLobby(pendingPasswordLobby);
-            const popup = document.getElementById('passwordPopup');
-            if (popup) popup.style.display = 'none';
-            if (passwordInput) passwordInput.value = '';
-            pendingPasswordLobby = null;
-        }
-        
-        function cancelPassword() {
-            const popup = document.getElementById('passwordPopup');
-            if (popup) popup.style.display = 'none';
-            const input = document.getElementById('passwordInput');
-            if (input) input.value = '';
-            pendingPasswordLobby = null;
-        }
-        
-        function joinLobby(lobby) {
-            console.log('🚪 ورود به لابی:', lobby.name);
-            
-            // پیدا کردن جایگاه خالی
-            let seatNumber = 1;
-            for (let i = 1; i <= (lobby.maxPlayers || 10); i++) {
-                if (!lobby.players || !lobby.players[i] || !lobby.players[i].online) {
-                    seatNumber = i;
-                    break;
-                }
-            }
-            
-            // اضافه کردن کاربر به لابی
-            if (!lobby.players) lobby.players = {};
-            lobby.players[seatNumber] = {
-                userId: currentUser,
-                name: userName,
-                avatar: currentAvatar,
-                like: false,
-                dislike: false,
-                mic: false,
-                online: true,
-                seat: seatNumber
-            };
-            
-            // به‌روزرسانی زمان آخرین فعالیت
-            lobby.lastActivity = new Date().toISOString();
-            
-            // ورود به لابی
-            enterLobby(lobby);
-        }
-        
-        // ==================== ورود به صفحه لابی ====================
-        function enterLobby(lobby) {
-            console.log('🚪 ورود به صفحه لابی:', lobby.name);
-            
-            if (!lobby) return;
-            
-            currentLobby = lobby;
-            playerStates = lobby.players || {};
-            
-            // پیدا کردن جایگاه خودمان
-            currentSeat = null;
-            isCreator = false;
-            
-            Object.entries(playerStates).forEach(([seat, player]) => {
-                if (player && player.userId === currentUser) {
-                    currentSeat = parseInt(seat);
-                    isCreator = (lobby.creatorId === currentUser);
-                }
-            });
-            
-            console.log('✅ اطلاعات لابی: جایگاه شما:', currentSeat, 'سازنده هستید؟', isCreator);
-            
-            // نمایش صفحه لابی
-            document.getElementById('friendly-hall-page').style.display = 'none';
-            document.getElementById('lobby-page').style.display = 'block';
-            
-            // به‌روزرسانی نمایش
-            updateLobbyDisplay();
-            
-            // بارگذاری چت
-            loadChatMessages();
-            
-            // نمایش پیام ورود
-            showPlayerJoinedNotification(`${userName} وارد لابی شد`);
-            
-            console.log(`✅ وارد لابی شدید: ${lobby.name}`);
-        }
-        
-        function showPlayerJoinedNotification(message) {
-            const notification = document.getElementById('playerJoinedNotification');
-            if (notification) {
-                notification.textContent = message;
-                notification.style.display = 'block';
-                
-                setTimeout(() => {
-                    notification.style.display = 'none';
-                }, 3000);
-            }
-        }
-        
-        function showSystemMessage(message, type = 'info') {
-            console.log('📢 سیستم:', message);
-            
-            // نمایش در صفحه
-            const systemMessage = document.getElementById('systemMessage');
-            if (systemMessage) {
-                systemMessage.textContent = message;
-                
-                if (type === 'error') {
-                    systemMessage.style.backgroundColor = 'rgba(244, 67, 54, 0.9)';
-                } else if (type === 'success') {
-                    systemMessage.style.backgroundColor = 'rgba(76, 175, 80, 0.9)';
-                } else if (type === 'warning') {
-                    systemMessage.style.backgroundColor = 'rgba(255, 193, 7, 0.9)';
-                } else {
-                    systemMessage.style.backgroundColor = 'rgba(33, 150, 243, 0.9)';
-                }
-                
-                systemMessage.style.display = 'block';
-                
-                setTimeout(() => {
-                    systemMessage.style.display = 'none';
-                }, 3000);
-            }
-            
-            // نمایش در چت
-            addChatMessage('سیستم', message, 'system');
-        }
-        
-        // ==================== نمایش دایره‌های بازیکنان ====================
-        function createPlayerCircles() {
-            const container = document.getElementById('playersGrid');
-            if (!container || !currentLobby) return;
-            
-            let html = '';
-            const maxPlayers = currentLobby.maxPlayers || 10;
-            
-            for (let i = 1; i <= maxPlayers; i++) {
-                const playerData = playerStates[i];
-                
-                if (playerData && playerData.online) {
-                    // بازیکن آنلاین
-                    let iconsHtml = '';
-                    if (playerData.like) {
-                        iconsHtml += '<div class="player-icon like-icon">👍</div>';
-                    }
-                    if (playerData.dislike) {
-                        iconsHtml += '<div class="player-icon dislike-icon">👎</div>';
-                    }
-                    
-                    // نشان‌گر سازنده
-                    const isPlayerCreator = (currentLobby.creatorId === playerData.userId);
-                    
-                    html += `
-                        <div class="player-circle" data-player="${i}">
-                            ${isPlayerCreator ? '<div class="creator-badge">سازنده</div>' : ''}
-                            <div class="player-number">${i}</div>
-                            <div class="online-status"></div>
-                            ${iconsHtml ? `<div class="player-icons">${iconsHtml}</div>` : ''}
-                            ${playerData.mic ? '<div class="player-mic-status">🎤</div>' : ''}
-                            <div class="player-avatar">
-                                <img src="${playerData.avatar === 'avatar1' 
-                                    ? 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png'
-                                    : 'https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png'}" 
-                                    alt="آواتار ${playerData.name}"
-                                    style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
-                            </div>
-                            <div class="player-name">
-                                ${playerData.name}
-                                ${playerData.userId === currentUser ? ' (شما)' : ''}
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    // جایگاه خالی
-                    html += `
-                        <div class="player-circle" data-player="${i}">
-                            <div class="player-number">${i}</div>
-                            <div class="player-avatar">
-                                <div class="empty-avatar" style="font-size:32px;color:rgba(255,255,255,0.5);">+</div>
-                            </div>
-                            <div class="player-name">خالی</div>
-                        </div>
-                    `;
-                }
-            }
-            
-            container.innerHTML = html;
-        }
-        
-        function updateLobbyDisplay() {
-            if (!currentLobby) return;
-            
-            // به‌روزرسانی عنوان
-            const onlinePlayers = Object.values(playerStates).filter(p => p && p.online).length;
-            const title = document.getElementById('lobbyTitle');
-            if (title) {
-                title.textContent = `${currentLobby.name} (${onlinePlayers}/${currentLobby.maxPlayers})`;
-            }
-            
-            // به‌روزرسانی دایره‌های بازیکنان
-            createPlayerCircles();
-        }
-        
-        // ==================== سیستم چت ====================
-        function toggleChat() {
-            const chatContainer = document.getElementById('chatContainer');
-            if (chatContainer) {
-                chatContainer.style.display = chatContainer.style.display === 'flex' ? 'none' : 'flex';
-                
-                if (chatContainer.style.display === 'flex') {
-                    setTimeout(() => {
-                        const chatMessages = document.getElementById('chatMessages');
-                        if (chatMessages) {
-                            chatMessages.scrollTop = chatMessages.scrollHeight;
-                        }
-                    }, 100);
-                }
-            }
-        }
-        
-        function sendChatMessage() {
-            const chatInput = document.getElementById('chatInput');
-            const message = chatInput ? chatInput.value.trim() : '';
-            
-            if (!message || !currentLobby) return;
-            
-            // اضافه کردن پیام به چت
-            const chatMessage = {
-                userId: currentUser,
-                username: userName,
-                text: message,
-                timestamp: new Date().toISOString()
-            };
-            
-            if (!currentLobby.chat) currentLobby.chat = [];
-            currentLobby.chat.push(chatMessage);
-            
-            // نمایش پیام
-            addChatMessage(userName, message, 'sent');
-            
-            // پاک کردن فیلد ورودی
-            if (chatInput) chatInput.value = '';
-        }
-        
-        function loadChatMessages() {
-            const chatMessagesContainer = document.getElementById('chatMessages');
-            if (!chatMessagesContainer || !currentLobby) return;
-            
-            chatMessagesContainer.innerHTML = '';
-            chatMessages = currentLobby.chat || [];
-            
-            chatMessages.forEach(message => {
-                const type = message.userId === currentUser ? 'sent' : 'received';
-                addChatMessage(message.username || message.userId, message.text, type);
-            });
-        }
-        
-        function addChatMessage(sender, text, type) {
-            const chatMessagesContainer = document.getElementById('chatMessages');
-            if (!chatMessagesContainer) return;
-            
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type}`;
-            
-            let senderText = sender;
-            if (type === 'system') {
-                senderText = '📢 ' + sender;
-            } else if (type === 'sent') {
-                senderText = '👤 شما';
-            } else {
-                senderText = '👤 ' + sender;
-            }
-            
-            messageDiv.innerHTML = `
-                <div class="message-sender">${senderText}</div>
-                <div class="message-text">${text}</div>
-            `;
-            
-            chatMessagesContainer.appendChild(messageDiv);
-            chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
-        }
-        
-        // ==================== سیستم لایک/دیسلایک/میکروفون ====================
-        function toggleLike() {
-            if (!currentLobby || !currentSeat) return;
-            
-            const playerData = playerStates[currentSeat];
-            if (!playerData) return;
-            
-            playerData.like = !playerData.like;
-            playerData.dislike = false;
-            
-            // به‌روزرسانی نمایش
-            createPlayerCircles();
-            
-            // حذف خودکار بعد از 3 ثانیه
-            if (playerData.like) {
-                setTimeout(() => {
-                    if (playerStates[currentSeat]) {
-                        playerStates[currentSeat].like = false;
-                        createPlayerCircles();
-                    }
-                }, 3000);
-            }
-        }
-        
-        function toggleDislike() {
-            if (!currentLobby || !currentSeat) return;
-            
-            const playerData = playerStates[currentSeat];
-            if (!playerData) return;
-            
-            playerData.dislike = !playerData.dislike;
-            playerData.like = false;
-            
-            // به‌روزرسانی نمایش
-            createPlayerCircles();
-            
-            // حذف خودکار بعد از 3 ثانیه
-            if (playerData.dislike) {
-                setTimeout(() => {
-                    if (playerStates[currentSeat]) {
-                        playerStates[currentSeat].dislike = false;
-                        createPlayerCircles();
-                    }
-                }, 3000);
-            }
-        }
-        
-        function toggleMic() {
-            if (!currentLobby || !currentSeat) return;
-            
-            const playerData = playerStates[currentSeat];
-            if (!playerData) return;
-            
-            userMicOn = !userMicOn;
-            playerData.mic = userMicOn;
-            
-            // به‌روزرسانی دکمه میکروفون
-            const micBtn = document.getElementById('micButton');
-            if (micBtn) {
-                if (userMicOn) {
-                    micBtn.classList.add('active');
-                    startVideoChat();
-                } else {
-                    micBtn.classList.remove('active');
-                    stopVideoChat();
-                }
-            }
-            
-            // به‌روزرسانی نمایش
-            createPlayerCircles();
-        }
-        
-        // ==================== سیستم ویدیوچت ====================
-        async function startVideoChat() {
-            try {
-                console.log('🎥 شروع ویدیوچت...');
-                
-                // نمایش ویدیوچت
-                const videoContainer = document.getElementById('videoChatContainer');
-                if (videoContainer) videoContainer.style.display = 'block';
-                
-                // درخواست دسترسی به دوربین و میکروفون
-                localStream = await navigator.mediaDevices.getUserMedia({
-                    video: true,
-                    audio: true
-                });
-                
-                setupLocalVideo();
-                
-                console.log('✅ ویدیوچت شروع شد');
-                
-            } catch (err) {
-                console.error('❌ خطا در دسترسی به دوربین:', err);
-                showSystemMessage('لطفا دسترسی دوربین و میکروفون را فعال کنید', 'error');
-                
-                // غیرفعال کردن میکروفون
-                userMicOn = false;
-                const micBtn = document.getElementById('micButton');
-                if (micBtn) micBtn.classList.remove('active');
-            }
-        }
-        
-        function stopVideoChat() {
-            if (localStream) {
-                localStream.getTracks().forEach(track => track.stop());
-                localStream = null;
-            }
-            
-            // پاک کردن ویدیوها
-            const videoGrid = document.getElementById('videoGrid');
-            if (videoGrid) videoGrid.innerHTML = '';
-            
-            const videoContainer = document.getElementById('videoChatContainer');
-            if (videoContainer) videoContainer.style.display = 'none';
-        }
-        
-        function setupLocalVideo() {
-            const videoGrid = document.getElementById('videoGrid');
-            if (!videoGrid) return;
-            
-            // حذف ویدیوی قدیمی خودمان
-            const existingVideo = document.getElementById('video-local');
-            if (existingVideo) existingVideo.remove();
-            
-            // ایجاد ویدیوی محلی
-            const videoItem = document.createElement('div');
-            videoItem.className = 'video-item video-local';
-            videoItem.id = 'video-local';
-            
-            const video = document.createElement('video');
-            video.autoplay = true;
-            video.muted = true;
-            video.playsInline = true;
-            video.srcObject = localStream;
-            video.style.width = '100%';
-            video.style.height = '150px';
-            video.style.objectFit = 'cover';
-            
-            const videoName = document.createElement('div');
-            videoName.className = 'video-name';
-            videoName.textContent = `${userName} (شما)`;
-            
-            videoItem.appendChild(video);
-            videoItem.appendChild(videoName);
-            videoGrid.appendChild(videoItem);
-        }
-        
-        // ==================== خروج از لابی ====================
-        function closeLobby() {
-            if (!currentLobby) return;
-            
-            console.log('🚪 خروج از لابی:', currentLobby.name);
-            
-            // قطع ویدیوچت
-            stopVideoChat();
-            
-            // بازگشت به صفحه تالار
-            document.getElementById('lobby-page').style.display = 'none';
-            document.getElementById('friendly-hall-page').style.display = 'block';
-            
-            // به‌روزرسانی لیست لابی‌ها
-            updateLobbiesList();
-            
-            // ریست متغیرها
-            currentLobby = null;
-            currentSeat = null;
-            isCreator = false;
-            playerStates = {};
-            userMicOn = false;
-            
-            const micBtn = document.getElementById('micButton');
-            if (micBtn) micBtn.classList.remove('active');
-            
-            console.log('✅ به صفحه تالار بازگشتید');
-        }
-        
-        // ==================== شروع بازی ====================
-        function startGame() {
-            if (!currentLobby) return;
-            
-            // فقط سازنده می‌تواند بازی را شروع کند
-            if (!isCreator) {
-                showSystemMessage('فقط سازنده لابی می‌تواند بازی را شروع کند!', 'error');
-                return;
-            }
-            
-            const onlinePlayers = Object.values(playerStates).filter(p => p && p.online).length;
-            if (onlinePlayers < 4) {
-                showSystemMessage('برای شروع بازی حداقل ۴ بازیکن لازم است!', 'error');
-                return;
-            }
-            
-            showSystemMessage('🎮 بازی شروع شد!', 'success');
-        }
-        
-        // ==================== مدیریت پروفایل ====================
-        function openProfileModal() {
-            const modal = document.getElementById('profileModal');
-            if (modal) {
-                modal.style.display = 'block';
-                document.getElementById('avatar1')?.classList.remove('selected');
-                document.getElementById('avatar2')?.classList.remove('selected');
-                const currentAvatarElement = document.getElementById(currentAvatar);
-                if (currentAvatarElement) currentAvatarElement.classList.add('selected');
-                const currentUserName = document.getElementById('currentUserName');
-                if (currentUserName) currentUserName.textContent = userName;
-                const userNameInput = document.getElementById('userNameInput');
-                if (userNameInput) userNameInput.value = '';
-            }
-        }
-        
-        function closeProfileModal() {
-            const modal = document.getElementById('profileModal');
-            if (modal) modal.style.display = 'none';
-        }
-        
-        function switchProfileTab(tabName) {
-            // حذف کلاس active از همه تب‌ها
-            const tabs = document.querySelectorAll('.profile-tab');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            
-            const contents = document.querySelectorAll('.profile-tab-content');
-            contents.forEach(content => content.classList.remove('active'));
-            
-            // اضافه کردن کلاس active به تب انتخاب شده
-            if (tabName === 'avatars') {
-                document.querySelector('.profile-tab:nth-child(1)')?.classList.add('active');
-                document.getElementById('avatarsTab')?.classList.add('active');
-            } else {
-                document.querySelector('.profile-tab:nth-child(2)')?.classList.add('active');
-                document.getElementById('buyTab')?.classList.add('active');
-            }
-        }
-        
-        function selectAvatar(avatarId) {
-            document.getElementById('avatar1')?.classList.remove('selected');
-            document.getElementById('avatar2')?.classList.remove('selected');
-            const selectedAvatar = document.getElementById(avatarId);
-            if (selectedAvatar) selectedAvatar.classList.add('selected');
-            
-            currentAvatar = avatarId;
-            
-            // ذخیره در localStorage
-            try {
-                if (typeof localStorage !== 'undefined') {
-                    localStorage.setItem('mafiaUserAvatar', currentAvatar);
-                }
-            } catch (e) {
-                console.log('⚠️ خطا در ذخیره آواتار');
-            }
-            
-            updateMainProfile();
-            
-            // اگر در لابی هستیم، آواتار را به‌روز کن
-            if (currentLobby && currentSeat && playerStates[currentSeat]) {
-                playerStates[currentSeat].avatar = currentAvatar;
-                createPlayerCircles();
-            }
-        }
-        
-        function saveUserName() {
-            const nameInput = document.getElementById('userNameInput');
-            const newName = nameInput ? nameInput.value.trim() : '';
-            
-            if (!newName) {
-                showSystemMessage('لطفا نام جدید را وارد کنید', 'error');
-                return;
-            }
-            
-            if (newName.length < 2 || newName.length > 20) {
-                showSystemMessage('نام باید بین ۲ تا ۲۰ حرف باشد', 'error');
-                return;
-            }
-            
-            userName = newName;
-            
-            // ذخیره در localStorage
-            try {
-                if (typeof localStorage !== 'undefined') {
-                    localStorage.setItem('mafiaUserName', userName);
-                }
-            } catch (e) {
-                console.log('⚠️ خطا در ذخیره نام کاربری');
-            }
-            
-            updateMainProfile();
-            
-            const currentUserName = document.getElementById('currentUserName');
-            if (currentUserName) currentUserName.textContent = userName;
-            
-            // اگر در لابی هستیم، نام را به‌روز کن
-            if (currentLobby && currentSeat && playerStates[currentSeat]) {
-                playerStates[currentSeat].name = userName;
-                createPlayerCircles();
-            }
-            
-            if (nameInput) nameInput.value = '';
-            showSystemMessage('نام کاربری با موفقیت تغییر کرد', 'success');
-        }
-        
-        // ==================== مدیریت رویدادها ====================
-        window.onclick = function(event) {
-            const profileModal = document.getElementById('profileModal');
-            if (event.target === profileModal) {
-                closeProfileModal();
-            }
-            
-            const lobbyModal = document.getElementById('lobbyModal');
-            if (event.target === lobbyModal) {
-                closeLobbyModal();
-            }
-            
-            const passwordPopup = document.getElementById('passwordPopup');
-            if (event.target === passwordPopup) {
-                cancelPassword();
-            }
-        };
-        
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeProfileModal();
-                closeLobbyModal();
-                const passwordPopup = document.getElementById('passwordPopup');
-                if (passwordPopup && passwordPopup.style.display === 'block') {
-                    cancelPassword();
-                }
-            }
-            
-            if (e.key === 'Enter') {
-                const activeElement = document.activeElement;
-                
-                if (activeElement && activeElement.id === 'chatInput') {
-                    sendChatMessage();
-                }
-                
-                if (activeElement && activeElement.id === 'passwordInput') {
-                    submitPassword();
-                }
-            }
-        });
-        
-        // ==================== راه‌اندازی اولیه ====================
-        window.onload = function() {
-            console.log('🚀 بازی در حال بارگذاری...');
-            
-            // بارگذاری کاربر
-            loadUserData();
-            
-            console.log('✅ بازی آماده است!');
-        };
-        
-        // ==================== ابزارهای دیباگ ====================
-        window.debug = {
-            showState: function() {
-                console.log('=== وضعیت سیستم ===');
-                console.log('کاربر:', userName, currentUser);
-                console.log('لابی‌ها:', lobbies.length);
-                console.log('لابی فعلی:', currentLobby?.name);
-                console.log('ویدیوچت:', localStream ? 'فعال' : 'غیرفعال');
-            },
-            createTestLobby: function() {
-                const testLobby = {
-                    id: 'test_lobby_' + Date.now(),
-                    name: 'لابی تست',
-                    hasPassword: false,
-                    password: null,
-                    maxPlayers: 10,
-                    creatorId: currentUser,
-                    creatorName: userName,
-                    creatorAvatar: currentAvatar,
-                    players: {
-                        1: {
-                            userId: currentUser,
-                            name: userName,
-                            avatar: currentAvatar,
-                            like: false,
-                            dislike: false,
-                            mic: false,
-                            online: true,
-                            seat: 1
-                        }
-                    },
-                    chat: [],
-                    createdAt: new Date().toISOString(),
-                    lastActivity: new Date().toISOString()
-                };
-                
-                lobbies.push(testLobby);
-                updateLobbiesList();
-                showSystemMessage('لابی تست ایجاد شد!', 'success');
-            },
-            reset: function() {
-                try {
-                    localStorage.clear();
-                } catch (e) {
-                    console.log('⚠️ خطا در پاک کردن localStorage');
-                }
-                location.reload();
-            }
-        };
     </script>
 </body>
 </html>
