@@ -977,6 +977,8 @@
             font-family: 'Inter', 'Segoe UI', sans-serif;
         }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- صفحه اصلی بازی -->
@@ -986,27 +988,28 @@
                 <span class="currency-icon gem-icon">💎</span>
                 <div class="currency-info">
                     <span class="currency-label">جم</span>
-                    <span class="currency-value" id="gemDisplay">∞</span>
+                    <span class="currency-value" id="gemDisplay">100</span>
                 </div>
             </div>
             <div class="currency-card">
                 <span class="currency-icon coin-icon">🪙</span>
                 <div class="currency-info">
                     <span class="currency-label">سکه</span>
-                    <span class="currency-value" id="coinDisplay">∞</span>
+                    <span class="currency-value" id="coinDisplay">600</span>
                 </div>
             </div>
         </div>
         
-        <!-- پروفایل کاربر - سازنده با تیک آبی -->
+        <!-- پروفایل کاربر -->
         <div class="profile-container" onclick="openProfilePage()">
-            <div class="profile-avatar" id="mainProfileAvatar"></div>
+            <div class="profile-avatar" id="mainProfileAvatar">
+                <img src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png" style="width:100%; height:100%; border-radius:50%;">
+            </div>
             <div class="profile-info">
                 <div class="profile-name" id="mainProfileName">
-                    <span class="verified-badge"></span>
-                    <span class="profile-name-text" id="mainProfileNameText">سازنده</span>
+                    <span class="profile-name-text" id="mainProfileNameText">بازیکن</span>
                 </div>
-                <div class="profile-level">سطح ∞</div>
+                <div class="profile-level" id="mainProfileLevel">سطح ۱</div>
             </div>
         </div>
         
@@ -1026,7 +1029,7 @@
         <div class="hall-back-btn" onclick="goBackToGame()"></div>
     </div>
     
-    <!-- صفحه پروفایل سازنده -->
+    <!-- صفحه پروفایل -->
     <div id="profile-page">
         <div class="profile-back-btn" onclick="closeProfilePage()"></div>
         
@@ -1038,17 +1041,16 @@
                 
                 <div class="name-box" onclick="openEditModal()">
                     <div class="user-name" id="profileUserName">
-                        سازنده
-                        <span class="verified-badge"></span>
+                        بازیکن
                     </div>
-                    <span class="level-badge" id="profileLevelBadge">سازنده</span>
+                    <span class="level-badge" id="profileLevelBadge">سطح ۱</span>
                 </div>
                 
                 <div class="edit-status" id="editStatus">
-                    <span class="free-badge">⚡ بی‌نهایت</span>
+                    <span class="free-badge">⚡ ۱ بار رایگان</span>
                     <span class="coin-badge">
                         <span class="coin-icon">🪙</span>
-                        ∞
+                        ۵ سکه
                     </span>
                 </div>
             </div>
@@ -1059,7 +1061,7 @@
                         <span class="user-id-icon">🆔</span>
                         کد کاربری
                     </span>
-                    <span class="user-id-value" id="userIdDisplay">۱</span>
+                    <span class="user-id-value" id="userIdDisplay">۱۲۳۴۵۶</span>
                 </div>
                 
                 <div class="stats-row">
@@ -1067,7 +1069,7 @@
                         <span class="stat-icon">🏆</span>
                         <div class="stat-detail">
                             <span class="stat-label">تعداد برد</span>
-                            <span class="stat-figure" id="winCount">∞</span>
+                            <span class="stat-figure" id="winCount">۰</span>
                         </div>
                     </div>
                     <div class="stat-cell">
@@ -1084,7 +1086,7 @@
                         <span class="stat-icon">⏳</span>
                         <div class="stat-detail">
                             <span class="stat-label">ساعت بازی</span>
-                            <span class="stat-figure" id="hoursPlayed">∞</span>
+                            <span class="stat-figure" id="hoursPlayed">۰</span>
                             <span class="stat-unit">h</span>
                         </div>
                     </div>
@@ -1092,7 +1094,7 @@
                         <span class="stat-icon">👁️</span>
                         <div class="stat-detail">
                             <span class="stat-label">تعداد ناظر</span>
-                            <span class="stat-figure" id="observerCount">∞</span>
+                            <span class="stat-figure" id="observerCount">۰</span>
                         </div>
                     </div>
                 </div>
@@ -1102,10 +1104,10 @@
                         <span class="rank-icon">👑</span>
                         <div class="rank-detail">
                             <span class="rank-label">مقام</span>
-                            <span class="rank-name" id="rankName">سازنده</span>
+                            <span class="rank-name" id="rankName">کاربر</span>
                         </div>
                     </div>
-                    <span class="rank-tag" id="rankTag">بنیانگذار</span>
+                    <span class="rank-tag" id="rankTag">بازیکن</span>
                 </div>
             </div>
         </div>
@@ -1129,7 +1131,7 @@
             <!-- آواتار من -->
             <div class="tab-panel active" id="myAvatarsPanel">
                 <div class="avatar-grid" id="myAvatarsGrid">
-                    <!-- آواتارهای پیشفرض با شماره -->
+                    <!-- آواتارهای پیشفرض - با لینک‌های درست شده -->
                     <div class="avatar-card selected" id="avatar1" onclick="selectAvatar('avatar1')">
                         <div class="avatar-thumb">
                             <img src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png">
@@ -1147,7 +1149,7 @@
                 </div>
             </div>
             
-            <!-- خرید آواتار -->
+            <!-- خرید آواتار - با لینک‌های درست شده -->
             <div class="tab-panel" id="shopPanel">
                 <div class="shop-grid" id="shopGrid">
                     <!-- آواتار نینجا -->
@@ -1202,66 +1204,65 @@
         let editCount = 0;
         let userCoins = 600;
         let userGems = 100;
-        let userId = Math.floor(100000 + Math.random() * 9000000);
+        let userId = 0;
         
         // آواتارهای خریداری شده
         let ownedAvatars = ['avatar1', 'avatar2'];
         
-        // ========== بررسی اکانت سازنده (مهمترین قسمت) ==========
+        // ========== فلگ جلوگیری از اجرای مجدد ==========
+        let initialized = false;
+        
+        // ========== بررسی اکانت سازنده ==========
         function checkCreatorAccount() {
             try {
-                // 1. بررسی از localStorage
+                // اول از localStorage
                 const savedPhone = localStorage.getItem('mafiaUserPhone');
                 const savedPassword = localStorage.getItem('mafiaUserPassword');
                 const savedIsCreator = localStorage.getItem('mafiaIsCreator');
                 const savedUserId = localStorage.getItem('mafiaUserId');
                 
-                // شرط اصلی سازنده
+                // شرط سازنده
                 if (savedPhone === CREATOR_PHONE && savedPassword === CREATOR_PASSWORD) {
-                    console.log('✅ سازنده شناسایی شد (شماره و رمز)');
                     return true;
                 }
-                
                 if (savedIsCreator === 'true') {
-                    console.log('✅ سازنده شناسایی شد (isCreator)');
                     return true;
                 }
-                
                 if (savedUserId && parseInt(savedUserId) === CREATOR_ID) {
-                    console.log('✅ سازنده شناسایی شد (userId)');
                     return true;
                 }
                 
-                // 2. بررسی از URL
+                // بررسی از URL
                 const urlParams = new URLSearchParams(window.location.search);
                 const phoneFromURL = urlParams.get('phone');
                 const passFromURL = urlParams.get('pass');
                 
                 if (phoneFromURL === CREATOR_PHONE && passFromURL === CREATOR_PASSWORD) {
-                    // ذخیره برای دفعات بعد
                     localStorage.setItem('mafiaUserPhone', phoneFromURL);
                     localStorage.setItem('mafiaUserPassword', passFromURL);
                     localStorage.setItem('mafiaUserId', '1');
                     localStorage.setItem('mafiaIsCreator', 'true');
-                    console.log('✅ سازنده شناسایی شد (URL)');
                     return true;
                 }
-                
-            } catch (e) {
-                console.log('خطا در بررسی سازنده:', e);
-            }
-            
-            console.log('👤 کاربر عادی');
+            } catch (e) {}
             return false;
         }
         
-        // ========== بارگذاری اطلاعات کاربر ==========
-        function loadUserData() {
-            // اول بررسی کن آیا کاربر سازنده است
+        // ========== مقداردهی اولیه ==========
+        function initializeGame() {
+            // اگر قبلاً مقداردهی شده، دوباره اجرا نکن
+            if (initialized) {
+                return;
+            }
+            initialized = true;
+            
+            console.log('🚀 مقداردهی اولیه بازی...');
+            
+            // بررسی سازنده بودن
             const isCreatorUser = checkCreatorAccount();
             
             if (isCreatorUser) {
-                // 🛑 اگر سازنده است، مستقیم اطلاعات سازنده رو ست کن
+                // ✅ کاربر سازنده
                 isCreator = true;
                 userName = 'سازنده';
                 userId = CREATOR_ID;
@@ -1271,7 +1272,7 @@
                 editCount = 0;
                 currentAvatar = 'avatar1';
                 
-                // ذخیره مجدد اطلاعات سازنده در localStorage
+                // ذخیره اطلاعات سازنده
                 localStorage.setItem('mafiaUserId', '1');
                 localStorage.setItem('mafiaIsCreator', 'true');
                 localStorage.setItem('mafiaUserName', 'سازنده');
@@ -1281,80 +1282,79 @@
                 localStorage.setItem('mafiaEditCount', '0');
                 localStorage.setItem('mafiaUserAvatar', 'avatar1');
                 
-                console.log('👑 پنل سازنده با موفقیت فعال شد');
+                console.log('👑 پنل سازنده فعال شد');
+            } else {
+                // 👤 کاربر عادی
+                isCreator = false;
                 
-                // به‌روزرسانی نمایش
-                updateMainProfile();
-                updateProfilePage();
-                updateMyAvatars();
-                updateShopAvatars();
-                updateCurrencyDisplay();
-                
-                if (document.getElementById('userIdDisplay')) {
-                    document.getElementById('userIdDisplay').textContent = '۱';
-                }
-                
-                return; // 🚫 بقیه تابع اجرا نشه
-            }
-            
-            // ========== اگر کاربر عادی است ==========
-            isCreator = false;
-            
-            try {
-                if (typeof localStorage !== 'undefined') {
-                    const savedAvatar = localStorage.getItem('mafiaUserAvatar');
+                try {
+                    // بارگذاری اطلاعات کاربر عادی
                     const savedName = localStorage.getItem('mafiaUserName');
                     const savedUserId = localStorage.getItem('mafiaUserId');
                     const savedOwnedAvatars = localStorage.getItem('mafiaOwnedAvatars');
                     const savedGems = localStorage.getItem('mafiaUserGems');
                     const savedCoins = localStorage.getItem('mafiaUserCoins');
                     const savedEditCount = localStorage.getItem('mafiaEditCount');
+                    const savedAvatar = localStorage.getItem('mafiaUserAvatar');
                     
                     if (savedOwnedAvatars) {
                         ownedAvatars = JSON.parse(savedOwnedAvatars);
-                    } else {
-                        ownedAvatars = ['avatar1', 'avatar2'];
                     }
-                    
                     if (savedGems) userGems = parseInt(savedGems);
                     if (savedCoins) userCoins = parseInt(savedCoins);
                     if (savedEditCount) editCount = parseInt(savedEditCount);
                     if (savedName) userName = savedName.slice(0, 12);
-                    if (savedUserId && parseInt(savedUserId) !== CREATOR_ID) userId = parseInt(savedUserId);
+                    if (savedUserId) userId = parseInt(savedUserId);
                     if (savedAvatar) currentAvatar = savedAvatar;
+                    
+                    // اگر userId وجود نداره، یه جدید بساز
+                    if (!userId || userId === 0) {
+                        userId = Math.floor(100000 + Math.random() * 9000000);
+                        localStorage.setItem('mafiaUserId', userId.toString());
+                    }
+                    
+                } catch (e) {
+                    console.log('خطا در بارگذاری:', e);
+                    userId = Math.floor(100000 + Math.random() * 9000000);
+                    localStorage.setItem('mafiaUserId', userId.toString());
                 }
-            } catch (error) {
-                console.log('خطا در بارگذاری اطلاعات کاربر عادی:', error);
+                
+                console.log('👤 کاربر عادی فعال شد');
             }
             
-            // ذخیره اطلاعات کاربر عادی
-            saveUserData();
-            
             // به‌روزرسانی نمایش
-            updateMainProfile();
-            updateProfilePage();
-            updateMyAvatars();
-            updateShopAvatars();
-            updateCurrencyDisplay();
+            updateAllDisplays();
             
-            if (document.getElementById('userIdDisplay')) {
-                document.getElementById('userIdDisplay').textContent = userId.toLocaleString('fa-IR');
+            // پاک کردن پارامترهای URL
+            if (window.location.search) {
+                window.history.replaceState({}, document.title, window.location.pathname);
             }
         }
         
-        // ========== ذخیره اطلاعات کاربر ==========
-        function saveUserData() {
-            try {
-                if (typeof localStorage !== 'undefined' && !isCreator) {
-                    localStorage.setItem('mafiaUserId', userId.toString());
-                    localStorage.setItem('mafiaUserAvatar', currentAvatar);
-                    localStorage.setItem('mafiaUserName', userName);
-                    localStorage.setItem('mafiaOwnedAvatars', JSON.stringify(ownedAvatars));
-                    localStorage.setItem('mafiaUserGems', userGems.toString());
-                    localStorage.setItem('mafiaUserCoins', userCoins.toString());
-                    localStorage.setItem('mafiaEditCount', editCount.toString());
+        // ========== به‌روزرسانی همه نمایشگرها ==========
+        function updateAllDisplays() {
+            // به‌روزرسانی پروفایل اصلی
+            updateMainProfile();
+            
+            // به‌روزرسانی صفحه پروفایل
+            updateProfilePage();
+            
+            // به‌روزرسانی آواتارها
+            updateMyAvatars();
+            updateShopAvatars();
+            
+            // به‌روزرسانی ارز
+            updateCurrencyDisplay();
+            
+            // به‌روزرسانی کد کاربری
+            const userIdDisplay = document.getElementById('userIdDisplay');
+            if (userIdDisplay) {
+                if (isCreator) {
+                    userIdDisplay.textContent = '۱';
+                } else {
+                    userIdDisplay.textContent = userId.toLocaleString('fa-IR');
                 }
-            } catch (e) {}
+            }
         }
         
         // ========== به‌روزرسانی نمایش ارز ==========
@@ -1371,53 +1371,34 @@
             }
         }
         
-        // ========== دریافت تیک آبی ==========
-        function getVerifiedBadge() {
-            return isCreator ? '<span class="verified-badge" title="سازنده بازی"></span>' : '';
-        }
-        
         // ========== به‌روزرسانی پروفایل اصلی ==========
         function updateMainProfile() {
+            // آواتار
             const profileAvatar = document.getElementById('mainProfileAvatar');
             if (profileAvatar) {
-                profileAvatar.innerHTML = '';
-                const img = document.createElement('img');
+                let imgSrc = '';
+                if (currentAvatar === 'avatar1') imgSrc = 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png';
+                else if (currentAvatar === 'avatar2') imgSrc = 'https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png';
+                else if (currentAvatar === 'ninja') imgSrc = 'https://s8.uupload.ir/files/inshot_20260212_151231364_umrq.png';
+                else if (currentAvatar === 'samurai') imgSrc = 'https://s8.uupload.ir/files/inshot_20260212_151120584_7df6.png';
                 
-                if (currentAvatar === 'avatar1') {
-                    img.src = 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png';
-                } else if (currentAvatar === 'avatar2') {
-                    img.src = 'https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png';
-                } else if (currentAvatar === 'ninja') {
-                    img.src = 'https://s8.uupload.ir/files/inshot_20260212_151231364_umrq.png';
-                } else if (currentAvatar === 'samurai') {
-                    img.src = 'https://s8.uupload.ir/files/inshot_20260212_151120584_7df6.png';
-                }
-                
-                img.style.width = '100%';
-                img.style.height = '100%';
-                img.style.borderRadius = '50%';
-                profileAvatar.appendChild(img);
+                profileAvatar.innerHTML = `<img src="${imgSrc}" style="width:100%; height:100%; border-radius:50%;">`;
             }
             
+            // نام
             const profileName = document.getElementById('mainProfileName');
-            if (profileName) {
+            const nameText = document.getElementById('mainProfileNameText');
+            if (profileName && nameText) {
                 let displayName = userName;
-                if (displayName.length > 10) {
-                    displayName = displayName.slice(0, 9) + '...';
-                }
+                if (displayName.length > 10) displayName = displayName.slice(0, 9) + '...';
+                nameText.textContent = displayName;
                 
                 if (isCreator) {
-                    profileName.innerHTML = `
-                        <span class="verified-badge"></span>
-                        <span class="profile-name-text" title="${userName}">${displayName}</span>
-                    `;
-                } else {
-                    profileName.innerHTML = `
-                        <span class="profile-name-text" title="${userName}">${displayName}</span>
-                    `;
+                    profileName.innerHTML = `<span class="verified-badge"></span><span class="profile-name-text" id="mainProfileNameText" title="${userName}">${displayName}</span>`;
                 }
             }
             
+            // سطح
             const profileLevel = document.querySelector('.profile-level');
             if (profileLevel) {
                 profileLevel.textContent = isCreator ? 'سطح ∞' : 'سطح ۱';
@@ -1426,36 +1407,32 @@
         
         // ========== به‌روزرسانی صفحه پروفایل ==========
         function updateProfilePage() {
+            // آواتار
             const profileImg = document.getElementById('profileAvatarImg');
             if (profileImg) {
-                if (currentAvatar === 'avatar1') {
-                    profileImg.src = 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png';
-                } else if (currentAvatar === 'avatar2') {
-                    profileImg.src = 'https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png';
-                } else if (currentAvatar === 'ninja') {
-                    profileImg.src = 'https://s8.uupload.ir/files/inshot_20260212_151231364_umrq.png';
-                } else if (currentAvatar === 'samurai') {
-                    profileImg.src = 'https://s8.uupload.ir/files/inshot_20260212_151120584_7df6.png';
-                }
+                if (currentAvatar === 'avatar1') profileImg.src = 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png';
+                else if (currentAvatar === 'avatar2') profileImg.src = 'https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png';
+                else if (currentAvatar === 'ninja') profileImg.src = 'https://s8.uupload.ir/files/inshot_20260212_151231364_umrq.png';
+                else if (currentAvatar === 'samurai') profileImg.src = 'https://s8.uupload.ir/files/inshot_20260212_151120584_7df6.png';
             }
             
+            // نام
             const profileName = document.getElementById('profileUserName');
             if (profileName) {
                 if (isCreator) {
-                    profileName.innerHTML = `
-                        ${userName}
-                        <span class="verified-badge"></span>
-                    `;
+                    profileName.innerHTML = `${userName} <span class="verified-badge"></span>`;
                 } else {
-                    profileName.innerHTML = `${userName}`;
+                    profileName.textContent = userName;
                 }
             }
             
+            // سطح
             const levelBadge = document.getElementById('profileLevelBadge');
             if (levelBadge) {
                 levelBadge.textContent = isCreator ? 'سازنده' : 'سطح ۱';
             }
             
+            // وضعیت ویرایش
             const editStatus = document.getElementById('editStatus');
             if (editStatus) {
                 if (isCreator) {
@@ -1477,6 +1454,7 @@
                 }
             }
             
+            // مقام
             const rankName = document.getElementById('rankName');
             const rankTag = document.getElementById('rankTag');
             if (rankName && rankTag) {
@@ -1484,6 +1462,7 @@
                 rankTag.textContent = isCreator ? 'بنیانگذار' : 'بازیکن';
             }
             
+            // آمار
             if (isCreator) {
                 const winCount = document.getElementById('winCount');
                 const loseCount = document.getElementById('loseCount');
@@ -1555,7 +1534,7 @@
             myAvatarsGrid.innerHTML = html;
         }
         
-        // ========== به‌روزرسانی فروشگاه آواتار ==========
+        // ========== به‌روزرسانی فروشگاه ==========
         function updateShopAvatars() {
             const shopNinja = document.getElementById('shopNinja');
             if (shopNinja) {
@@ -1566,6 +1545,21 @@
             if (shopSamurai) {
                 shopSamurai.style.display = ownedAvatars.includes('samurai') ? 'none' : 'block';
             }
+        }
+        
+        // ========== ذخیره اطلاعات ==========
+        function saveUserData() {
+            if (isCreator) return;
+            
+            try {
+                localStorage.setItem('mafiaUserId', userId.toString());
+                localStorage.setItem('mafiaUserAvatar', currentAvatar);
+                localStorage.setItem('mafiaUserName', userName);
+                localStorage.setItem('mafiaOwnedAvatars', JSON.stringify(ownedAvatars));
+                localStorage.setItem('mafiaUserGems', userGems.toString());
+                localStorage.setItem('mafiaUserCoins', userCoins.toString());
+                localStorage.setItem('mafiaEditCount', editCount.toString());
+            } catch (e) {}
         }
         
         // ========== انتخاب آواتار ==========
@@ -1783,11 +1777,19 @@
             document.getElementById('avatar-page').style.display = 'none';
         }
         
-        // ========== اجرا در هنگام لود صفحه ==========
-        window.onload = function() {
-            console.log('🚀 صفحه بازی در حال لود...');
-            loadUserData();
-        };
+        // ========== اجرا در لحظه لود صفحه ==========
+        (function() {
+            // اجرا بلافاصله
+            initializeGame();
+        })();
+        
+        // جلوگیری از اجرای مجدد با DOMContentLoaded
+        window.addEventListener('DOMContentLoaded', function() {
+            // فقط اگه مقداردهی نشده بود
+            if (!initialized) {
+                initializeGame();
+            }
+        });
     </script>
 </body>
 </html>
