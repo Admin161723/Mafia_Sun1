@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MafiaSun | پروفایل کاربر</title>
+    <title>MafiaSun | بازی آنلاین</title>
     <style>
         * {
             margin: 0;
@@ -23,16 +23,67 @@
             display: block;
         }
         
-        /* صفحه تالار دوستانه - عکس پس‌زمینه فقط */
-        #friendly-hall-page {
+        /* ========== هدر بالای صفحه اصلی - طراحی ساده و مینیمال ========== */
+        .game-header {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://s8.uupload.ir/files/img_20260208_174730_422_inei.jpg') no-repeat center center fixed;
-            background-size: cover;
-            display: none;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 1001;
+        }
+        
+        /* کارت جم و سکه - طراحی ساده و کوچک */
+        .currency-card {
+            background: rgba(18, 22, 28, 0.8);
+            backdrop-filter: blur(4px);
+            border-radius: 30px;
+            padding: 6px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #3a3f4a;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            width: fit-content;
+            align-self: flex-end;
+        }
+        
+        .currency-icon {
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #c0c6d1;
+        }
+        
+        .currency-info {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+        
+        .currency-label {
+            color: #8f9aa7;
+            font-size: 11px;
+            font-weight: 400;
+        }
+        
+        .currency-value {
+            color: #e6e9f0;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        
+        .gem-icon {
+            color: #a8c0e0;
+        }
+        
+        .coin-icon {
+            color: #e6d5a8;
         }
         
         /* پروفایل در صفحه اصلی */
@@ -42,26 +93,27 @@
             left: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: rgba(10, 14, 23, 0.85);
-            padding: 8px 16px;
+            gap: 8px;
+            background: rgba(18, 22, 28, 0.8);
+            backdrop-filter: blur(4px);
+            padding: 6px 14px;
             border-radius: 30px;
-            border: 1.5px solid #d4a373;
+            border: 1px solid #3a3f4a;
             cursor: pointer;
             z-index: 1000;
-            max-width: 200px;
-            backdrop-filter: blur(4px);
+            max-width: 180px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
         
         .profile-avatar {
-            width: 42px;
-            height: 42px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            border: 1.5px solid #e9c46a;
+            border: 1.5px solid #7f8c9a;
             flex-shrink: 0;
         }
         
@@ -78,8 +130,8 @@
         }
         
         .profile-name {
-            color: #f1faee;
-            font-size: 13px;
+            color: #e6e9f0;
+            font-size: 12px;
             font-weight: 500;
             display: flex;
             align-items: center;
@@ -88,21 +140,21 @@
         
         .profile-name-text {
             display: inline-block;
-            max-width: 80px;
+            max-width: 70px;
             overflow: hidden;
             text-overflow: ellipsis;
-            color: #f1faee;
-            font-size: 12px;
+            color: #e6e9f0;
+            font-size: 11px;
         }
         
         .profile-level {
-            color: #e9c46a;
-            font-size: 10px;
+            color: #b0c4ce;
+            font-size: 9px;
             background: rgba(0, 0, 0, 0.3);
             padding: 2px 8px;
             border-radius: 20px;
             align-self: flex-start;
-            border: 0.5px solid #d4a373;
+            border: 0.5px solid #4a5560;
         }
         
         /* نوار پایین */
@@ -111,42 +163,44 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 65px;
-            background: rgba(8, 12, 19, 0.95);
+            height: 60px;
+            background: rgba(8, 12, 16, 0.9);
             backdrop-filter: blur(4px);
             display: flex;
             align-items: center;
             justify-content: center;
-            border-top: 1px solid #d4a373;
+            border-top: 1px solid #2a2f38;
         }
         
         .house-img {
-            width: 45px;
-            height: 45px;
-            opacity: 0.9;
+            width: 40px;
+            height: 40px;
+            opacity: 0.8;
         }
         
         .house-img img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            filter: brightness(0.9);
+            filter: brightness(0.8);
         }
         
         /* دکمه شروع */
         .start-button {
             position: fixed;
-            bottom: 85px;
+            bottom: 80px;
             left: 50%;
             transform: translateX(-50%);
             cursor: pointer;
-            width: 160px;
-            height: 160px;
+            width: 140px;
+            height: 140px;
             transition: all 0.2s;
+            opacity: 0.9;
         }
         
         .start-button:hover {
             transform: translateX(-50%) scale(1.02);
+            opacity: 1;
         }
         
         .start-button img {
@@ -155,72 +209,47 @@
             object-fit: contain;
         }
         
-        /* دکمه ضربدر خوشگل */
-        .close-btn {
+        /* ========== صفحه تالار دوستانه - با عکس پس زمینه ========== */
+        #friendly-hall-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://s8.uupload.ir/files/img_20260208_174730_422_inei.jpg') no-repeat center center;
+            background-size: cover;
+            display: none;
+        }
+        
+        /* دکمه بازگشت - فقط در تالار دوستانه */
+        .hall-back-btn {
             position: fixed;
             top: 20px;
             right: 20px;
-            width: 44px;
-            height: 44px;
-            background: rgba(18, 22, 30, 0.7);
-            backdrop-filter: blur(8px);
+            width: 40px;
+            height: 40px;
+            background: rgba(18, 22, 28, 0.8);
+            backdrop-filter: blur(4px);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            border: 1.2px solid rgba(212, 163, 115, 0.6);
-            color: #e9ecef;
-            font-size: 26px;
+            border: 1px solid #3a3f4a;
+            color: #c0c6d1;
+            font-size: 22px;
             font-weight: 300;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
             z-index: 2000;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
         
-        .close-btn:hover {
-            background: rgba(38, 45, 58, 0.8);
-            border-color: #d4a373;
+        .hall-back-btn:hover {
+            background: rgba(40, 46, 56, 0.9);
+            border-color: #6a7a8a;
             color: white;
-            transform: rotate(90deg);
         }
         
-        .close-btn::before {
-            content: "✕";
-            line-height: 1;
-        }
-        
-        /* دکمه بازگشت */
-        .back-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 44px;
-            height: 44px;
-            background: rgba(18, 22, 30, 0.7);
-            backdrop-filter: blur(8px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 1.2px solid rgba(212, 163, 115, 0.6);
-            color: #e9ecef;
-            font-size: 26px;
-            font-weight: 300;
-            transition: all 0.2s ease;
-            z-index: 2000;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-        
-        .back-btn:hover {
-            background: rgba(38, 45, 58, 0.8);
-            border-color: #d4a373;
-            color: white;
-            transform: scale(1.05);
-        }
-        
-        .back-btn::before {
+        .hall-back-btn::before {
             content: "←";
             line-height: 1;
         }
@@ -235,53 +264,51 @@
             background: url('https://s8.uupload.ir/files/img_20260212_001408_558_g4g9.jpg') no-repeat center center;
             background-size: cover;
             display: none;
-            padding: 24px;
+            padding: 20px;
             direction: rtl;
             overflow-y: auto;
         }
         
         .profile-content {
-            max-width: 480px;
+            max-width: 460px;
             margin: 30px auto 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 16px;
         }
         
-        /* کارت پروفایل */
+        /* کارت پروفایل - ساده */
         .profile-card {
-            background: rgba(12, 16, 24, 0.85);
+            background: rgba(16, 20, 26, 0.85);
             backdrop-filter: blur(8px);
-            border-radius: 28px;
-            padding: 28px 24px;
+            border-radius: 24px;
+            padding: 24px 22px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 18px;
-            border: 1px solid rgba(212, 163, 115, 0.5);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            gap: 16px;
+            border: 1px solid #3a4050;
             width: 100%;
         }
         
         .avatar-circle {
-            width: 96px;
-            height: 96px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            border: 2px solid #d4a373;
+            border: 2px solid #7f8c9a;
             margin-top: -12px;
             cursor: pointer;
             transition: all 0.2s;
-            background: #1e1e2a;
+            background: #1e222a;
         }
         
         .avatar-circle:hover {
-            border-color: #e9c46a;
-            transform: scale(1.03);
+            border-color: #a0b0c0;
         }
         
         .avatar-circle img {
@@ -291,26 +318,26 @@
         }
         
         .name-box {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.4);
             border-radius: 40px;
-            padding: 12px 22px;
+            padding: 10px 20px;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border: 1px solid #d4a373;
+            border: 1px solid #4a5560;
             cursor: pointer;
             transition: all 0.2s;
         }
         
         .name-box:hover {
-            background: rgba(0, 0, 0, 0.65);
-            border-color: #e9c46a;
+            background: rgba(0, 0, 0, 0.6);
+            border-color: #6a7a8a;
         }
         
         .user-name {
-            color: #f1faee;
-            font-size: 18px;
+            color: #f0f4fa;
+            font-size: 17px;
             font-weight: 500;
             display: flex;
             align-items: center;
@@ -321,26 +348,26 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 20px;
-            height: 20px;
-            background: #2c6e9c;
+            width: 18px;
+            height: 18px;
+            background: #2a4a6a;
             border-radius: 50%;
-            border: 1px solid #e9ecef;
+            border: 1px solid #a0b0c0;
         }
         
         .verified-badge::before {
             content: "✓";
             color: white;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 400;
         }
         
         .level-badge {
-            background: #d4a373;
-            color: #0a0e17;
-            padding: 5px 18px;
+            background: #4a5560;
+            color: #f0f4fa;
+            padding: 4px 16px;
             border-radius: 30px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
             border: none;
         }
@@ -353,100 +380,95 @@
             width: 100%;
             margin-top: 4px;
             padding-top: 14px;
-            border-top: 1px solid rgba(212, 163, 115, 0.3);
+            border-top: 1px solid #3a4050;
             font-size: 12px;
         }
         
         .free-badge {
-            background: #2f4f4f;
-            color: #e9ecef;
-            padding: 5px 14px;
+            background: #2a4040;
+            color: #e0e8f0;
+            padding: 4px 14px;
             border-radius: 30px;
-            border: 0.5px solid #6b8e7c;
+            border: 1px solid #4a6a6a;
         }
         
         .coin-badge {
-            background: #5e503f;
-            color: #e9ecef;
-            padding: 5px 14px;
+            background: #4a4030;
+            color: #e0e8f0;
+            padding: 4px 14px;
             border-radius: 30px;
             display: flex;
             align-items: center;
             gap: 5px;
-            border: 0.5px solid #a88b6e;
-        }
-        
-        .coin-icon {
-            font-size: 14px;
+            border: 1px solid #6a5a4a;
         }
         
         /* ========== کارت آمار ========== */
         .stats-section {
-            background: rgba(12, 16, 24, 0.85);
+            background: rgba(16, 20, 26, 0.85);
             backdrop-filter: blur(8px);
-            border-radius: 28px;
-            padding: 24px;
-            border: 1px solid rgba(212, 163, 115, 0.5);
+            border-radius: 24px;
+            padding: 22px;
+            border: 1px solid #3a4050;
             width: 100%;
         }
         
-        /* کد کاربری - قابل کپی */
         .user-id-block {
-            background: rgba(0, 0, 0, 0.35);
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 16px;
-            padding: 14px 18px;
-            margin-bottom: 24px;
+            padding: 12px 18px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border: 0.5px solid #5f6b7a;
-            border-right: 4px solid #d4a373;
+            border: 1px solid #4a5560;
+            border-right: 4px solid #7f8c9a;
             transition: all 0.2s;
             cursor: pointer;
         }
         
         .user-id-block:hover {
             background: rgba(0, 0, 0, 0.5);
-            border-right-color: #e9c46a;
+            border-right-color: #a0b0c0;
         }
         
         .user-id-label {
-            color: #adb5bd;
-            font-size: 13px;
+            color: #b0c0d0;
+            font-size: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
         
         .user-id-icon {
-            font-size: 20px;
-            color: #d4a373;
+            font-size: 18px;
+            color: #a0b0c0;
         }
         
         .user-id-value {
-            color: #e9ecef;
+            color: #e6e9f0;
             font-size: 15px;
-            font-weight: 400;
+            font-weight: 600;
             font-family: 'Courier New', monospace;
-            letter-spacing: 1.5px;
-            background: rgba(0,0,0,0.3);
-            padding: 5px 16px;
+            letter-spacing: 1px;
+            background: rgba(0,0,0,0.4);
+            padding: 4px 16px;
             border-radius: 30px;
-            border: 0.5px solid #5f6b7a;
+            border: 1px solid #4a5560;
         }
         
-        /* نوتیفیکیشن کپی */
+        /* نوتیفیکیشن کپی - ساده */
         .copy-notification {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: #2c3e50;
-            color: #e9ecef;
+            background: #1e2630;
+            color: #e0e8f0;
             padding: 10px 24px;
             border-radius: 40px;
             font-size: 13px;
-            border: 0.5px solid #d4a373;
+            border: 1px solid #4a5560;
             backdrop-filter: blur(4px);
             z-index: 3000;
             display: none;
@@ -471,67 +493,60 @@
         .stat-cell {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 16px;
-            padding: 14px 12px;
+            padding: 12px 12px;
             display: flex;
             align-items: center;
             gap: 10px;
-            border: 0.5px solid #495057;
+            border: 1px solid #3a4050;
             transition: all 0.2s;
         }
         
         .stat-cell:hover {
-            background: rgba(0, 0, 0, 0.5);
-            border-color: #6c757d;
+            background: rgba(0, 0, 0, 0.45);
+            border-color: #5a6570;
         }
         
         .stat-icon {
-            font-size: 24px;
+            font-size: 22px;
             min-width: 40px;
             height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(33, 37, 41, 0.6);
+            background: rgba(30, 36, 44, 0.8);
             border-radius: 12px;
-            color: #d4a373;
+            color: #b0c0d0;
         }
         
         .stat-detail {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
         }
         
         .stat-label {
-            color: #adb5bd;
-            font-size: 11px;
-            font-weight: 400;
+            color: #a0b0c0;
+            font-size: 10px;
+            font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
         
         .stat-figure {
-            color: #f1faee;
+            color: #f0f4fa;
             font-size: 20px;
-            font-weight: 500;
+            font-weight: 600;
             line-height: 1;
         }
         
-        .stat-unit {
-            color: #adb5bd;
-            font-size: 11px;
-            margin-right: 3px;
-        }
-        
-        /* باکس مقام - فقط ادمین و مدیر ارشد */
         .rank-section {
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(0, 0, 0, 0.3);
             border-radius: 18px;
-            padding: 16px 18px;
+            padding: 14px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border: 0.5px solid #495057;
+            border: 1px solid #3a4050;
             margin-top: 16px;
         }
         
@@ -542,39 +557,72 @@
         }
         
         .rank-icon {
-            font-size: 26px;
-            background: rgba(33, 37, 41, 0.6);
-            padding: 6px;
+            font-size: 24px;
+            background: rgba(30, 36, 44, 0.8);
+            padding: 5px;
             border-radius: 12px;
-            color: #d4a373;
+            color: #b0c0d0;
         }
         
         .rank-detail {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
         }
         
         .rank-label {
-            color: #adb5bd;
-            font-size: 11px;
+            color: #a0b0c0;
+            font-size: 10px;
             text-transform: uppercase;
         }
         
         .rank-name {
-            color: #f1faee;
-            font-size: 18px;
-            font-weight: 500;
+            color: #f0f4fa;
+            font-size: 17px;
+            font-weight: 600;
         }
         
         .rank-tag {
-            background: #2c3e50;
-            color: #e9ecef;
-            padding: 6px 20px;
-            border-radius: 40px;
-            font-size: 14px;
+            background: #2a3640;
+            color: #e0e8f0;
+            padding: 5px 20px;
+            border-radius: 30px;
+            font-size: 13px;
             font-weight: 400;
-            border: 0.5px solid #5f6b7a;
+            border: 1px solid #4a5560;
+        }
+        
+        /* دکمه بازگشت در پروفایل */
+        .profile-back-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(18, 22, 28, 0.8);
+            backdrop-filter: blur(4px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 1px solid #3a3f4a;
+            color: #c0c6d1;
+            font-size: 22px;
+            font-weight: 300;
+            transition: all 0.2s;
+            z-index: 2000;
+        }
+        
+        .profile-back-btn:hover {
+            background: rgba(40, 46, 56, 0.9);
+            border-color: #6a7a8a;
+            color: white;
+        }
+        
+        .profile-back-btn::before {
+            content: "←";
+            line-height: 1;
         }
         
         /* ========== صفحه انتخاب آواتار ========== */
@@ -587,7 +635,7 @@
             background: url('https://s8.uupload.ir/files/img_20260212_001408_558_g4g9.jpg') no-repeat center center;
             background-size: cover;
             display: none;
-            padding: 24px;
+            padding: 20px;
             direction: rtl;
             overflow-y: auto;
         }
@@ -601,32 +649,32 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
         }
         
         .avatar-header h2 {
-            color: #e9ecef;
+            color: #e6e9f0;
             font-size: 22px;
-            font-weight: 400;
-            letter-spacing: 0.5px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
         }
         
         .avatar-tabs {
             display: flex;
-            gap: 12px;
-            margin-bottom: 28px;
-            background: rgba(10, 14, 23, 0.7);
+            gap: 10px;
+            margin-bottom: 24px;
+            background: rgba(16, 20, 26, 0.8);
             backdrop-filter: blur(8px);
-            padding: 8px;
+            padding: 6px;
             border-radius: 50px;
-            border: 0.5px solid #495057;
+            border: 1px solid #3a4050;
         }
         
         .avatar-tab {
             flex: 1;
-            padding: 10px 16px;
+            padding: 10px 18px;
             text-align: center;
-            color: #adb5bd;
+            color: #b0c0d0;
             font-size: 14px;
             font-weight: 400;
             border-radius: 40px;
@@ -635,18 +683,18 @@
         }
         
         .avatar-tab.active {
-            background: #2c3e50;
-            color: #e9ecef;
-            border: 0.5px solid #d4a373;
+            background: #2a3640;
+            color: #f0f4fa;
+            border: 1px solid #5a6a7a;
         }
         
         .tab-panel {
             display: none;
-            background: rgba(12, 16, 24, 0.85);
+            background: rgba(16, 20, 26, 0.85);
             backdrop-filter: blur(8px);
-            border-radius: 28px;
+            border-radius: 24px;
             padding: 24px;
-            border: 1px solid rgba(212, 163, 115, 0.5);
+            border: 1px solid #3a4050;
         }
         
         .tab-panel.active {
@@ -671,12 +719,12 @@
         
         .avatar-card:hover {
             background: rgba(0, 0, 0, 0.5);
-            border-color: #6c757d;
+            border-color: #5a6a7a;
         }
         
         .avatar-card.selected {
-            border: 1.5px solid #d4a373;
-            background: rgba(44, 62, 80, 0.5);
+            border: 2px solid #7f8c9a;
+            background: rgba(40, 50, 60, 0.6);
         }
         
         .avatar-thumb {
@@ -685,7 +733,7 @@
             margin: 0 auto 12px;
             border-radius: 50%;
             overflow: hidden;
-            border: 2px solid #495057;
+            border: 2px solid #4a5560;
         }
         
         .avatar-thumb img {
@@ -695,17 +743,31 @@
         }
         
         .avatar-title {
-            color: #e9ecef;
+            color: #e0e8f0;
             font-size: 14px;
             font-weight: 400;
             margin-bottom: 10px;
         }
         
+        .price-tag {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 12px;
+            color: #e6d5a8;
+            font-size: 14px;
+            background: rgba(0,0,0,0.3);
+            padding: 4px 10px;
+            border-radius: 30px;
+            border: 1px solid #5a6a4a;
+        }
+        
         .select-button {
-            background: #2c3e50;
-            color: #e9ecef;
-            border: 0.5px solid #5f6b7a;
-            padding: 6px 20px;
+            background: #2a3640;
+            color: #e0e8f0;
+            border: 1px solid #4a5560;
+            padding: 6px 22px;
             border-radius: 30px;
             font-size: 12px;
             font-weight: 400;
@@ -714,8 +776,8 @@
         }
         
         .select-button:hover {
-            background: #34495e;
-            border-color: #d4a373;
+            background: #364656;
+            border-color: #6a7a8a;
         }
         
         .shop-grid {
@@ -734,8 +796,8 @@
         }
         
         .shop-card:hover {
-            border-color: #6c757d;
             background: rgba(0, 0, 0, 0.5);
+            border-color: #5a6a7a;
         }
         
         .shop-thumb {
@@ -744,7 +806,7 @@
             margin: 0 auto 12px;
             border-radius: 50%;
             overflow: hidden;
-            border: 2px solid #495057;
+            border: 2px solid #5a6a6a;
         }
         
         .shop-thumb img {
@@ -754,28 +816,32 @@
         }
         
         .shop-title {
-            color: #e9ecef;
+            color: #e0e8f0;
             font-size: 14px;
             font-weight: 400;
             margin-bottom: 6px;
         }
         
         .shop-price {
-            color: #d4a373;
+            color: #e6d5a8;
             font-size: 14px;
-            font-weight: 400;
-            margin-bottom: 10px;
+            font-weight: 500;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            gap: 6px;
+            background: rgba(0,0,0,0.3);
+            padding: 4px 10px;
+            border-radius: 30px;
+            border: 1px solid #5a6a4a;
         }
         
         .buy-button {
-            background: #2f4f4f;
-            color: #e9ecef;
-            border: 0.5px solid #6b8e7c;
-            padding: 6px 20px;
+            background: #2a4040;
+            color: #e0e8f0;
+            border: 1px solid #4a6a6a;
+            padding: 6px 22px;
             border-radius: 30px;
             font-size: 12px;
             font-weight: 400;
@@ -784,53 +850,52 @@
         }
         
         .buy-button:hover {
-            background: #3b5e5e;
-            border-color: #a88b6e;
+            background: #305050;
+            border-color: #6a8a8a;
         }
         
-        /* مودال ویرایش */
+        /* مودال ویرایش - ساده */
         .edit-modal {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(18, 22, 30, 0.98);
-            backdrop-filter: blur(12px);
-            border: 1px solid #d4a373;
-            border-radius: 28px;
-            padding: 32px;
+            background: rgba(18, 22, 28, 0.98);
+            backdrop-filter: blur(8px);
+            border: 1px solid #4a5560;
+            border-radius: 24px;
+            padding: 30px;
             width: 90%;
-            max-width: 380px;
+            max-width: 360px;
             display: none;
             z-index: 10000;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         
         .edit-modal h3 {
-            color: #e9ecef;
+            color: #e6e9f0;
             font-size: 20px;
-            font-weight: 400;
-            margin-bottom: 24px;
+            font-weight: 500;
+            margin-bottom: 22px;
             text-align: center;
-            letter-spacing: 0.5px;
         }
         
         .edit-input {
             width: 100%;
-            padding: 14px 18px;
+            padding: 14px 20px;
             border-radius: 40px;
-            border: 0.5px solid #5f6b7a;
-            background: rgba(0,0,0,0.3);
-            color: #e9ecef;
-            font-size: 16px;
-            margin-bottom: 24px;
+            border: 1px solid #4a5560;
+            background: rgba(0,0,0,0.4);
+            color: #f0f4fa;
+            font-size: 15px;
+            margin-bottom: 22px;
             direction: rtl;
         }
         
         .edit-input:focus {
             outline: none;
-            border-color: #d4a373;
-            background: rgba(0,0,0,0.5);
+            border-color: #6a7a8a;
+            background: rgba(0,0,0,0.6);
         }
         
         .modal-actions {
@@ -840,62 +905,113 @@
         
         .save-action {
             flex: 2;
-            background: #2f4f4f;
-            color: #e9ecef;
-            border: 0.5px solid #6b8e7c;
+            background: #2a4040;
+            color: #e0e8f0;
+            border: 1px solid #4a6a6a;
             padding: 14px;
             border-radius: 40px;
             font-weight: 400;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.2s;
         }
         
         .save-action:hover {
-            background: #3b5e5e;
+            background: #305050;
         }
         
         .cancel-action {
             flex: 1;
             background: transparent;
-            color: #e9ecef;
-            border: 0.5px solid #7a5c4a;
+            color: #e0e8f0;
+            border: 1px solid #5a4a4a;
             padding: 14px;
             border-radius: 40px;
             font-weight: 400;
-            font-size: 15px;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.2s;
         }
         
         .cancel-action:hover {
-            background: rgba(122, 92, 74, 0.2);
+            background: rgba(90, 74, 74, 0.2);
         }
         
         .coin-message {
-            color: #d4a373;
-            font-size: 14px;
+            color: #e6d5a8;
+            font-size: 13px;
             margin-bottom: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+            background: rgba(0,0,0,0.3);
+            padding: 8px;
+            border-radius: 40px;
+        }
+        
+        /* دکمه بستن در آواتار */
+        .avatar-close-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(18, 22, 28, 0.8);
+            backdrop-filter: blur(4px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 1px solid #3a3f4a;
+            color: #c0c6d1;
+            font-size: 22px;
+            font-weight: 300;
+            transition: all 0.2s;
+        }
+        
+        .avatar-close-btn:hover {
+            background: rgba(40, 46, 56, 0.9);
+            border-color: #6a7a8a;
+            color: white;
+        }
+        
+        .avatar-close-btn::before {
+            content: "✕";
+            line-height: 1;
         }
         
         body {
             overflow: hidden;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
         }
     </style>
 </head>
 <body>
     <!-- صفحه اصلی بازی -->
     <div id="main-game-page">
+        <!-- هدر با جم و سکه - طراحی ساده و کوچک -->
+        <div class="game-header">
+            <div class="currency-card">
+                <span class="currency-icon gem-icon">💎</span>
+                <div class="currency-info">
+                    <span class="currency-label">جم</span>
+                    <span class="currency-value" id="gemDisplay">۱,۲۸۴</span>
+                </div>
+            </div>
+            <div class="currency-card">
+                <span class="currency-icon coin-icon">🪙</span>
+                <div class="currency-info">
+                    <span class="currency-label">سکه</span>
+                    <span class="currency-value" id="coinDisplay">۵,۶۲۰</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- پروفایل کاربر -->
         <div class="profile-container" onclick="openProfilePage()">
             <div class="profile-avatar" id="mainProfileAvatar"></div>
             <div class="profile-info">
                 <div class="profile-name" id="mainProfileName"></div>
-                <div class="profile-level">سطح 1</div>
+                <div class="profile-level">سطح ۱</div>
             </div>
         </div>
         
@@ -910,14 +1026,14 @@
         </div>
     </div>
     
-    <!-- صفحه تالار دوستانه - فقط عکس پس‌زمینه، بدون متن -->
+    <!-- صفحه تالار دوستانه - با عکس پس زمینه -->
     <div id="friendly-hall-page">
-        <div class="close-btn" onclick="goBackToGame()"></div>
+        <div class="hall-back-btn" onclick="goBackToGame()"></div>
     </div>
     
     <!-- صفحه پروفایل -->
     <div id="profile-page">
-        <div class="back-btn" onclick="closeProfilePage()"></div>
+        <div class="profile-back-btn" onclick="closeProfilePage()"></div>
         
         <div class="profile-content">
             <!-- کارت پروفایل -->
@@ -945,16 +1061,16 @@
             
             <!-- بخش آمار -->
             <div class="stats-section">
-                <!-- کد کاربری - قابل کپی -->
+                <!-- کد کاربری -->
                 <div class="user-id-block" onclick="copyUserId()">
                     <span class="user-id-label">
                         <span class="user-id-icon">🆔</span>
                         کد کاربری
                     </span>
-                    <span class="user-id-value" id="userIdDisplay">MF-2847-5931</span>
+                    <span class="user-id-value" id="userIdDisplay">۱۲۳۴۵۶۷</span>
                 </div>
                 
-                <!-- ردیف ۱: برد و باخت (شکلک باخت تغییر کرد) -->
+                <!-- ردیف ۱: برد و باخت -->
                 <div class="stats-row">
                     <div class="stat-cell">
                         <span class="stat-icon">🏆</span>
@@ -991,7 +1107,7 @@
                     </div>
                 </div>
                 
-                <!-- مقام بازی - ادمین / مدیر ارشد -->
+                <!-- مقام بازی -->
                 <div class="rank-section">
                     <div class="rank-info">
                         <span class="rank-icon">⚙️</span>
@@ -1014,7 +1130,7 @@
         <div class="avatar-container">
             <div class="avatar-header">
                 <h2>انتخاب آواتار</h2>
-                <div class="close-btn" onclick="closeAvatarPage()"></div>
+                <div class="avatar-close-btn" onclick="closeAvatarPage()"></div>
             </div>
             
             <div class="avatar-tabs">
@@ -1049,7 +1165,7 @@
                         </div>
                         <div class="shop-title">آواتار طلایی</div>
                         <div class="shop-price">
-                            <span>🪙</span> ۱۰۰
+                            <span>💎</span> ۵۰ جم
                         </div>
                         <button class="buy-button" onclick="buyAvatar('gold')">خرید</button>
                     </div>
@@ -1059,7 +1175,7 @@
                         </div>
                         <div class="shop-title">آواتار الماسی</div>
                         <div class="shop-price">
-                            <span>🪙</span> ۲۰۰
+                            <span>💎</span> ۱۰۰ جم
                         </div>
                         <button class="buy-button" onclick="buyAvatar('diamond')">خرید</button>
                     </div>
@@ -1087,8 +1203,12 @@
         let userName = 'بازیکن';
         let isVerified = true;
         let editCount = 0;
-        let userCoins = 500;
-        let userId = 'MF-2847-5931';
+        let userCoins = 5620;
+        let userGems = 1284;
+        let userId = 1234567;
+        
+        // آواتارهای خریداری شده
+        let ownedAvatars = ['avatar1', 'avatar2'];
         
         window.onload = function() {
             loadUserData();
@@ -1101,20 +1221,22 @@
                     const savedName = localStorage.getItem('mafiaUserName');
                     const savedEditCount = localStorage.getItem('mafiaEditCount');
                     const savedCoins = localStorage.getItem('mafiaUserCoins');
+                    const savedGems = localStorage.getItem('mafiaUserGems');
                     const savedUserId = localStorage.getItem('mafiaUserId');
+                    const savedOwnedAvatars = localStorage.getItem('mafiaOwnedAvatars');
                     
                     if (savedAvatar) currentAvatar = savedAvatar;
                     if (savedName) userName = savedName.slice(0, 12);
                     if (savedEditCount) editCount = parseInt(savedEditCount);
                     if (savedCoins) userCoins = parseInt(savedCoins);
-                    if (savedUserId) userId = savedUserId;
+                    if (savedGems) userGems = parseInt(savedGems);
+                    if (savedUserId) userId = parseInt(savedUserId);
+                    if (savedOwnedAvatars) ownedAvatars = JSON.parse(savedOwnedAvatars);
                 }
             } catch (error) {}
             
-            if (!userId || userId === 'MF-2847-5931') {
-                const random1 = Math.floor(1000 + Math.random() * 9000);
-                const random2 = Math.floor(1000 + Math.random() * 9000);
-                userId = `MF-${random1}-${random2}`;
+            if (!userId || userId === 1234567) {
+                userId = Math.floor(100000 + Math.random() * 9000000);
                 try {
                     if (typeof localStorage !== 'undefined') {
                         localStorage.setItem('mafiaUserId', userId);
@@ -1125,8 +1247,16 @@
             updateMainProfile();
             updateProfilePage();
             updateEditStatus();
-            updateSelectedAvatar();
-            document.getElementById('userIdDisplay').textContent = userId;
+            updateAvatarCollections();
+            updateCurrencyDisplay();
+            document.getElementById('userIdDisplay').textContent = userId.toLocaleString('fa-IR');
+        }
+        
+        function updateCurrencyDisplay() {
+            const gemDisplay = document.getElementById('gemDisplay');
+            const coinDisplay = document.getElementById('coinDisplay');
+            if (gemDisplay) gemDisplay.textContent = userGems.toLocaleString('fa-IR');
+            if (coinDisplay) coinDisplay.textContent = userCoins.toLocaleString('fa-IR');
         }
         
         function getVerifiedBadge() {
@@ -1138,9 +1268,13 @@
             if (profileAvatar) {
                 profileAvatar.innerHTML = '';
                 const img = document.createElement('img');
-                img.src = currentAvatar === 'avatar1' 
-                    ? 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png'
-                    : 'https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png';
+                
+                if (currentAvatar === 'avatar1' || currentAvatar === 'gold') {
+                    img.src = 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png';
+                } else {
+                    img.src = 'https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png';
+                }
+                
                 img.style.width = '100%';
                 img.style.height = '100%';
                 img.style.borderRadius = '50%';
@@ -1163,9 +1297,11 @@
         function updateProfilePage() {
             const profileImg = document.getElementById('profileAvatarImg');
             if (profileImg) {
-                profileImg.src = currentAvatar === 'avatar1' 
-                    ? 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png'
-                    : 'https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png';
+                if (currentAvatar === 'avatar1' || currentAvatar === 'gold') {
+                    profileImg.src = 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png';
+                } else {
+                    profileImg.src = 'https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png';
+                }
             }
             
             const profileName = document.getElementById('profileUserName');
@@ -1177,11 +1313,76 @@
             }
         }
         
+        function updateAvatarCollections() {
+            const myAvatarsPanel = document.getElementById('myAvatarsPanel');
+            if (myAvatarsPanel) {
+                let html = '<div class="avatar-grid">';
+                
+                if (ownedAvatars.includes('avatar1')) {
+                    html += `
+                        <div class="avatar-card ${currentAvatar === 'avatar1' ? 'selected' : ''}" id="avatar1" onclick="selectAvatar('avatar1')">
+                            <div class="avatar-thumb">
+                                <img src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png">
+                            </div>
+                            <div class="avatar-title">آواتار مرد</div>
+                            <button class="select-button" onclick="selectAvatar('avatar1'); event.stopPropagation();">انتخاب</button>
+                        </div>
+                    `;
+                }
+                
+                if (ownedAvatars.includes('avatar2')) {
+                    html += `
+                        <div class="avatar-card ${currentAvatar === 'avatar2' ? 'selected' : ''}" id="avatar2" onclick="selectAvatar('avatar2')">
+                            <div class="avatar-thumb">
+                                <img src="https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png">
+                            </div>
+                            <div class="avatar-title">آواتار زن</div>
+                            <button class="select-button" onclick="selectAvatar('avatar2'); event.stopPropagation();">انتخاب</button>
+                        </div>
+                    `;
+                }
+                
+                if (ownedAvatars.includes('gold')) {
+                    html += `
+                        <div class="avatar-card ${currentAvatar === 'gold' ? 'selected' : ''}" id="avatarGold" onclick="selectAvatar('gold')">
+                            <div class="avatar-thumb">
+                                <img src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png">
+                            </div>
+                            <div class="avatar-title">آواتار طلایی</div>
+                            <button class="select-button" onclick="selectAvatar('gold'); event.stopPropagation();">انتخاب</button>
+                        </div>
+                    `;
+                }
+                
+                if (ownedAvatars.includes('diamond')) {
+                    html += `
+                        <div class="avatar-card ${currentAvatar === 'diamond' ? 'selected' : ''}" id="avatarDiamond" onclick="selectAvatar('diamond')">
+                            <div class="avatar-thumb">
+                                <img src="https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png">
+                            </div>
+                            <div class="avatar-title">آواتار الماسی</div>
+                            <button class="select-button" onclick="selectAvatar('diamond'); event.stopPropagation();">انتخاب</button>
+                        </div>
+                    `;
+                }
+                
+                html += '</div>';
+                myAvatarsPanel.innerHTML = html;
+            }
+        }
+        
         function updateSelectedAvatar() {
-            document.getElementById('avatar1')?.classList.remove('selected');
-            document.getElementById('avatar2')?.classList.remove('selected');
-            const selectedAvatar = document.getElementById(currentAvatar);
-            if (selectedAvatar) selectedAvatar.classList.add('selected');
+            const cards = document.querySelectorAll('#myAvatarsPanel .avatar-card');
+            cards.forEach(card => card.classList.remove('selected'));
+            
+            let selectedId = '';
+            if (currentAvatar === 'avatar1') selectedId = 'avatar1';
+            else if (currentAvatar === 'avatar2') selectedId = 'avatar2';
+            else if (currentAvatar === 'gold') selectedId = 'avatarGold';
+            else if (currentAvatar === 'diamond') selectedId = 'avatarDiamond';
+            
+            const selectedCard = document.getElementById(selectedId);
+            if (selectedCard) selectedCard.classList.add('selected');
         }
         
         function updateEditStatus() {
@@ -1206,7 +1407,6 @@
             }
         }
         
-        // کپی کردن کد کاربری
         function copyUserId() {
             const userIdElement = document.getElementById('userIdDisplay');
             const userIdText = userIdElement.textContent;
@@ -1248,16 +1448,18 @@
             document.getElementById('profile-page').style.display = 'block';
             document.getElementById('avatar-page').style.display = 'none';
             updateProfilePage();
+            document.getElementById('userIdDisplay').textContent = userId.toLocaleString('fa-IR');
         }
         
         function closeProfilePage() {
             document.getElementById('profile-page').style.display = 'none';
             document.getElementById('main-game-page').style.display = 'block';
+            updateCurrencyDisplay();
         }
         
         function openAvatarPage() {
             document.getElementById('avatar-page').style.display = 'block';
-            updateSelectedAvatar();
+            updateAvatarCollections();
         }
         
         function closeAvatarPage() {
@@ -1289,28 +1491,46 @@
                 }
             } catch (e) {}
             
-            updateSelectedAvatar();
+            updateAvatarCollections();
             updateMainProfile();
             updateProfilePage();
         }
         
         function buyAvatar(type) {
-            let price = type === 'gold' ? 100 : 200;
+            let price = type === 'gold' ? 50 : 100;
+            let avatarName = type === 'gold' ? 'طلایی' : 'الماسی';
+            let avatarId = type === 'gold' ? 'gold' : 'diamond';
             
-            if (userCoins < price) {
-                alert(`سکه کافی نیست. نیاز به ${price} سکه`);
+            if (userGems < price) {
+                alert(`❌ جم کافی ندارید! نیاز به ${price} جم`);
                 return;
             }
             
-            userCoins -= price;
+            if (ownedAvatars.includes(avatarId)) {
+                alert('⚠️ این آواتار را قبلاً خریداری کرده‌اید');
+                return;
+            }
+            
+            userGems -= price;
+            ownedAvatars.push(avatarId);
             
             try {
                 if (typeof localStorage !== 'undefined') {
-                    localStorage.setItem('mafiaUserCoins', userCoins.toString());
+                    localStorage.setItem('mafiaUserGems', userGems.toString());
+                    localStorage.setItem('mafiaOwnedAvatars', JSON.stringify(ownedAvatars));
                 }
             } catch (e) {}
             
-            alert(`آواتار ${type === 'gold' ? 'طلایی' : 'الماسی'} خریداری شد`);
+            updateCurrencyDisplay();
+            updateAvatarCollections();
+            
+            const notification = document.getElementById('copyNotification');
+            notification.textContent = `✅ آواتار ${avatarName} خریداری شد`;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+                notification.textContent = '✅ کد کاربری کپی شد';
+            }, 2000);
         }
         
         function openEditModal() {
@@ -1381,6 +1601,7 @@
             updateMainProfile();
             updateProfilePage();
             updateEditStatus();
+            updateCurrencyDisplay();
             closeEditModal();
         }
         
