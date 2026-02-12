@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -23,7 +23,7 @@
             display: block;
         }
         
-        /* ========== هدر بالای صفحه اصلی - طراحی ساده و مینیمال ========== */
+        /* ========== هدر بالای صفحه اصلی ========== */
         .game-header {
             position: fixed;
             top: 20px;
@@ -34,7 +34,6 @@
             z-index: 1001;
         }
         
-        /* کارت جم و سکه - طراحی ساده و کوچک */
         .currency-card {
             background: rgba(18, 22, 28, 0.8);
             backdrop-filter: blur(4px);
@@ -157,7 +156,6 @@
             border: 0.5px solid #4a5560;
         }
         
-        /* نوار پایین */
         .bottom-bar {
             position: fixed;
             bottom: 0;
@@ -185,7 +183,6 @@
             filter: brightness(0.8);
         }
         
-        /* دکمه شروع */
         .start-button {
             position: fixed;
             bottom: 80px;
@@ -209,7 +206,7 @@
             object-fit: contain;
         }
         
-        /* ========== صفحه تالار دوستانه - با عکس پس زمینه ========== */
+        /* ========== صفحه تالار دوستانه ========== */
         #friendly-hall-page {
             position: fixed;
             top: 0;
@@ -221,7 +218,6 @@
             display: none;
         }
         
-        /* دکمه بازگشت - فقط در تالار دوستانه */
         .hall-back-btn {
             position: fixed;
             top: 20px;
@@ -278,7 +274,6 @@
             gap: 16px;
         }
         
-        /* کارت پروفایل - ساده */
         .profile-card {
             background: rgba(16, 20, 26, 0.85);
             backdrop-filter: blur(8px);
@@ -344,22 +339,24 @@
             gap: 6px;
         }
         
+        /* ========== تیک آبی فقط مخصوص سازنده ========== */
         .verified-badge {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             width: 18px;
             height: 18px;
-            background: #2a4a6a;
+            background: #1e88e5;
             border-radius: 50%;
-            border: 1px solid #a0b0c0;
+            border: 1.5px solid #ffffff;
+            box-shadow: 0 0 8px rgba(30, 136, 229, 0.5);
         }
         
         .verified-badge::before {
             content: "✓";
             color: white;
             font-size: 11px;
-            font-weight: 400;
+            font-weight: bold;
         }
         
         .level-badge {
@@ -457,7 +454,6 @@
             border: 1px solid #4a5560;
         }
         
-        /* نوتیفیکیشن کپی - ساده */
         .copy-notification {
             position: fixed;
             bottom: 30px;
@@ -482,7 +478,6 @@
             100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
         }
         
-        /* گرید آمار */
         .stats-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -592,7 +587,6 @@
             border: 1px solid #4a5560;
         }
         
-        /* دکمه بازگشت در پروفایل */
         .profile-back-btn {
             position: fixed;
             top: 20px;
@@ -641,7 +635,7 @@
         }
         
         .avatar-container {
-            max-width: 480px;
+            max-width: 500px;
             margin: 50px auto 0;
         }
         
@@ -654,7 +648,7 @@
         
         .avatar-header h2 {
             color: #e6e9f0;
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 500;
             letter-spacing: 0.3px;
         }
@@ -704,13 +698,13 @@
         .avatar-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            gap: 20px;
         }
         
         .avatar-card {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 20px;
-            padding: 18px;
+            padding: 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.2s;
@@ -720,20 +714,22 @@
         .avatar-card:hover {
             background: rgba(0, 0, 0, 0.5);
             border-color: #5a6a7a;
+            transform: translateY(-3px);
         }
         
         .avatar-card.selected {
             border: 2px solid #7f8c9a;
             background: rgba(40, 50, 60, 0.6);
+            box-shadow: 0 0 20px rgba(127, 140, 154, 0.3);
         }
         
         .avatar-thumb {
-            width: 90px;
-            height: 90px;
-            margin: 0 auto 12px;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px;
             border-radius: 50%;
             overflow: hidden;
-            border: 2px solid #4a5560;
+            border: 3px solid #4a5560;
         }
         
         .avatar-thumb img {
@@ -742,35 +738,26 @@
             object-fit: cover;
         }
         
-        .avatar-title {
+        .avatar-number {
             color: #e0e8f0;
-            font-size: 14px;
-            font-weight: 400;
-            margin-bottom: 10px;
-        }
-        
-        .price-tag {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
+            font-size: 18px;
+            font-weight: bold;
             margin-bottom: 12px;
-            color: #e6d5a8;
-            font-size: 14px;
-            background: rgba(0,0,0,0.3);
-            padding: 4px 10px;
-            border-radius: 30px;
-            border: 1px solid #5a6a4a;
+            background: rgba(0,0,0,0.5);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid #5a6a7a;
         }
         
         .select-button {
             background: #2a3640;
             color: #e0e8f0;
             border: 1px solid #4a5560;
-            padding: 6px 22px;
+            padding: 8px 24px;
             border-radius: 30px;
-            font-size: 12px;
-            font-weight: 400;
+            font-size: 13px;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -778,18 +765,19 @@
         .select-button:hover {
             background: #364656;
             border-color: #6a7a8a;
+            transform: scale(1.05);
         }
         
         .shop-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            gap: 20px;
         }
         
         .shop-card {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 20px;
-            padding: 18px;
+            padding: 20px;
             text-align: center;
             border: 1px solid transparent;
             transition: all 0.2s;
@@ -798,15 +786,16 @@
         .shop-card:hover {
             background: rgba(0, 0, 0, 0.5);
             border-color: #5a6a7a;
+            transform: translateY(-3px);
         }
         
         .shop-thumb {
-            width: 90px;
-            height: 90px;
-            margin: 0 auto 12px;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px;
             border-radius: 50%;
             overflow: hidden;
-            border: 2px solid #5a6a6a;
+            border: 3px solid #5a6a6a;
         }
         
         .shop-thumb img {
@@ -815,24 +804,29 @@
             object-fit: cover;
         }
         
-        .shop-title {
+        .shop-number {
             color: #e0e8f0;
-            font-size: 14px;
-            font-weight: 400;
-            margin-bottom: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            background: rgba(0,0,0,0.5);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid #5a6a7a;
         }
         
         .shop-price {
             color: #e6d5a8;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            background: rgba(0,0,0,0.3);
-            padding: 4px 10px;
+            gap: 8px;
+            background: rgba(0,0,0,0.4);
+            padding: 6px 12px;
             border-radius: 30px;
             border: 1px solid #5a6a4a;
         }
@@ -841,10 +835,10 @@
             background: #2a4040;
             color: #e0e8f0;
             border: 1px solid #4a6a6a;
-            padding: 6px 22px;
+            padding: 8px 24px;
             border-radius: 30px;
-            font-size: 12px;
-            font-weight: 400;
+            font-size: 13px;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -852,9 +846,37 @@
         .buy-button:hover {
             background: #305050;
             border-color: #6a8a8a;
+            transform: scale(1.05);
         }
         
-        /* مودال ویرایش - ساده */
+        .avatar-close-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(18, 22, 28, 0.8);
+            backdrop-filter: blur(4px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 1px solid #3a3f4a;
+            color: #c0c6d1;
+            font-size: 22px;
+            font-weight: 300;
+            transition: all 0.2s;
+        }
+        
+        .avatar-close-btn:hover {
+            background: rgba(40, 46, 56, 0.9);
+            border-color: #6a7a8a;
+            color: white;
+        }
+        
+        .avatar-close-btn::before {
+            content: "✕";
+            line-height: 1;
+        }
+        
         .edit-modal {
             position: fixed;
             top: 50%;
@@ -950,35 +972,6 @@
             border-radius: 40px;
         }
         
-        /* دکمه بستن در آواتار */
-        .avatar-close-btn {
-            width: 40px;
-            height: 40px;
-            background: rgba(18, 22, 28, 0.8);
-            backdrop-filter: blur(4px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 1px solid #3a3f4a;
-            color: #c0c6d1;
-            font-size: 22px;
-            font-weight: 300;
-            transition: all 0.2s;
-        }
-        
-        .avatar-close-btn:hover {
-            background: rgba(40, 46, 56, 0.9);
-            border-color: #6a7a8a;
-            color: white;
-        }
-        
-        .avatar-close-btn::before {
-            content: "✕";
-            line-height: 1;
-        }
-        
         body {
             overflow: hidden;
             font-family: 'Inter', 'Segoe UI', sans-serif;
@@ -988,30 +981,32 @@
 <body>
     <!-- صفحه اصلی بازی -->
     <div id="main-game-page">
-        <!-- هدر با جم و سکه - طراحی ساده و کوچک -->
         <div class="game-header">
             <div class="currency-card">
                 <span class="currency-icon gem-icon">💎</span>
                 <div class="currency-info">
                     <span class="currency-label">جم</span>
-                    <span class="currency-value" id="gemDisplay">۱,۲۸۴</span>
+                    <span class="currency-value" id="gemDisplay">∞</span>
                 </div>
             </div>
             <div class="currency-card">
                 <span class="currency-icon coin-icon">🪙</span>
                 <div class="currency-info">
                     <span class="currency-label">سکه</span>
-                    <span class="currency-value" id="coinDisplay">۵,۶۲۰</span>
+                    <span class="currency-value" id="coinDisplay">∞</span>
                 </div>
             </div>
         </div>
         
-        <!-- پروفایل کاربر -->
+        <!-- پروفایل کاربر - سازنده با تیک آبی -->
         <div class="profile-container" onclick="openProfilePage()">
             <div class="profile-avatar" id="mainProfileAvatar"></div>
             <div class="profile-info">
-                <div class="profile-name" id="mainProfileName"></div>
-                <div class="profile-level">سطح ۱</div>
+                <div class="profile-name" id="mainProfileName">
+                    <span class="verified-badge"></span>
+                    <span class="profile-name-text" id="mainProfileNameText">سازنده</span>
+                </div>
+                <div class="profile-level">سطح ∞</div>
             </div>
         </div>
         
@@ -1026,17 +1021,16 @@
         </div>
     </div>
     
-    <!-- صفحه تالار دوستانه - با عکس پس زمینه -->
+    <!-- صفحه تالار دوستانه -->
     <div id="friendly-hall-page">
         <div class="hall-back-btn" onclick="goBackToGame()"></div>
     </div>
     
-    <!-- صفحه پروفایل -->
+    <!-- صفحه پروفایل سازنده -->
     <div id="profile-page">
         <div class="profile-back-btn" onclick="closeProfilePage()"></div>
         
         <div class="profile-content">
-            <!-- کارت پروفایل -->
             <div class="profile-card">
                 <div class="avatar-circle" id="profileAvatarCircle" onclick="openAvatarPage()">
                     <img id="profileAvatarImg" src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png">
@@ -1044,57 +1038,53 @@
                 
                 <div class="name-box" onclick="openEditModal()">
                     <div class="user-name" id="profileUserName">
-                        بازیکن
+                        سازنده
                         <span class="verified-badge"></span>
                     </div>
-                    <span class="level-badge">سطح ۱</span>
+                    <span class="level-badge" id="profileLevelBadge">سازنده</span>
                 </div>
                 
                 <div class="edit-status" id="editStatus">
-                    <span class="free-badge">۱ بار رایگان</span>
+                    <span class="free-badge">⚡ بی‌نهایت</span>
                     <span class="coin-badge">
                         <span class="coin-icon">🪙</span>
-                        ۵ سکه
+                        ∞
                     </span>
                 </div>
             </div>
             
-            <!-- بخش آمار -->
             <div class="stats-section">
-                <!-- کد کاربری -->
                 <div class="user-id-block" onclick="copyUserId()">
                     <span class="user-id-label">
                         <span class="user-id-icon">🆔</span>
                         کد کاربری
                     </span>
-                    <span class="user-id-value" id="userIdDisplay">۱۲۳۴۵۶۷</span>
+                    <span class="user-id-value" id="userIdDisplay">۱</span>
                 </div>
                 
-                <!-- ردیف ۱: برد و باخت -->
                 <div class="stats-row">
                     <div class="stat-cell">
                         <span class="stat-icon">🏆</span>
                         <div class="stat-detail">
                             <span class="stat-label">تعداد برد</span>
-                            <span class="stat-figure">۱۲۸</span>
+                            <span class="stat-figure" id="winCount">∞</span>
                         </div>
                     </div>
                     <div class="stat-cell">
                         <span class="stat-icon">🕊️</span>
                         <div class="stat-detail">
                             <span class="stat-label">تعداد باخت</span>
-                            <span class="stat-figure">۸۹</span>
+                            <span class="stat-figure" id="loseCount">۰</span>
                         </div>
                     </div>
                 </div>
                 
-                <!-- ردیف ۲: ساعت و ناظر -->
                 <div class="stats-row">
                     <div class="stat-cell">
                         <span class="stat-icon">⏳</span>
                         <div class="stat-detail">
                             <span class="stat-label">ساعت بازی</span>
-                            <span class="stat-figure">۳۴۲</span>
+                            <span class="stat-figure" id="hoursPlayed">∞</span>
                             <span class="stat-unit">h</span>
                         </div>
                     </div>
@@ -1102,27 +1092,25 @@
                         <span class="stat-icon">👁️</span>
                         <div class="stat-detail">
                             <span class="stat-label">تعداد ناظر</span>
-                            <span class="stat-figure">۱۵۶</span>
+                            <span class="stat-figure" id="observerCount">∞</span>
                         </div>
                     </div>
                 </div>
                 
-                <!-- مقام بازی -->
                 <div class="rank-section">
                     <div class="rank-info">
-                        <span class="rank-icon">⚙️</span>
+                        <span class="rank-icon">👑</span>
                         <div class="rank-detail">
                             <span class="rank-label">مقام</span>
-                            <span class="rank-name">ادمین</span>
+                            <span class="rank-name" id="rankName">سازنده</span>
                         </div>
                     </div>
-                    <span class="rank-tag">مدیر ارشد</span>
+                    <span class="rank-tag" id="rankTag">بنیانگذار</span>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- نوتیفیکیشن کپی -->
     <div id="copyNotification" class="copy-notification">✅ کد کاربری کپی شد</div>
     
     <!-- صفحه انتخاب آواتار -->
@@ -1138,53 +1126,57 @@
                 <div class="avatar-tab" onclick="switchAvatarTab('shop')">خرید آواتار</div>
             </div>
             
+            <!-- آواتار من -->
             <div class="tab-panel active" id="myAvatarsPanel">
-                <div class="avatar-grid">
+                <div class="avatar-grid" id="myAvatarsGrid">
+                    <!-- آواتارهای پیشفرض با شماره -->
                     <div class="avatar-card selected" id="avatar1" onclick="selectAvatar('avatar1')">
                         <div class="avatar-thumb">
                             <img src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png">
                         </div>
-                        <div class="avatar-title">آواتار مرد</div>
+                        <div class="avatar-number">#۰۰۱</div>
                         <button class="select-button" onclick="selectAvatar('avatar1'); event.stopPropagation();">انتخاب</button>
                     </div>
                     <div class="avatar-card" id="avatar2" onclick="selectAvatar('avatar2')">
                         <div class="avatar-thumb">
                             <img src="https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png">
                         </div>
-                        <div class="avatar-title">آواتار زن</div>
+                        <div class="avatar-number">#۰۰۲</div>
                         <button class="select-button" onclick="selectAvatar('avatar2'); event.stopPropagation();">انتخاب</button>
                     </div>
                 </div>
             </div>
             
+            <!-- خرید آواتار -->
             <div class="tab-panel" id="shopPanel">
-                <div class="shop-grid">
-                    <div class="shop-card">
+                <div class="shop-grid" id="shopGrid">
+                    <!-- آواتار نینجا -->
+                    <div class="shop-card" id="shopNinja">
                         <div class="shop-thumb">
-                            <img src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png">
+                            <img src="https://s8.uupload.ir/files/inshot_20260212_151231364_umrq.png">
                         </div>
-                        <div class="shop-title">آواتار طلایی</div>
+                        <div class="shop-number">#۰۰۳</div>
                         <div class="shop-price">
-                            <span>💎</span> ۵۰ جم
+                            <span>💎</span> ۲۰۰ جم
                         </div>
-                        <button class="buy-button" onclick="buyAvatar('gold')">خرید</button>
+                        <button class="buy-button" onclick="buyAvatar('ninja', '#۰۰۳', 'https://s8.uupload.ir/files/inshot_20260212_151231364_umrq.png', 200)">خرید</button>
                     </div>
-                    <div class="shop-card">
+                    <!-- آواتار سامورایی -->
+                    <div class="shop-card" id="shopSamurai">
                         <div class="shop-thumb">
-                            <img src="https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png">
+                            <img src="https://s8.uupload.ir/files/inshot_20260212_151120584_7df6.png">
                         </div>
-                        <div class="shop-title">آواتار الماسی</div>
+                        <div class="shop-number">#۰۰۴</div>
                         <div class="shop-price">
-                            <span>💎</span> ۱۰۰ جم
+                            <span>💎</span> ۲۰۰ جم
                         </div>
-                        <button class="buy-button" onclick="buyAvatar('diamond')">خرید</button>
+                        <button class="buy-button" onclick="buyAvatar('samurai', '#۰۰۴', 'https://s8.uupload.ir/files/inshot_20260212_151120584_7df6.png', 200)">خرید</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- مودال ویرایش نام -->
     <div class="edit-modal" id="editModal">
         <h3 id="modalTitle">تغییر نام</h3>
         <div id="coinRequiredMessage" class="coin-message" style="display: none;">
@@ -1198,19 +1190,58 @@
     </div>
 
     <script>
-        // متغیرها
+        // ========== اطلاعات سازنده ==========
+        const CREATOR_PHONE = '09904844031';
+        const CREATOR_PASSWORD = 'Admin16172-matin-1000';
+        const CREATOR_NAME = 'سازنده';
+        const CREATOR_ID = 1;
+        
+        // ========== متغیرهای اصلی ==========
         let currentAvatar = 'avatar1';
         let userName = 'بازیکن';
-        let isVerified = true;
+        let isCreator = false;
         let editCount = 0;
-        let userCoins = 5620;
-        let userGems = 1284;
-        let userId = 1234567;
+        let userCoins = 600;
+        let userGems = 100;
+        let userId = Math.floor(100000 + Math.random() * 9000000);
         
-        // آواتارهای خریداری شده
+        // آواتارهای خریداری شده - فقط آواتارهای پیشفرض
         let ownedAvatars = ['avatar1', 'avatar2'];
         
+        // ========== بررسی اکانت سازنده ==========
+        function checkCreatorAccount() {
+            // بررسی می‌کنیم که آیا کاربر با شماره سازنده وارد شده است
+            try {
+                const savedPhone = localStorage.getItem('mafiaUserPhone');
+                const savedPassword = localStorage.getItem('mafiaUserPassword');
+                const savedUserId = localStorage.getItem('mafiaUserId');
+                
+                // اگر شماره و رمز مطابقت داشت، سازنده است
+                if (savedPhone === CREATOR_PHONE && savedPassword === CREATOR_PASSWORD) {
+                    return true;
+                }
+                
+                // همچنین اگر userId برابر با CREATOR_ID باشد
+                if (savedUserId && parseInt(savedUserId) === CREATOR_ID) {
+                    return true;
+                }
+            } catch (e) {}
+            return false;
+        }
+        
         window.onload = function() {
+            // ابتدا بررسی می‌کنیم آیا کاربر سازنده است
+            isCreator = checkCreatorAccount();
+            
+            // اگر سازنده است، همه چیز را بینهایت کن
+            if (isCreator) {
+                userName = CREATOR_NAME;
+                userId = CREATOR_ID;
+                userGems = Infinity;
+                userCoins = Infinity;
+                ownedAvatars = ['avatar1', 'avatar2', 'ninja', 'samurai'];
+            }
+            
             loadUserData();
         };
         
@@ -1219,48 +1250,69 @@
                 if (typeof localStorage !== 'undefined') {
                     const savedAvatar = localStorage.getItem('mafiaUserAvatar');
                     const savedName = localStorage.getItem('mafiaUserName');
-                    const savedEditCount = localStorage.getItem('mafiaEditCount');
-                    const savedCoins = localStorage.getItem('mafiaUserCoins');
-                    const savedGems = localStorage.getItem('mafiaUserGems');
                     const savedUserId = localStorage.getItem('mafiaUserId');
                     const savedOwnedAvatars = localStorage.getItem('mafiaOwnedAvatars');
+                    const savedGems = localStorage.getItem('mafiaUserGems');
+                    const savedCoins = localStorage.getItem('mafiaUserCoins');
+                    const savedEditCount = localStorage.getItem('mafiaEditCount');
+                    
+                    // اگر سازنده نیست، اطلاعات عادی را بارگذاری کن
+                    if (!isCreator) {
+                        if (savedOwnedAvatars) {
+                            ownedAvatars = JSON.parse(savedOwnedAvatars);
+                        } else {
+                            ownedAvatars = ['avatar1', 'avatar2'];
+                        }
+                        if (savedGems) userGems = parseInt(savedGems);
+                        if (savedCoins) userCoins = parseInt(savedCoins);
+                        if (savedEditCount) editCount = parseInt(savedEditCount);
+                        if (savedName) userName = savedName.slice(0, 12);
+                        if (savedUserId && parseInt(savedUserId) !== CREATOR_ID) userId = parseInt(savedUserId);
+                    }
                     
                     if (savedAvatar) currentAvatar = savedAvatar;
-                    if (savedName) userName = savedName.slice(0, 12);
-                    if (savedEditCount) editCount = parseInt(savedEditCount);
-                    if (savedCoins) userCoins = parseInt(savedCoins);
-                    if (savedGems) userGems = parseInt(savedGems);
-                    if (savedUserId) userId = parseInt(savedUserId);
-                    if (savedOwnedAvatars) ownedAvatars = JSON.parse(savedOwnedAvatars);
                 }
             } catch (error) {}
             
-            if (!userId || userId === 1234567) {
-                userId = Math.floor(100000 + Math.random() * 9000000);
-                try {
-                    if (typeof localStorage !== 'undefined') {
-                        localStorage.setItem('mafiaUserId', userId);
-                    }
-                } catch(e) {}
-            }
+            // ذخیره اطلاعات
+            saveUserData();
             
+            // به‌روزرسانی نمایش
             updateMainProfile();
             updateProfilePage();
-            updateEditStatus();
-            updateAvatarCollections();
+            updateMyAvatars();
+            updateShopAvatars();
             updateCurrencyDisplay();
-            document.getElementById('userIdDisplay').textContent = userId.toLocaleString('fa-IR');
+            document.getElementById('userIdDisplay').textContent = isCreator ? '۱' : userId.toLocaleString('fa-IR');
+        }
+        
+        function saveUserData() {
+            try {
+                if (typeof localStorage !== 'undefined' && !isCreator) {
+                    localStorage.setItem('mafiaUserId', userId.toString());
+                    localStorage.setItem('mafiaUserAvatar', currentAvatar);
+                    localStorage.setItem('mafiaUserName', userName);
+                    localStorage.setItem('mafiaOwnedAvatars', JSON.stringify(ownedAvatars));
+                    localStorage.setItem('mafiaUserGems', userGems.toString());
+                    localStorage.setItem('mafiaUserCoins', userCoins.toString());
+                    localStorage.setItem('mafiaEditCount', editCount.toString());
+                }
+            } catch (e) {}
         }
         
         function updateCurrencyDisplay() {
             const gemDisplay = document.getElementById('gemDisplay');
             const coinDisplay = document.getElementById('coinDisplay');
-            if (gemDisplay) gemDisplay.textContent = userGems.toLocaleString('fa-IR');
-            if (coinDisplay) coinDisplay.textContent = userCoins.toLocaleString('fa-IR');
+            if (gemDisplay) gemDisplay.textContent = isCreator ? '∞' : userGems.toLocaleString('fa-IR');
+            if (coinDisplay) coinDisplay.textContent = isCreator ? '∞' : userCoins.toLocaleString('fa-IR');
         }
         
         function getVerifiedBadge() {
-            return '<span class="verified-badge"></span>';
+            // فقط سازنده تیک آبی دارد
+            if (isCreator) {
+                return '<span class="verified-badge" title="سازنده بازی"></span>';
+            }
+            return ''; // کاربران عادی هیچ تیک آبی ندارند
         }
         
         function updateMainProfile() {
@@ -1269,10 +1321,15 @@
                 profileAvatar.innerHTML = '';
                 const img = document.createElement('img');
                 
-                if (currentAvatar === 'avatar1' || currentAvatar === 'gold') {
+                // تنظیم عکس بر اساس آواتار انتخاب شده
+                if (currentAvatar === 'avatar1') {
                     img.src = 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png';
-                } else {
+                } else if (currentAvatar === 'avatar2') {
                     img.src = 'https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png';
+                } else if (currentAvatar === 'ninja') {
+                    img.src = 'https://s8.uupload.ir/files/inshot_20260212_151231364_umrq.png';
+                } else if (currentAvatar === 'samurai') {
+                    img.src = 'https://s8.uupload.ir/files/inshot_20260212_151120584_7df6.png';
                 }
                 
                 img.style.width = '100%';
@@ -1287,117 +1344,69 @@
                 if (displayName.length > 10) {
                     displayName = displayName.slice(0, 9) + '...';
                 }
-                profileName.innerHTML = `
-                    ${getVerifiedBadge()}
-                    <span class="profile-name-text" title="${userName}">${displayName}</span>
-                `;
+                
+                if (isCreator) {
+                    profileName.innerHTML = `
+                        <span class="verified-badge"></span>
+                        <span class="profile-name-text" title="${userName}">${displayName}</span>
+                    `;
+                } else {
+                    profileName.innerHTML = `
+                        <span class="profile-name-text" title="${userName}">${displayName}</span>
+                    `;
+                }
+            }
+            
+            const profileLevel = document.querySelector('.profile-level');
+            if (profileLevel) {
+                profileLevel.textContent = isCreator ? 'سطح ∞' : 'سطح ۱';
             }
         }
         
         function updateProfilePage() {
             const profileImg = document.getElementById('profileAvatarImg');
             if (profileImg) {
-                if (currentAvatar === 'avatar1' || currentAvatar === 'gold') {
+                if (currentAvatar === 'avatar1') {
                     profileImg.src = 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png';
-                } else {
+                } else if (currentAvatar === 'avatar2') {
                     profileImg.src = 'https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png';
+                } else if (currentAvatar === 'ninja') {
+                    profileImg.src = 'https://s8.uupload.ir/files/inshot_20260212_151231364_umrq.png';
+                } else if (currentAvatar === 'samurai') {
+                    profileImg.src = 'https://s8.uupload.ir/files/inshot_20260212_151120584_7df6.png';
                 }
             }
             
             const profileName = document.getElementById('profileUserName');
             if (profileName) {
-                profileName.innerHTML = `
-                    ${userName}
-                    <span class="verified-badge"></span>
-                `;
+                if (isCreator) {
+                    profileName.innerHTML = `
+                        ${userName}
+                        <span class="verified-badge"></span>
+                    `;
+                } else {
+                    profileName.innerHTML = `${userName}`;
+                }
             }
-        }
-        
-        function updateAvatarCollections() {
-            const myAvatarsPanel = document.getElementById('myAvatarsPanel');
-            if (myAvatarsPanel) {
-                let html = '<div class="avatar-grid">';
-                
-                if (ownedAvatars.includes('avatar1')) {
-                    html += `
-                        <div class="avatar-card ${currentAvatar === 'avatar1' ? 'selected' : ''}" id="avatar1" onclick="selectAvatar('avatar1')">
-                            <div class="avatar-thumb">
-                                <img src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png">
-                            </div>
-                            <div class="avatar-title">آواتار مرد</div>
-                            <button class="select-button" onclick="selectAvatar('avatar1'); event.stopPropagation();">انتخاب</button>
-                        </div>
-                    `;
-                }
-                
-                if (ownedAvatars.includes('avatar2')) {
-                    html += `
-                        <div class="avatar-card ${currentAvatar === 'avatar2' ? 'selected' : ''}" id="avatar2" onclick="selectAvatar('avatar2')">
-                            <div class="avatar-thumb">
-                                <img src="https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png">
-                            </div>
-                            <div class="avatar-title">آواتار زن</div>
-                            <button class="select-button" onclick="selectAvatar('avatar2'); event.stopPropagation();">انتخاب</button>
-                        </div>
-                    `;
-                }
-                
-                if (ownedAvatars.includes('gold')) {
-                    html += `
-                        <div class="avatar-card ${currentAvatar === 'gold' ? 'selected' : ''}" id="avatarGold" onclick="selectAvatar('gold')">
-                            <div class="avatar-thumb">
-                                <img src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png">
-                            </div>
-                            <div class="avatar-title">آواتار طلایی</div>
-                            <button class="select-button" onclick="selectAvatar('gold'); event.stopPropagation();">انتخاب</button>
-                        </div>
-                    `;
-                }
-                
-                if (ownedAvatars.includes('diamond')) {
-                    html += `
-                        <div class="avatar-card ${currentAvatar === 'diamond' ? 'selected' : ''}" id="avatarDiamond" onclick="selectAvatar('diamond')">
-                            <div class="avatar-thumb">
-                                <img src="https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png">
-                            </div>
-                            <div class="avatar-title">آواتار الماسی</div>
-                            <button class="select-button" onclick="selectAvatar('diamond'); event.stopPropagation();">انتخاب</button>
-                        </div>
-                    `;
-                }
-                
-                html += '</div>';
-                myAvatarsPanel.innerHTML = html;
+            
+            const levelBadge = document.getElementById('profileLevelBadge');
+            if (levelBadge) {
+                levelBadge.textContent = isCreator ? 'سازنده' : 'سطح ۱';
             }
-        }
-        
-        function updateSelectedAvatar() {
-            const cards = document.querySelectorAll('#myAvatarsPanel .avatar-card');
-            cards.forEach(card => card.classList.remove('selected'));
             
-            let selectedId = '';
-            if (currentAvatar === 'avatar1') selectedId = 'avatar1';
-            else if (currentAvatar === 'avatar2') selectedId = 'avatar2';
-            else if (currentAvatar === 'gold') selectedId = 'avatarGold';
-            else if (currentAvatar === 'diamond') selectedId = 'avatarDiamond';
-            
-            const selectedCard = document.getElementById(selectedId);
-            if (selectedCard) selectedCard.classList.add('selected');
-        }
-        
-        function updateEditStatus() {
             const editStatus = document.getElementById('editStatus');
             if (editStatus) {
-                if (editCount === 0) {
+                if (isCreator) {
                     editStatus.innerHTML = `
-                        <span class="free-badge">۱ بار رایگان</span>
+                        <span class="free-badge">⚡ بی‌نهایت</span>
                         <span class="coin-badge">
                             <span class="coin-icon">🪙</span>
-                            ۵ سکه
+                            ∞
                         </span>
                     `;
                 } else {
                     editStatus.innerHTML = `
+                        <span class="free-badge">⚡ ${editCount === 0 ? '۱ بار رایگان' : 'پرداختی'}</span>
                         <span class="coin-badge">
                             <span class="coin-icon">🪙</span>
                             ۵ سکه
@@ -1405,6 +1414,156 @@
                     `;
                 }
             }
+            
+            const rankName = document.getElementById('rankName');
+            const rankTag = document.getElementById('rankTag');
+            if (rankName && rankTag) {
+                rankName.textContent = isCreator ? 'سازنده' : 'کاربر';
+                rankTag.textContent = isCreator ? 'بنیانگذار' : 'بازیکن';
+            }
+            
+            // آمار برای سازنده
+            if (isCreator) {
+                document.getElementById('winCount').textContent = '∞';
+                document.getElementById('loseCount').textContent = '۰';
+                document.getElementById('hoursPlayed').textContent = '∞';
+                document.getElementById('observerCount').textContent = '∞';
+            }
+        }
+        
+        function updateMyAvatars() {
+            const myAvatarsGrid = document.getElementById('myAvatarsGrid');
+            if (!myAvatarsGrid) return;
+            
+            let html = '';
+            
+            // آواتارهای پیشفرض
+            if (ownedAvatars.includes('avatar1')) {
+                html += `
+                    <div class="avatar-card ${currentAvatar === 'avatar1' ? 'selected' : ''}" id="avatar1" onclick="selectAvatar('avatar1')">
+                        <div class="avatar-thumb">
+                            <img src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png">
+                        </div>
+                        <div class="avatar-number">#۰۰۱</div>
+                        <button class="select-button" onclick="selectAvatar('avatar1'); event.stopPropagation();">انتخاب</button>
+                    </div>
+                `;
+            }
+            
+            if (ownedAvatars.includes('avatar2')) {
+                html += `
+                    <div class="avatar-card ${currentAvatar === 'avatar2' ? 'selected' : ''}" id="avatar2" onclick="selectAvatar('avatar2')">
+                        <div class="avatar-thumb">
+                            <img src="https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png">
+                        </div>
+                        <div class="avatar-number">#۰۰۲</div>
+                        <button class="select-button" onclick="selectAvatar('avatar2'); event.stopPropagation();">انتخاب</button>
+                    </div>
+                `;
+            }
+            
+            // آواتارهای خریداری شده
+            if (ownedAvatars.includes('ninja')) {
+                html += `
+                    <div class="avatar-card ${currentAvatar === 'ninja' ? 'selected' : ''}" id="avatarNinja" onclick="selectAvatar('ninja')">
+                        <div class="avatar-thumb">
+                            <img src="https://s8.uupload.ir/files/inshot_20260212_151231364_umrq.png">
+                        </div>
+                        <div class="avatar-number">#۰۰۳</div>
+                        <button class="select-button" onclick="selectAvatar('ninja'); event.stopPropagation();">انتخاب</button>
+                    </div>
+                `;
+            }
+            
+            if (ownedAvatars.includes('samurai')) {
+                html += `
+                    <div class="avatar-card ${currentAvatar === 'samurai' ? 'selected' : ''}" id="avatarSamurai" onclick="selectAvatar('samurai')">
+                        <div class="avatar-thumb">
+                            <img src="https://s8.uupload.ir/files/inshot_20260212_151120584_7df6.png">
+                        </div>
+                        <div class="avatar-number">#۰۰۴</div>
+                        <button class="select-button" onclick="selectAvatar('samurai'); event.stopPropagation();">انتخاب</button>
+                    </div>
+                `;
+            }
+            
+            myAvatarsGrid.innerHTML = html;
+        }
+        
+        function updateShopAvatars() {
+            // آواتار نینجا
+            const shopNinja = document.getElementById('shopNinja');
+            if (shopNinja) {
+                if (ownedAvatars.includes('ninja')) {
+                    shopNinja.style.display = 'none';
+                } else {
+                    shopNinja.style.display = 'block';
+                }
+            }
+            
+            // آواتار سامورایی
+            const shopSamurai = document.getElementById('shopSamurai');
+            if (shopSamurai) {
+                if (ownedAvatars.includes('samurai')) {
+                    shopSamurai.style.display = 'none';
+                } else {
+                    shopSamurai.style.display = 'block';
+                }
+            }
+        }
+        
+        function selectAvatar(avatarId) {
+            currentAvatar = avatarId;
+            saveUserData();
+            updateMyAvatars();
+            updateMainProfile();
+            updateProfilePage();
+        }
+        
+        function buyAvatar(avatarId, avatarNumber, avatarImage, price) {
+            // اگه سازنده هست که همه چیز داره
+            if (isCreator) {
+                alert('✅ شما سازنده هستید و همه آواتارها در دسترس شماست');
+                return;
+            }
+            
+            // بررسی جم کافی
+            if (userGems < price) {
+                alert(`❌ جم کافی ندارید! شما ${userGems} جم دارید و نیاز به ${price} جم است`);
+                return;
+            }
+            
+            // بررسی اینکه قبلا خریداری نشده
+            if (ownedAvatars.includes(avatarId)) {
+                alert('⚠️ این آواتار را قبلاً خریداری کرده‌اید');
+                return;
+            }
+            
+            // کم کردن جم
+            userGems -= price;
+            
+            // اضافه کردن آواتار به لیست خریداری شده‌ها
+            ownedAvatars.push(avatarId);
+            
+            // ذخیره در localStorage
+            saveUserData();
+            
+            // به‌روزرسانی نمایش
+            updateCurrencyDisplay();
+            updateMyAvatars();
+            updateShopAvatars();
+            
+            // تغییر به تب آواتار من
+            switchAvatarTab('my');
+            
+            // نمایش نوتیفیکیشن خرید موفق
+            const notification = document.getElementById('copyNotification');
+            notification.textContent = `✅ آواتار ${avatarNumber} با موفقیت خریداری شد`;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+                notification.textContent = '✅ کد کاربری کپی شد';
+            }, 3000);
         }
         
         function copyUserId() {
@@ -1448,7 +1607,7 @@
             document.getElementById('profile-page').style.display = 'block';
             document.getElementById('avatar-page').style.display = 'none';
             updateProfilePage();
-            document.getElementById('userIdDisplay').textContent = userId.toLocaleString('fa-IR');
+            document.getElementById('userIdDisplay').textContent = isCreator ? '۱' : userId.toLocaleString('fa-IR');
         }
         
         function closeProfilePage() {
@@ -1459,7 +1618,8 @@
         
         function openAvatarPage() {
             document.getElementById('avatar-page').style.display = 'block';
-            updateAvatarCollections();
+            updateMyAvatars();
+            updateShopAvatars();
         }
         
         function closeAvatarPage() {
@@ -1479,61 +1639,16 @@
             } else {
                 tabs[1].classList.add('active');
                 document.getElementById('shopPanel').classList.add('active');
+                updateShopAvatars();
             }
-        }
-        
-        function selectAvatar(avatarId) {
-            currentAvatar = avatarId;
-            
-            try {
-                if (typeof localStorage !== 'undefined') {
-                    localStorage.setItem('mafiaUserAvatar', currentAvatar);
-                }
-            } catch (e) {}
-            
-            updateAvatarCollections();
-            updateMainProfile();
-            updateProfilePage();
-        }
-        
-        function buyAvatar(type) {
-            let price = type === 'gold' ? 50 : 100;
-            let avatarName = type === 'gold' ? 'طلایی' : 'الماسی';
-            let avatarId = type === 'gold' ? 'gold' : 'diamond';
-            
-            if (userGems < price) {
-                alert(`❌ جم کافی ندارید! نیاز به ${price} جم`);
-                return;
-            }
-            
-            if (ownedAvatars.includes(avatarId)) {
-                alert('⚠️ این آواتار را قبلاً خریداری کرده‌اید');
-                return;
-            }
-            
-            userGems -= price;
-            ownedAvatars.push(avatarId);
-            
-            try {
-                if (typeof localStorage !== 'undefined') {
-                    localStorage.setItem('mafiaUserGems', userGems.toString());
-                    localStorage.setItem('mafiaOwnedAvatars', JSON.stringify(ownedAvatars));
-                }
-            } catch (e) {}
-            
-            updateCurrencyDisplay();
-            updateAvatarCollections();
-            
-            const notification = document.getElementById('copyNotification');
-            notification.textContent = `✅ آواتار ${avatarName} خریداری شد`;
-            notification.style.display = 'block';
-            setTimeout(() => {
-                notification.style.display = 'none';
-                notification.textContent = '✅ کد کاربری کپی شد';
-            }, 2000);
         }
         
         function openEditModal() {
+            if (isCreator) {
+                alert('⚡ شما سازنده هستید و نام کاربری ثابت است');
+                return;
+            }
+            
             const modal = document.getElementById('editModal');
             const coinMessage = document.getElementById('coinRequiredMessage');
             const modalTitle = document.getElementById('modalTitle');
@@ -1557,52 +1672,54 @@
         }
         
         function saveUserName() {
+            if (isCreator) return;
+            
             const nameInput = document.getElementById('editNameInput');
             let newName = nameInput.value.trim();
             
             if (!newName) {
-                alert('نام جدید را وارد کنید');
+                alert('❌ لطفا نام جدید را وارد کنید');
                 return;
             }
             
             if (newName.length < 2) {
-                alert('حداقل ۲ حرف');
+                alert('❌ نام باید حداقل ۲ حرف باشد');
                 return;
             }
             
             if (newName.length > 12) {
-                alert('حداکثر ۱۲ حرف');
+                alert('❌ نام نمی‌تواند بیشتر از ۱۲ حرف باشد');
                 return;
             }
             
+            // بررسی سکه برای ویرایش دوم به بعد
             if (editCount > 0) {
                 if (userCoins < 5) {
-                    alert('۵ سکه نیاز است');
+                    alert('❌ سکه کافی ندارید! نیاز به ۵ سکه');
                     return;
                 }
                 userCoins -= 5;
-                try {
-                    if (typeof localStorage !== 'undefined') {
-                        localStorage.setItem('mafiaUserCoins', userCoins.toString());
-                    }
-                } catch(e) {}
             }
             
+            // ذخیره نام جدید
             userName = newName;
             editCount++;
             
-            try {
-                if (typeof localStorage !== 'undefined') {
-                    localStorage.setItem('mafiaUserName', userName);
-                    localStorage.setItem('mafiaEditCount', editCount.toString());
-                }
-            } catch (e) {}
+            // ذخیره در localStorage
+            saveUserData();
             
+            // به‌روزرسانی نمایش
             updateMainProfile();
             updateProfilePage();
-            updateEditStatus();
             updateCurrencyDisplay();
             closeEditModal();
+            
+            // نمایش پیام موفقیت
+            if (editCount === 1) {
+                alert('✅ نام کاربری با موفقیت تغییر کرد (۱ بار رایگان)');
+            } else {
+                alert('✅ نام کاربری با موفقیت تغییر کرد (۵ سکه کسر شد)');
+            }
         }
         
         function openFriendlyHall() {
