@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -1193,7 +1193,6 @@
         // ========== اطلاعات سازنده ==========
         const CREATOR_PHONE = '09904844031';
         const CREATOR_PASSWORD = 'Admin16172-matin-1000';
-        const CREATOR_NAME = 'سازنده';
         const CREATOR_ID = 1;
         
         // ========== متغیرهای اصلی ==========
@@ -1205,47 +1204,102 @@
         let userGems = 100;
         let userId = Math.floor(100000 + Math.random() * 9000000);
         
-        // آواتارهای خریداری شده - فقط آواتارهای پیشفرض
+        // آواتارهای خریداری شده
         let ownedAvatars = ['avatar1', 'avatar2'];
         
-        // ========== بررسی اکانت سازنده ==========
+        // ========== بررسی اکانت سازنده (مهمترین قسمت) ==========
         function checkCreatorAccount() {
-            // بررسی می‌کنیم که آیا کاربر با شماره سازنده وارد شده است
             try {
+                // 1. بررسی از localStorage
                 const savedPhone = localStorage.getItem('mafiaUserPhone');
                 const savedPassword = localStorage.getItem('mafiaUserPassword');
+                const savedIsCreator = localStorage.getItem('mafiaIsCreator');
                 const savedUserId = localStorage.getItem('mafiaUserId');
                 
-                // اگر شماره و رمز مطابقت داشت، سازنده است
+                // شرط اصلی سازنده
                 if (savedPhone === CREATOR_PHONE && savedPassword === CREATOR_PASSWORD) {
+                    console.log('✅ سازنده شناسایی شد (شماره و رمز)');
                     return true;
                 }
                 
-                // همچنین اگر userId برابر با CREATOR_ID باشد
-                if (savedUserId && parseInt(savedUserId) === CREATOR_ID) {
+                if (savedIsCreator === 'true') {
+                    console.log('✅ سازنده شناسایی شد (isCreator)');
                     return true;
                 }
-            } catch (e) {}
+                
+                if (savedUserId && parseInt(savedUserId) === CREATOR_ID) {
+                    console.log('✅ سازنده شناسایی شد (userId)');
+                    return true;
+                }
+                
+                // 2. بررسی از URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const phoneFromURL = urlParams.get('phone');
+                const passFromURL = urlParams.get('pass');
+                
+                if (phoneFromURL === CREATOR_PHONE && passFromURL === CREATOR_PASSWORD) {
+                    // ذخیره برای دفعات بعد
+                    localStorage.setItem('mafiaUserPhone', phoneFromURL);
+                    localStorage.setItem('mafiaUserPassword', passFromURL);
+                    localStorage.setItem('mafiaUserId', '1');
+                    localStorage.setItem('mafiaIsCreator', 'true');
+                    console.log('✅ سازنده شناسایی شد (URL)');
+                    return true;
+                }
+                
+            } catch (e) {
+                console.log('خطا در بررسی سازنده:', e);
+            }
+            
+            console.log('👤 کاربر عادی');
             return false;
         }
         
-        window.onload = function() {
-            // ابتدا بررسی می‌کنیم آیا کاربر سازنده است
-            isCreator = checkCreatorAccount();
+        // ========== بارگذاری اطلاعات کاربر ==========
+        function loadUserData() {
+            // اول بررسی کن آیا کاربر سازنده است
+            const isCreatorUser = checkCreatorAccount();
             
-            // اگر سازنده است، همه چیز را بینهایت کن
-            if (isCreator) {
-                userName = CREATOR_NAME;
+            if (isCreatorUser) {
+                // 🛑 اگر سازنده است، مستقیم اطلاعات سازنده رو ست کن
+                isCreator = true;
+                userName = 'سازنده';
                 userId = CREATOR_ID;
                 userGems = Infinity;
                 userCoins = Infinity;
                 ownedAvatars = ['avatar1', 'avatar2', 'ninja', 'samurai'];
+                editCount = 0;
+                currentAvatar = 'avatar1';
+                
+                // ذخیره مجدد اطلاعات سازنده در localStorage
+                localStorage.setItem('mafiaUserId', '1');
+                localStorage.setItem('mafiaIsCreator', 'true');
+                localStorage.setItem('mafiaUserName', 'سازنده');
+                localStorage.setItem('mafiaUserGems', 'Infinity');
+                localStorage.setItem('mafiaUserCoins', 'Infinity');
+                localStorage.setItem('mafiaOwnedAvatars', JSON.stringify(['avatar1', 'avatar2', 'ninja', 'samurai']));
+                localStorage.setItem('mafiaEditCount', '0');
+                localStorage.setItem('mafiaUserAvatar', 'avatar1');
+                
+                console.log('👑 پنل سازنده با موفقیت فعال شد');
+                
+                // به‌روزرسانی نمایش
+                updateMainProfile();
+                updateProfilePage();
+                updateMyAvatars();
+                updateShopAvatars();
+                updateCurrencyDisplay();
+                
+                if (document.getElementById('userIdDisplay')) {
+                    document.getElementById('userIdDisplay').textContent = '۱';
+                }
+                
+                return; // 🚫 بقیه تابع اجرا نشه
             }
             
-            loadUserData();
-        };
-        
-        function loadUserData() {
+            // ========== اگر کاربر عادی است ==========
+            isCreator = false;
+            
             try {
                 if (typeof localStorage !== 'undefined') {
                     const savedAvatar = localStorage.getItem('mafiaUserAvatar');
@@ -1256,25 +1310,24 @@
                     const savedCoins = localStorage.getItem('mafiaUserCoins');
                     const savedEditCount = localStorage.getItem('mafiaEditCount');
                     
-                    // اگر سازنده نیست، اطلاعات عادی را بارگذاری کن
-                    if (!isCreator) {
-                        if (savedOwnedAvatars) {
-                            ownedAvatars = JSON.parse(savedOwnedAvatars);
-                        } else {
-                            ownedAvatars = ['avatar1', 'avatar2'];
-                        }
-                        if (savedGems) userGems = parseInt(savedGems);
-                        if (savedCoins) userCoins = parseInt(savedCoins);
-                        if (savedEditCount) editCount = parseInt(savedEditCount);
-                        if (savedName) userName = savedName.slice(0, 12);
-                        if (savedUserId && parseInt(savedUserId) !== CREATOR_ID) userId = parseInt(savedUserId);
+                    if (savedOwnedAvatars) {
+                        ownedAvatars = JSON.parse(savedOwnedAvatars);
+                    } else {
+                        ownedAvatars = ['avatar1', 'avatar2'];
                     }
                     
+                    if (savedGems) userGems = parseInt(savedGems);
+                    if (savedCoins) userCoins = parseInt(savedCoins);
+                    if (savedEditCount) editCount = parseInt(savedEditCount);
+                    if (savedName) userName = savedName.slice(0, 12);
+                    if (savedUserId && parseInt(savedUserId) !== CREATOR_ID) userId = parseInt(savedUserId);
                     if (savedAvatar) currentAvatar = savedAvatar;
                 }
-            } catch (error) {}
+            } catch (error) {
+                console.log('خطا در بارگذاری اطلاعات کاربر عادی:', error);
+            }
             
-            // ذخیره اطلاعات
+            // ذخیره اطلاعات کاربر عادی
             saveUserData();
             
             // به‌روزرسانی نمایش
@@ -1283,9 +1336,13 @@
             updateMyAvatars();
             updateShopAvatars();
             updateCurrencyDisplay();
-            document.getElementById('userIdDisplay').textContent = isCreator ? '۱' : userId.toLocaleString('fa-IR');
+            
+            if (document.getElementById('userIdDisplay')) {
+                document.getElementById('userIdDisplay').textContent = userId.toLocaleString('fa-IR');
+            }
         }
         
+        // ========== ذخیره اطلاعات کاربر ==========
         function saveUserData() {
             try {
                 if (typeof localStorage !== 'undefined' && !isCreator) {
@@ -1300,28 +1357,32 @@
             } catch (e) {}
         }
         
+        // ========== به‌روزرسانی نمایش ارز ==========
         function updateCurrencyDisplay() {
             const gemDisplay = document.getElementById('gemDisplay');
             const coinDisplay = document.getElementById('coinDisplay');
-            if (gemDisplay) gemDisplay.textContent = isCreator ? '∞' : userGems.toLocaleString('fa-IR');
-            if (coinDisplay) coinDisplay.textContent = isCreator ? '∞' : userCoins.toLocaleString('fa-IR');
-        }
-        
-        function getVerifiedBadge() {
-            // فقط سازنده تیک آبی دارد
+            
             if (isCreator) {
-                return '<span class="verified-badge" title="سازنده بازی"></span>';
+                if (gemDisplay) gemDisplay.textContent = '∞';
+                if (coinDisplay) coinDisplay.textContent = '∞';
+            } else {
+                if (gemDisplay) gemDisplay.textContent = userGems.toLocaleString('fa-IR');
+                if (coinDisplay) coinDisplay.textContent = userCoins.toLocaleString('fa-IR');
             }
-            return ''; // کاربران عادی هیچ تیک آبی ندارند
         }
         
+        // ========== دریافت تیک آبی ==========
+        function getVerifiedBadge() {
+            return isCreator ? '<span class="verified-badge" title="سازنده بازی"></span>' : '';
+        }
+        
+        // ========== به‌روزرسانی پروفایل اصلی ==========
         function updateMainProfile() {
             const profileAvatar = document.getElementById('mainProfileAvatar');
             if (profileAvatar) {
                 profileAvatar.innerHTML = '';
                 const img = document.createElement('img');
                 
-                // تنظیم عکس بر اساس آواتار انتخاب شده
                 if (currentAvatar === 'avatar1') {
                     img.src = 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png';
                 } else if (currentAvatar === 'avatar2') {
@@ -1363,6 +1424,7 @@
             }
         }
         
+        // ========== به‌روزرسانی صفحه پروفایل ==========
         function updateProfilePage() {
             const profileImg = document.getElementById('profileAvatarImg');
             if (profileImg) {
@@ -1422,22 +1484,26 @@
                 rankTag.textContent = isCreator ? 'بنیانگذار' : 'بازیکن';
             }
             
-            // آمار برای سازنده
             if (isCreator) {
-                document.getElementById('winCount').textContent = '∞';
-                document.getElementById('loseCount').textContent = '۰';
-                document.getElementById('hoursPlayed').textContent = '∞';
-                document.getElementById('observerCount').textContent = '∞';
+                const winCount = document.getElementById('winCount');
+                const loseCount = document.getElementById('loseCount');
+                const hoursPlayed = document.getElementById('hoursPlayed');
+                const observerCount = document.getElementById('observerCount');
+                
+                if (winCount) winCount.textContent = '∞';
+                if (loseCount) loseCount.textContent = '۰';
+                if (hoursPlayed) hoursPlayed.textContent = '∞';
+                if (observerCount) observerCount.textContent = '∞';
             }
         }
         
+        // ========== به‌روزرسانی آواتارهای من ==========
         function updateMyAvatars() {
             const myAvatarsGrid = document.getElementById('myAvatarsGrid');
             if (!myAvatarsGrid) return;
             
             let html = '';
             
-            // آواتارهای پیشفرض
             if (ownedAvatars.includes('avatar1')) {
                 html += `
                     <div class="avatar-card ${currentAvatar === 'avatar1' ? 'selected' : ''}" id="avatar1" onclick="selectAvatar('avatar1')">
@@ -1462,7 +1528,6 @@
                 `;
             }
             
-            // آواتارهای خریداری شده
             if (ownedAvatars.includes('ninja')) {
                 html += `
                     <div class="avatar-card ${currentAvatar === 'ninja' ? 'selected' : ''}" id="avatarNinja" onclick="selectAvatar('ninja')">
@@ -1490,28 +1555,20 @@
             myAvatarsGrid.innerHTML = html;
         }
         
+        // ========== به‌روزرسانی فروشگاه آواتار ==========
         function updateShopAvatars() {
-            // آواتار نینجا
             const shopNinja = document.getElementById('shopNinja');
             if (shopNinja) {
-                if (ownedAvatars.includes('ninja')) {
-                    shopNinja.style.display = 'none';
-                } else {
-                    shopNinja.style.display = 'block';
-                }
+                shopNinja.style.display = ownedAvatars.includes('ninja') ? 'none' : 'block';
             }
             
-            // آواتار سامورایی
             const shopSamurai = document.getElementById('shopSamurai');
             if (shopSamurai) {
-                if (ownedAvatars.includes('samurai')) {
-                    shopSamurai.style.display = 'none';
-                } else {
-                    shopSamurai.style.display = 'block';
-                }
+                shopSamurai.style.display = ownedAvatars.includes('samurai') ? 'none' : 'block';
             }
         }
         
+        // ========== انتخاب آواتار ==========
         function selectAvatar(avatarId) {
             currentAvatar = avatarId;
             saveUserData();
@@ -1520,43 +1577,31 @@
             updateProfilePage();
         }
         
+        // ========== خرید آواتار ==========
         function buyAvatar(avatarId, avatarNumber, avatarImage, price) {
-            // اگه سازنده هست که همه چیز داره
             if (isCreator) {
                 alert('✅ شما سازنده هستید و همه آواتارها در دسترس شماست');
                 return;
             }
             
-            // بررسی جم کافی
             if (userGems < price) {
                 alert(`❌ جم کافی ندارید! شما ${userGems} جم دارید و نیاز به ${price} جم است`);
                 return;
             }
             
-            // بررسی اینکه قبلا خریداری نشده
             if (ownedAvatars.includes(avatarId)) {
                 alert('⚠️ این آواتار را قبلاً خریداری کرده‌اید');
                 return;
             }
             
-            // کم کردن جم
             userGems -= price;
-            
-            // اضافه کردن آواتار به لیست خریداری شده‌ها
             ownedAvatars.push(avatarId);
-            
-            // ذخیره در localStorage
             saveUserData();
-            
-            // به‌روزرسانی نمایش
             updateCurrencyDisplay();
             updateMyAvatars();
             updateShopAvatars();
-            
-            // تغییر به تب آواتار من
             switchAvatarTab('my');
             
-            // نمایش نوتیفیکیشن خرید موفق
             const notification = document.getElementById('copyNotification');
             notification.textContent = `✅ آواتار ${avatarNumber} با موفقیت خریداری شد`;
             notification.style.display = 'block';
@@ -1566,6 +1611,7 @@
             }, 3000);
         }
         
+        // ========== کپی کد کاربری ==========
         function copyUserId() {
             const userIdElement = document.getElementById('userIdDisplay');
             const userIdText = userIdElement.textContent;
@@ -1601,13 +1647,18 @@
             }, 1500);
         }
         
+        // ========== توابع ناوبری ==========
         function openProfilePage() {
             document.getElementById('main-game-page').style.display = 'none';
             document.getElementById('friendly-hall-page').style.display = 'none';
             document.getElementById('profile-page').style.display = 'block';
             document.getElementById('avatar-page').style.display = 'none';
             updateProfilePage();
-            document.getElementById('userIdDisplay').textContent = isCreator ? '۱' : userId.toLocaleString('fa-IR');
+            
+            const userIdDisplay = document.getElementById('userIdDisplay');
+            if (userIdDisplay) {
+                userIdDisplay.textContent = isCreator ? '۱' : userId.toLocaleString('fa-IR');
+            }
         }
         
         function closeProfilePage() {
@@ -1672,7 +1723,10 @@
         }
         
         function saveUserName() {
-            if (isCreator) return;
+            if (isCreator) {
+                alert('⚡ شما سازنده هستید و نام کاربری ثابت است');
+                return;
+            }
             
             const nameInput = document.getElementById('editNameInput');
             let newName = nameInput.value.trim();
@@ -1692,7 +1746,6 @@
                 return;
             }
             
-            // بررسی سکه برای ویرایش دوم به بعد
             if (editCount > 0) {
                 if (userCoins < 5) {
                     alert('❌ سکه کافی ندارید! نیاز به ۵ سکه');
@@ -1701,20 +1754,14 @@
                 userCoins -= 5;
             }
             
-            // ذخیره نام جدید
             userName = newName;
             editCount++;
-            
-            // ذخیره در localStorage
             saveUserData();
-            
-            // به‌روزرسانی نمایش
             updateMainProfile();
             updateProfilePage();
             updateCurrencyDisplay();
             closeEditModal();
             
-            // نمایش پیام موفقیت
             if (editCount === 1) {
                 alert('✅ نام کاربری با موفقیت تغییر کرد (۱ بار رایگان)');
             } else {
@@ -1735,6 +1782,12 @@
             document.getElementById('profile-page').style.display = 'none';
             document.getElementById('avatar-page').style.display = 'none';
         }
+        
+        // ========== اجرا در هنگام لود صفحه ==========
+        window.onload = function() {
+            console.log('🚀 صفحه بازی در حال لود...');
+            loadUserData();
+        };
     </script>
 </body>
 </html>
