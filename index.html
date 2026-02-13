@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -10,20 +10,45 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
-        /* صفحه اصلی بازی */
-        #main-game-page {
+
+        body {
+            font-family: 'Vazirmatn', 'Inter', 'Segoe UI', sans-serif;
+            overflow: hidden;
+        }
+
+        /* ========== صفحات اصلی ========== */
+        #main-game-page, #friendly-hall-page, #profile-page, #avatar-page, #lobby-page {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://s8.uupload.ir/files/img_20260208_152349_053_b8yg.jpg') no-repeat center center fixed;
             background-size: cover;
+            background-position: center;
+            display: none;
+            overflow: hidden;
+        }
+
+        #main-game-page {
+            background: url('https://s8.uupload.ir/files/img_20260208_152349_053_b8yg.jpg') no-repeat center center fixed;
             display: block;
         }
-        
-        /* ========== هدر بالای صفحه اصلی ========== */
+
+        #friendly-hall-page {
+            background: url('https://s8.uupload.ir/files/img_20260208_174730_422_inei.jpg') no-repeat center center;
+            overflow-y: auto;
+        }
+
+        #profile-page, #avatar-page {
+            background: url('https://s8.uupload.ir/files/img_20260212_001408_558_g4g9.jpg') no-repeat center center;
+            overflow-y: auto;
+        }
+
+        #lobby-page {
+            background: url('https://s8.uupload.ir/files/inshot_20260213_024334942_qu0p.jpg') no-repeat center center;
+        }
+
+        /* ========== هدر ========== */
         .game-header {
             position: fixed;
             top: 20px;
@@ -33,7 +58,7 @@
             gap: 8px;
             z-index: 1001;
         }
-        
+
         .currency-card {
             background: rgba(18, 22, 28, 0.8);
             backdrop-filter: blur(4px);
@@ -43,11 +68,9 @@
             align-items: center;
             gap: 8px;
             border: 1px solid #3a3f4a;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             width: fit-content;
-            align-self: flex-end;
         }
-        
+
         .currency-icon {
             width: 22px;
             height: 22px;
@@ -57,35 +80,29 @@
             font-size: 16px;
             color: #c0c6d1;
         }
-        
+
         .currency-info {
             display: flex;
             align-items: baseline;
             gap: 4px;
         }
-        
+
         .currency-label {
             color: #8f9aa7;
             font-size: 11px;
             font-weight: 400;
         }
-        
+
         .currency-value {
             color: #e6e9f0;
             font-size: 15px;
             font-weight: 600;
-            letter-spacing: 0.3px;
         }
-        
-        .gem-icon {
-            color: #a8c0e0;
-        }
-        
-        .coin-icon {
-            color: #e6d5a8;
-        }
-        
-        /* پروفایل در صفحه اصلی */
+
+        .gem-icon { color: #a8c0e0; }
+        .coin-icon { color: #e6d5a8; }
+
+        /* ========== پروفایل بالای صفحه ========== */
         .profile-container {
             position: fixed;
             top: 20px;
@@ -101,33 +118,29 @@
             cursor: pointer;
             z-index: 1000;
             max-width: 180px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
-        
+
         .profile-avatar {
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             overflow: hidden;
             border: 1.5px solid #7f8c9a;
             flex-shrink: 0;
         }
-        
+
         .profile-avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        
+
         .profile-info {
             display: flex;
             flex-direction: column;
             gap: 2px;
         }
-        
+
         .profile-name {
             color: #e6e9f0;
             font-size: 12px;
@@ -136,7 +149,7 @@
             align-items: center;
             gap: 4px;
         }
-        
+
         .profile-name-text {
             display: inline-block;
             max-width: 70px;
@@ -145,17 +158,40 @@
             color: #e6e9f0;
             font-size: 11px;
         }
-        
+
         .profile-level {
             color: #b0c4ce;
             font-size: 9px;
             background: rgba(0, 0, 0, 0.3);
             padding: 2px 8px;
             border-radius: 20px;
-            align-self: flex-start;
             border: 0.5px solid #4a5560;
         }
-        
+
+        /* ========== دکمه شروع ========== */
+        .start-button {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: pointer;
+            width: 140px;
+            height: 140px;
+            transition: all 0.2s;
+            opacity: 0.9;
+        }
+
+        .start-button:hover {
+            transform: translateX(-50%) scale(1.02);
+            opacity: 1;
+        }
+
+        .start-button img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
         .bottom-bar {
             position: fixed;
             bottom: 0;
@@ -169,55 +205,21 @@
             justify-content: center;
             border-top: 1px solid #2a2f38;
         }
-        
+
         .house-img {
             width: 40px;
             height: 40px;
             opacity: 0.8;
         }
-        
+
         .house-img img {
             width: 100%;
             height: 100%;
             object-fit: contain;
             filter: brightness(0.8);
         }
-        
-        .start-button {
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            cursor: pointer;
-            width: 140px;
-            height: 140px;
-            transition: all 0.2s;
-            opacity: 0.9;
-        }
-        
-        .start-button:hover {
-            transform: translateX(-50%) scale(1.02);
-            opacity: 1;
-        }
-        
-        .start-button img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-        
-        /* ========== صفحه تالار دوستانه ========== */
-        #friendly-hall-page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://s8.uupload.ir/files/img_20260208_174730_422_inei.jpg') no-repeat center center;
-            background-size: cover;
-            display: none;
-        }
-        
+
+        /* ========== تالار دوستانه ========== */
         .hall-back-btn {
             position: fixed;
             top: 20px;
@@ -234,226 +236,1319 @@
             border: 1px solid #3a3f4a;
             color: #c0c6d1;
             font-size: 22px;
-            font-weight: 300;
             transition: all 0.2s;
             z-index: 2000;
         }
-        
+
         .hall-back-btn:hover {
             background: rgba(40, 46, 56, 0.9);
             border-color: #6a7a8a;
             color: white;
         }
-        
+
         .hall-back-btn::before {
             content: "←";
             line-height: 1;
         }
-        
-        /* ========== صفحه پروفایل ========== */
-        #profile-page {
+
+        .hall-create-lobby-btn {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://s8.uupload.ir/files/img_20260212_001408_558_g4g9.jpg') no-repeat center center;
-            background-size: cover;
-            display: none;
-            padding: 20px;
-            direction: rtl;
-            overflow-y: auto;
-        }
-        
-        .profile-content {
-            max-width: 460px;
-            margin: 30px auto 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-        }
-        
-        .profile-card {
-            background: rgba(16, 20, 26, 0.85);
-            backdrop-filter: blur(8px);
-            border-radius: 24px;
-            padding: 24px 22px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-            border: 1px solid #3a4050;
-            width: 100%;
-        }
-        
-        .avatar-circle {
-            width: 90px;
-            height: 90px;
+            bottom: 30px;
+            right: 25px;
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(145deg, #2a3640, #1e2630);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+            border: 2px solid #5a6a7a;
+            color: white;
+            font-size: 32px;
+            transition: all 0.3s;
+            z-index: 2000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .hall-create-lobby-btn:hover {
+            transform: scale(1.08);
+            border-color: #8a9aaa;
+            background: linear-gradient(145deg, #32404a, #263038);
+        }
+
+        .hall-create-lobby-btn::after {
+            content: "+";
+            line-height: 1;
+        }
+
+        /* ========== لیست لابی‌ها ========== */
+        .lobbies-container {
+            max-width: 500px;
+            margin: 80px auto 20px;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .lobby-card {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 25px;
+            padding: 20px;
+            border: 1px solid #3a4050;
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .lobby-card:hover {
+            transform: translateY(-3px);
+            border-color: #6a7a8a;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+        }
+
+        .lobby-name-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .lobby-name-text {
+            color: #f0f4fa;
+            font-size: 20px;
+            font-weight: 600;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .lobby-password-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #e6d5a8;
+            font-size: 14px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 6px 14px;
+            border-radius: 40px;
+            border: 1px solid #5a6a4a;
+        }
+
+        .lobby-creator-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #0a0c10;
+            border-radius: 18px;
+            padding: 12px 18px;
+            border: 1px solid #2a3038;
+            width: 100%;
+        }
+
+        .lobby-creator-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
             overflow: hidden;
-            border: 2px solid #7f8c9a;
-            margin-top: -12px;
+            border: 2px solid #5a6a7a;
+            flex-shrink: 0;
+        }
+
+        .lobby-creator-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .lobby-creator-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .lobby-creator-name {
+            color: #e6e9f0;
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .lobby-players {
+            color: #a8c0e0;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .lobby-join-btn {
+            background: #2a4040;
+            color: white;
+            border: 1px solid #4a6a6a;
+            padding: 8px 22px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .lobby-join-btn:hover {
+            background: #305050;
+            transform: scale(1.05);
+        }
+
+        .empty-lobbies {
+            text-align: center;
+            color: #b0c0d0;
+            padding: 50px 30px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            border-radius: 30px;
+            font-size: 17px;
+            border: 1px solid #3a4050;
+            margin-top: 30px;
+        }
+
+        /* ========== منوی ایجاد لابی ========== */
+        #create-lobby-menu {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 380px;
+            background: rgba(12, 16, 22, 0.98);
+            backdrop-filter: blur(12px);
+            border: 1px solid #5a6a7a;
+            border-radius: 28px;
+            padding: 28px 24px;
+            z-index: 10000;
+            display: none;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        .menu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .menu-header h2 {
+            color: #e6e9f0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .close-menu-btn {
+            width: 36px;
+            height: 36px;
+            background: rgba(30, 36, 44, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 1px solid #5a6a7a;
+            color: #c0c6d1;
+            font-size: 20px;
+            transition: all 0.2s;
+        }
+
+        .close-menu-btn:hover {
+            background: rgba(50, 60, 70, 0.9);
+            color: white;
+        }
+
+        .input-group {
+            margin-bottom: 22px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #b0c4ce;
+            font-size: 13px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .lobby-input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #4a5560;
+            border-radius: 40px;
+            color: #f0f4fa;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+
+        .lobby-input:focus {
+            outline: none;
+            border-color: #8a9aaa;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .password-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .toggle-label {
+            color: #e0e8f0;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 28px;
+            background: #2a3038;
+            border-radius: 30px;
+            border: 1px solid #4a5560;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-switch.active {
+            background: #2a4040;
+            border-color: #6a8a8a;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: #e0e8f0;
+            border-radius: 50%;
+            top: 1px;
+            left: 2px;
+            transition: 0.2s;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            left: 26px;
+            background: #ffffff;
+        }
+
+        #password-field {
+            display: none;
+            margin-bottom: 22px;
+        }
+
+        .players-selector {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 40px;
+            padding: 8px 16px;
+            border: 1px solid #4a5560;
+            margin-bottom: 25px;
+        }
+
+        .players-selector span {
+            color: #e0e8f0;
+            font-size: 15px;
+        }
+
+        .player-count-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .player-count-btn {
+            width: 36px;
+            height: 36px;
+            background: #2a3640;
+            border: 1px solid #5a6a7a;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .player-count-btn:hover {
+            background: #3a4650;
+            transform: scale(1.05);
+        }
+
+        #player-count-value {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .create-btn {
+            width: 100%;
+            background: linear-gradient(145deg, #2a4040, #1e3030);
+            color: white;
+            border: 1px solid #4a6a6a;
+            padding: 16px;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+
+        .create-btn:hover {
+            background: linear-gradient(145deg, #305050, #243838);
+            transform: scale(1.02);
+        }
+
+        /* ========== صفحه لابی ========== */
+        .table-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: min(1400px, 98vw);
+            height: min(1200px, 95vh);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .table-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .table {
+            width: min(650px, 65vw);
+            height: min(700px, 70vh);
+            background: url('https://s8.uupload.ir/files/inshot_20260213_024704366_un99.png') no-repeat center center;
+            background-size: contain;
+            position: absolute;
+            z-index: 10;
+            filter: drop-shadow(0 20px 35px rgba(0,0,0,0.7));
+        }
+
+        .chair {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6));
+            border: none;
+            outline: none;
+            background-color: transparent;
+            transform: translate(-50%, -50%) !important;
+        }
+
+        .chair-avatar {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            background: #1a1e24;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.7);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%);
+            z-index: 25;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .chair-avatar:hover {
+            transform: translate(-50%, -60%) scale(1.05);
+            border-color: gold;
+        }
+
+        .chair-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .chair-name {
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            background: transparent;
+            border: none;
+            padding: 2px 6px;
+            white-space: nowrap;
+            max-width: 90px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            position: absolute;
+            top: 75%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-shadow: 0 2px 8px black;
+            z-index: 30;
+        }
+
+        .crown-icon {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FFD700"><path d="M12 2L15 8L21 9L17 14L18 21L12 17.5L6 21L7 14L3 9L9 8L12 2Z"/></svg>') no-repeat center center;
+            background-size: contain;
+            filter: drop-shadow(0 0 5px gold);
+        }
+
+        .voice-wave {
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            height: 15px;
+            z-index: 35;
+            display: none;
+        }
+
+        .voice-wave.active {
+            display: flex;
+        }
+
+        .wave-bar {
+            width: 3px;
+            height: 10px;
+            background: #00ff88;
+            border-radius: 2px;
+            animation: wave 0.8s infinite ease-in-out;
+            box-shadow: 0 0 8px #00ff88;
+        }
+
+        .wave-bar:nth-child(2) { animation-delay: 0.2s; height: 15px; }
+        .wave-bar:nth-child(3) { animation-delay: 0.4s; height: 8px; }
+        .wave-bar:nth-child(4) { animation-delay: 0.1s; height: 12px; }
+        .wave-bar:nth-child(5) { animation-delay: 0.3s; height: 10px; }
+
+        @keyframes wave {
+            0%, 100% { transform: scaleY(0.5); opacity: 0.5; }
+            50% { transform: scaleY(1.2); opacity: 1; }
+        }
+
+        /* ========== صندلی‌های ناظر ========== */
+        .observers-area {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 100px;
+            z-index: 200;
+            pointer-events: none;
+        }
+
+        .observer-chair {
+            width: 110px;
+            height: 110px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-image: url('https://s8.uupload.ir/files/inshot_20260213_155824768_och.png');
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+            pointer-events: auto;
+            display: none;
+        }
+
+        .observer-chair.visible {
+            display: flex;
+        }
+
+        .observer-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid gold;
+            background: #1a1e24;
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+        }
+
+        .observer-avatar:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            border-color: #ffaa00;
+        }
+
+        .observer-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .observer-name {
+            color: white;
+            font-size: 10px;
+            background: rgba(0,0,0,0.7);
+            padding: 3px 8px;
+            border-radius: 20px;
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            border: 1px solid gold;
+        }
+
+        /* ========== میکروفون ========== */
+        .mic-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #2a3640, #1e2630);
+            border: 3px solid #5a6a7a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+            z-index: 1000;
+        }
+
+        .mic-button.active {
+            background: linear-gradient(145deg, #2a8a5e, #1e6a4a);
+            border-color: #a0ffc0;
+            box-shadow: 0 0 30px #2a8a5e;
+            transform: scale(1.1);
+        }
+
+        /* ========== دکمه سه خط ========== */
+        .menu-button {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            cursor: pointer;
+            z-index: 2000;
+        }
+
+        .menu-line {
+            width: 20px;
+            height: 2px;
+            background: white;
+            border-radius: 2px;
+        }
+
+        /* ========== منوی اصلی ========== */
+        .main-menu {
+            position: fixed;
+            top: 55px;
+            right: 15px;
+            width: 220px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 10px;
+            z-index: 2000;
+            display: none;
+        }
+
+        .main-menu.visible {
+            display: block;
+        }
+
+        .menu-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            color: white;
+            font-size: 13px;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item.danger {
+            color: #ff5555;
+        }
+
+        .banned-submenu {
+            margin-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 10px;
+        }
+
+        .banned-title {
+            color: #ff5555;
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+
+        .banned-user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px;
+            margin: 5px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            font-size: 11px;
+        }
+
+        .unban-small-btn {
+            background: #ff5555;
+            border: none;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+        }
+
+        /* ========== منوی مدیریت وسط ========== */
+        .admin-menu {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 280px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid gold;
+            border-radius: 20px;
+            padding: 20px;
+            z-index: 5000;
+            display: none;
+        }
+
+        .admin-menu.visible {
+            display: block;
+        }
+
+        .admin-menu h4 {
+            color: gold;
+            font-size: 16px;
+            margin-bottom: 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,215,0,0.3);
+            padding-bottom: 10px;
+        }
+
+        .admin-menu-item {
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            color: white;
+            font-size: 14px;
+            text-align: center;
+            border: 1px solid transparent;
+        }
+
+        .admin-menu-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .admin-menu-item.observer1, .admin-menu-item.observer2 {
+            background: rgba(60, 100, 200, 0.3);
+            border-color: #5a8ac0;
+        }
+
+        .admin-menu-item.transfer {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: gold;
+            color: gold;
+        }
+
+        .admin-menu-item.kick {
+            background: rgba(200, 60, 60, 0.3);
+            border-color: #c05a5a;
+        }
+
+        .admin-menu-item.ban {
+            background: rgba(200, 40, 40, 0.4);
+            border-color: #ff5555;
+        }
+
+        .admin-menu-item.remove-observer {
+            background: rgba(255, 165, 0, 0.3);
+            border-color: orange;
+            color: orange;
+        }
+
+        .empty-chair .chair-avatar {
+            opacity: 0.8;
+            border: 2px dashed rgba(255, 255, 255, 0.8);
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty-chair .chair-avatar::after {
+            content: "+";
+            font-size: 30px;
+            color: white;
+            font-weight: 300;
+            text-shadow: 0 2px 10px black;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .empty-chair .chair-name {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* ========== صفحه پروفایل ========== */
+        .profile-content {
+            max-width: 600px;
+            margin: 80px auto 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 0 20px 30px;
+        }
+
+        .profile-card {
+            background: rgba(16, 20, 26, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 30px 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            border: 1px solid #3a4050;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .avatar-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #7f8c9a;
+            cursor: pointer;
             background: #1e222a;
         }
-        
+
         .avatar-circle:hover {
             border-color: #a0b0c0;
         }
-        
+
         .avatar-circle img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        
+
         .name-box {
             background: rgba(0, 0, 0, 0.4);
             border-radius: 40px;
-            padding: 10px 20px;
+            padding: 12px 25px;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
             border: 1px solid #4a5560;
             cursor: pointer;
-            transition: all 0.2s;
         }
-        
+
         .name-box:hover {
             background: rgba(0, 0, 0, 0.6);
             border-color: #6a7a8a;
         }
-        
+
         .user-name {
             color: #f0f4fa;
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
-        
-        /* ========== تیک آبی فقط مخصوص سازنده ========== */
+
         .verified-badge {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             background: #1e88e5;
             border-radius: 50%;
-            border: 1.5px solid #ffffff;
+            border: 2px solid #ffffff;
             box-shadow: 0 0 8px rgba(30, 136, 229, 0.5);
         }
-        
+
         .verified-badge::before {
             content: "✓";
             color: white;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: bold;
         }
-        
+
         .level-badge {
             background: #4a5560;
             color: #f0f4fa;
-            padding: 4px 16px;
+            padding: 5px 18px;
             border-radius: 30px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 500;
-            border: none;
         }
-        
+
         .edit-status {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 15px;
             width: 100%;
-            margin-top: 4px;
-            padding-top: 14px;
+            margin-top: 5px;
+            padding-top: 15px;
             border-top: 1px solid #3a4050;
-            font-size: 12px;
+            font-size: 13px;
         }
-        
+
         .free-badge {
             background: #2a4040;
             color: #e0e8f0;
-            padding: 4px 14px;
+            padding: 5px 16px;
             border-radius: 30px;
             border: 1px solid #4a6a6a;
         }
-        
+
         .coin-badge {
             background: #4a4030;
             color: #e0e8f0;
-            padding: 4px 14px;
+            padding: 5px 16px;
             border-radius: 30px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             border: 1px solid #6a5a4a;
         }
-        
-        /* ========== کارت آمار ========== */
+
         .stats-section {
             background: rgba(16, 20, 26, 0.85);
             backdrop-filter: blur(8px);
             border-radius: 24px;
-            padding: 22px;
+            padding: 25px;
             border: 1px solid #3a4050;
             width: 100%;
+            max-width: 450px;
         }
-        
+
         .user-id-block {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 16px;
-            padding: 12px 18px;
+            padding: 12px 20px;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             border: 1px solid #4a5560;
             border-right: 4px solid #7f8c9a;
-            transition: all 0.2s;
             cursor: pointer;
         }
-        
+
         .user-id-block:hover {
             background: rgba(0, 0, 0, 0.5);
             border-right-color: #a0b0c0;
         }
-        
+
         .user-id-label {
             color: #b0c0d0;
-            font-size: 12px;
+            font-size: 13px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        
+
         .user-id-icon {
-            font-size: 18px;
+            font-size: 20px;
             color: #a0b0c0;
         }
-        
+
         .user-id-value {
             color: #e6e9f0;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 600;
             font-family: 'Courier New', monospace;
-            letter-spacing: 1px;
             background: rgba(0,0,0,0.4);
-            padding: 4px 16px;
+            padding: 5px 18px;
             border-radius: 30px;
             border: 1px solid #4a5560;
         }
-        
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .stat-cell {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid #3a4050;
+        }
+
+        .stat-cell:hover {
+            background: rgba(0, 0, 0, 0.45);
+            border-color: #5a6570;
+        }
+
+        .stat-icon {
+            font-size: 24px;
+            min-width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(30, 36, 44, 0.8);
+            border-radius: 12px;
+            color: #b0c0d0;
+        }
+
+        .stat-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .stat-label {
+            color: #a0b0c0;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .stat-figure {
+            color: #f0f4fa;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .rank-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 18px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #3a4050;
+            margin-top: 16px;
+        }
+
+        .rank-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .rank-icon {
+            font-size: 26px;
+            background: rgba(30, 36, 44, 0.8);
+            padding: 6px;
+            border-radius: 12px;
+            color: #b0c0d0;
+        }
+
+        .rank-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .rank-label {
+            color: #a0b0c0;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        .rank-name {
+            color: #f0f4fa;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .rank-tag {
+            background: #2a3640;
+            color: #e0e8f0;
+            padding: 6px 22px;
+            border-radius: 30px;
+            font-size: 14px;
+            border: 1px solid #4a5560;
+        }
+
+        /* ========== صفحه انتخاب آواتار - طرح جدید مثل مافیای آنلاین ========== */
+        .avatar-container {
+            max-width: 800px;
+            margin: 80px auto 0;
+            padding: 0 20px 30px;
+        }
+
+        .avatar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .avatar-header h2 {
+            color: #e6e9f0;
+            font-size: 26px;
+            font-weight: 500;
+        }
+
+        .avatar-close-btn {
+            width: 44px;
+            height: 44px;
+            background: rgba(18, 22, 28, 0.8);
+            backdrop-filter: blur(4px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 1px solid #3a3f4a;
+            color: #c0c6d1;
+            font-size: 24px;
+            transition: all 0.2s;
+        }
+
+        .avatar-close-btn:hover {
+            background: rgba(40, 46, 56, 0.9);
+            border-color: #6a7a8a;
+            color: white;
+        }
+
+        .avatar-close-btn::before {
+            content: "✕";
+            line-height: 1;
+        }
+
+        .avatar-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            background: rgba(16, 20, 26, 0.8);
+            backdrop-filter: blur(8px);
+            padding: 8px;
+            border-radius: 50px;
+            border: 1px solid #3a4050;
+            width: fit-content;
+        }
+
+        .avatar-tab {
+            padding: 12px 28px;
+            text-align: center;
+            color: #b0c0d0;
+            font-size: 15px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .avatar-tab.active {
+            background: #2a3640;
+            color: #f0f4fa;
+            border: 1px solid #5a6a7a;
+        }
+
+        .tab-panel {
+            display: none;
+            background: rgba(16, 20, 26, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 24px;
+            padding: 30px;
+            border: 1px solid #3a4050;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        /* طرح جدید مثل مافیای آنلاین - ۳ ستونه */
+        .avatar-grid, .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .avatar-card, .shop-card {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #4a5560;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+        }
+
+        .avatar-card:hover, .shop-card:hover {
+            border-color: gold;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255,215,0,0.2);
+        }
+
+        .avatar-card.selected {
+            border: 3px solid gold;
+            background: rgba(60, 70, 85, 0.9);
+            box-shadow: 0 0 20px gold;
+        }
+
+        /* آواتارهای دایره‌ای با حاشیه طلایی */
+        .avatar-thumb, .shop-thumb {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #7f8c9a;
+            margin: 0 auto 15px;
+            background: #1e2630;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+            transition: all 0.3s;
+        }
+
+        .avatar-card:hover .avatar-thumb,
+        .shop-card:hover .shop-thumb {
+            border-color: gold;
+            transform: scale(1.05);
+        }
+
+        .avatar-card.selected .avatar-thumb {
+            border-color: gold;
+            box-shadow: 0 0 15px gold;
+        }
+
+        .avatar-thumb img, .shop-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .avatar-number, .shop-number {
+            color: #e0e8f0;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: rgba(0,0,0,0.5);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 40px;
+            border: 1px solid #5a6a7a;
+        }
+
+        .select-button, .buy-button {
+            background: linear-gradient(145deg, #2a3640, #1e2630);
+            color: #e0e8f0;
+            border: 2px solid #4a5560;
+            padding: 8px 25px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: fit-content;
+            margin-top: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .select-button:hover, .buy-button:hover {
+            background: #364656;
+            border-color: gold;
+            transform: scale(1.05);
+            color: white;
+        }
+
+        .shop-price {
+            color: #ffd966;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(30, 35, 45, 0.9);
+            padding: 6px 20px;
+            border-radius: 40px;
+            border: 2px solid #b8860b;
+        }
+
+        .shop-price span {
+            font-size: 18px;
+        }
+
+        /* ========== مودال‌ها ========== */
         .copy-notification {
             position: fixed;
             bottom: 30px;
@@ -461,422 +1556,23 @@
             transform: translateX(-50%);
             background: #1e2630;
             color: #e0e8f0;
-            padding: 10px 24px;
+            padding: 12px 28px;
             border-radius: 40px;
-            font-size: 13px;
+            font-size: 14px;
             border: 1px solid #4a5560;
             backdrop-filter: blur(4px);
             z-index: 3000;
             display: none;
             animation: fadeInOut 1.5s ease;
         }
-        
+
         @keyframes fadeInOut {
             0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
             15% { opacity: 1; transform: translateX(-50%) translateY(0); }
             85% { opacity: 1; transform: translateX(-50%) translateY(0); }
             100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
         }
-        
-        .stats-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-        
-        .stat-cell {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 16px;
-            padding: 12px 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid #3a4050;
-            transition: all 0.2s;
-        }
-        
-        .stat-cell:hover {
-            background: rgba(0, 0, 0, 0.45);
-            border-color: #5a6570;
-        }
-        
-        .stat-icon {
-            font-size: 22px;
-            min-width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(30, 36, 44, 0.8);
-            border-radius: 12px;
-            color: #b0c0d0;
-        }
-        
-        .stat-detail {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-        
-        .stat-label {
-            color: #a0b0c0;
-            font-size: 10px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-        
-        .stat-figure {
-            color: #f0f4fa;
-            font-size: 20px;
-            font-weight: 600;
-            line-height: 1;
-        }
-        
-        .rank-section {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 18px;
-            padding: 14px 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid #3a4050;
-            margin-top: 16px;
-        }
-        
-        .rank-info {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-        
-        .rank-icon {
-            font-size: 24px;
-            background: rgba(30, 36, 44, 0.8);
-            padding: 5px;
-            border-radius: 12px;
-            color: #b0c0d0;
-        }
-        
-        .rank-detail {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-        
-        .rank-label {
-            color: #a0b0c0;
-            font-size: 10px;
-            text-transform: uppercase;
-        }
-        
-        .rank-name {
-            color: #f0f4fa;
-            font-size: 17px;
-            font-weight: 600;
-        }
-        
-        .rank-tag {
-            background: #2a3640;
-            color: #e0e8f0;
-            padding: 5px 20px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 400;
-            border: 1px solid #4a5560;
-        }
-        
-        .profile-back-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            background: rgba(18, 22, 28, 0.8);
-            backdrop-filter: blur(4px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 1px solid #3a3f4a;
-            color: #c0c6d1;
-            font-size: 22px;
-            font-weight: 300;
-            transition: all 0.2s;
-            z-index: 2000;
-        }
-        
-        .profile-back-btn:hover {
-            background: rgba(40, 46, 56, 0.9);
-            border-color: #6a7a8a;
-            color: white;
-        }
-        
-        .profile-back-btn::before {
-            content: "←";
-            line-height: 1;
-        }
-        
-        /* ========== صفحه انتخاب آواتار ========== */
-        #avatar-page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://s8.uupload.ir/files/img_20260212_001408_558_g4g9.jpg') no-repeat center center;
-            background-size: cover;
-            display: none;
-            padding: 20px;
-            direction: rtl;
-            overflow-y: auto;
-        }
-        
-        .avatar-container {
-            max-width: 500px;
-            margin: 50px auto 0;
-        }
-        
-        .avatar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 24px;
-        }
-        
-        .avatar-header h2 {
-            color: #e6e9f0;
-            font-size: 24px;
-            font-weight: 500;
-            letter-spacing: 0.3px;
-        }
-        
-        .avatar-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 24px;
-            background: rgba(16, 20, 26, 0.8);
-            backdrop-filter: blur(8px);
-            padding: 6px;
-            border-radius: 50px;
-            border: 1px solid #3a4050;
-        }
-        
-        .avatar-tab {
-            flex: 1;
-            padding: 10px 18px;
-            text-align: center;
-            color: #b0c0d0;
-            font-size: 14px;
-            font-weight: 400;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .avatar-tab.active {
-            background: #2a3640;
-            color: #f0f4fa;
-            border: 1px solid #5a6a7a;
-        }
-        
-        .tab-panel {
-            display: none;
-            background: rgba(16, 20, 26, 0.85);
-            backdrop-filter: blur(8px);
-            border-radius: 24px;
-            padding: 24px;
-            border: 1px solid #3a4050;
-        }
-        
-        .tab-panel.active {
-            display: block;
-        }
-        
-        .avatar-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        
-        .avatar-card {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid transparent;
-        }
-        
-        .avatar-card:hover {
-            background: rgba(0, 0, 0, 0.5);
-            border-color: #5a6a7a;
-            transform: translateY(-3px);
-        }
-        
-        .avatar-card.selected {
-            border: 2px solid #7f8c9a;
-            background: rgba(40, 50, 60, 0.6);
-            box-shadow: 0 0 20px rgba(127, 140, 154, 0.3);
-        }
-        
-        .avatar-thumb {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 15px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid #4a5560;
-        }
-        
-        .avatar-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .avatar-number {
-            color: #e0e8f0;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 12px;
-            background: rgba(0,0,0,0.5);
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            border: 1px solid #5a6a7a;
-        }
-        
-        .select-button {
-            background: #2a3640;
-            color: #e0e8f0;
-            border: 1px solid #4a5560;
-            padding: 8px 24px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .select-button:hover {
-            background: #364656;
-            border-color: #6a7a8a;
-            transform: scale(1.05);
-        }
-        
-        .shop-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        
-        .shop-card {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid transparent;
-            transition: all 0.2s;
-        }
-        
-        .shop-card:hover {
-            background: rgba(0, 0, 0, 0.5);
-            border-color: #5a6a7a;
-            transform: translateY(-3px);
-        }
-        
-        .shop-thumb {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 15px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid #5a6a6a;
-        }
-        
-        .shop-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .shop-number {
-            color: #e0e8f0;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 12px;
-            background: rgba(0,0,0,0.5);
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            border: 1px solid #5a6a7a;
-        }
-        
-        .shop-price {
-            color: #e6d5a8;
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: rgba(0,0,0,0.4);
-            padding: 6px 12px;
-            border-radius: 30px;
-            border: 1px solid #5a6a4a;
-        }
-        
-        .buy-button {
-            background: #2a4040;
-            color: #e0e8f0;
-            border: 1px solid #4a6a6a;
-            padding: 8px 24px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .buy-button:hover {
-            background: #305050;
-            border-color: #6a8a8a;
-            transform: scale(1.05);
-        }
-        
-        .avatar-close-btn {
-            width: 40px;
-            height: 40px;
-            background: rgba(18, 22, 28, 0.8);
-            backdrop-filter: blur(4px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 1px solid #3a3f4a;
-            color: #c0c6d1;
-            font-size: 22px;
-            font-weight: 300;
-            transition: all 0.2s;
-        }
-        
-        .avatar-close-btn:hover {
-            background: rgba(40, 46, 56, 0.9);
-            border-color: #6a7a8a;
-            color: white;
-        }
-        
-        .avatar-close-btn::before {
-            content: "✕";
-            line-height: 1;
-        }
-        
+
         .edit-modal {
             position: fixed;
             top: 50%;
@@ -888,43 +1584,43 @@
             border-radius: 24px;
             padding: 30px;
             width: 90%;
-            max-width: 360px;
+            max-width: 380px;
             display: none;
             z-index: 10000;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
-        
+
         .edit-modal h3 {
             color: #e6e9f0;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 500;
             margin-bottom: 22px;
             text-align: center;
         }
-        
+
         .edit-input {
             width: 100%;
-            padding: 14px 20px;
+            padding: 15px 22px;
             border-radius: 40px;
             border: 1px solid #4a5560;
             background: rgba(0,0,0,0.4);
             color: #f0f4fa;
-            font-size: 15px;
+            font-size: 16px;
             margin-bottom: 22px;
             direction: rtl;
         }
-        
+
         .edit-input:focus {
             outline: none;
             border-color: #6a7a8a;
             background: rgba(0,0,0,0.6);
         }
-        
+
         .modal-actions {
             display: flex;
             gap: 12px;
         }
-        
+
         .save-action {
             flex: 2;
             background: #2a4040;
@@ -933,15 +1629,14 @@
             padding: 14px;
             border-radius: 40px;
             font-weight: 400;
-            font-size: 14px;
+            font-size: 15px;
             cursor: pointer;
-            transition: all 0.2s;
         }
-        
+
         .save-action:hover {
             background: #305050;
         }
-        
+
         .cancel-action {
             flex: 1;
             background: transparent;
@@ -950,35 +1645,68 @@
             padding: 14px;
             border-radius: 40px;
             font-weight: 400;
-            font-size: 14px;
+            font-size: 15px;
             cursor: pointer;
-            transition: all 0.2s;
         }
-        
+
         .cancel-action:hover {
             background: rgba(90, 74, 74, 0.2);
         }
-        
+
         .coin-message {
             color: #e6d5a8;
-            font-size: 13px;
+            font-size: 14px;
             margin-bottom: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             background: rgba(0,0,0,0.3);
-            padding: 8px;
+            padding: 10px;
             border-radius: 40px;
         }
-        
-        body {
-            overflow: hidden;
-            font-family: 'Inter', 'Segoe UI', sans-serif;
+
+        .profile-back-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            background: rgba(18, 22, 28, 0.8);
+            backdrop-filter: blur(4px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 1px solid #3a3f4a;
+            color: #c0c6d1;
+            font-size: 24px;
+            z-index: 2000;
+        }
+
+        .profile-back-btn:hover {
+            background: rgba(40, 46, 56, 0.9);
+            border-color: #6a7a8a;
+            color: white;
+        }
+
+        .profile-back-btn::before {
+            content: "←";
+            line-height: 1;
+        }
+
+        @media (max-width: 600px) {
+            .chair { width: 90px; height: 90px; }
+            .chair-avatar { width: 45px; height: 45px; }
+            .observers-area { padding: 0 20px; }
+            .observer-chair { width: 80px; height: 80px; }
+            .mic-button { width: 50px; height: 50px; font-size: 24px; }
+            .avatar-grid, .shop-grid { grid-template-columns: repeat(2, 1fr); }
+            .avatar-thumb, .shop-thumb { width: 80px; height: 80px; }
         }
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- صفحه اصلی بازی -->
@@ -1000,10 +1728,9 @@
             </div>
         </div>
         
-        <!-- پروفایل کاربر -->
-        <div class="profile-container" onclick="openProfilePage()">
+        <div class="profile-container" onclick="window.app.openProfilePage()">
             <div class="profile-avatar" id="mainProfileAvatar">
-                <img src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png" style="width:100%; height:100%; border-radius:50%;">
+                <img src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png">
             </div>
             <div class="profile-info">
                 <div class="profile-name" id="mainProfileName">
@@ -1013,7 +1740,7 @@
             </div>
         </div>
         
-        <div class="start-button" onclick="openFriendlyHall()">
+        <div class="start-button" onclick="window.app.openFriendlyHall()">
             <img src="https://s8.uupload.ir/files/inshot_20260208_175011014_dlkk.png" alt="شروع بازی">
         </div>
         
@@ -1024,772 +1751,1295 @@
         </div>
     </div>
     
-    <!-- صفحه تالار دوستانه -->
+    <!-- صفحه تالار دوستانه - فقط لیست لابی‌ها -->
     <div id="friendly-hall-page">
-        <div class="hall-back-btn" onclick="goBackToGame()"></div>
+        <div class="hall-back-btn" onclick="window.app.goBackToGame()"></div>
+        <div class="hall-create-lobby-btn" onclick="window.app.openCreateLobbyMenu()"></div>
+        <div class="lobbies-container" id="lobbies-container"></div>
+    </div>
+    
+    <!-- منوی ایجاد لابی -->
+    <div id="create-lobby-menu">
+        <div class="menu-header">
+            <h2>ایجاد لابی</h2>
+            <div class="close-menu-btn" onclick="window.app.closeCreateLobbyMenu()">✕</div>
+        </div>
+        
+        <div class="input-group">
+            <label>🏷️ نام لابی</label>
+            <input type="text" id="lobby-name-input" class="lobby-input" placeholder="مثال: بازی دوستانه" maxlength="20">
+        </div>
+        
+        <div class="password-toggle">
+            <span class="toggle-label"><span>🔒</span> رمزعبور</span>
+            <div class="toggle-switch" id="password-toggle-switch" onclick="window.app.togglePasswordField()">
+                <div class="toggle-slider"></div>
+            </div>
+        </div>
+        
+        <div id="password-field">
+            <input type="password" id="lobby-password-input" class="lobby-input" placeholder="رمزعبور لابی">
+        </div>
+        
+        <div class="input-group">
+            <label>👥 تعداد بازیکنان</label>
+            <div class="players-selector">
+                <span>حداکثر بازیکن</span>
+                <div class="player-count-control">
+                    <div class="player-count-btn" onclick="window.app.changePlayerCount(-1)">−</div>
+                    <span id="player-count-value">8</span>
+                    <div class="player-count-btn" onclick="window.app.changePlayerCount(1)">+</div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="create-btn" onclick="window.app.createLobby()">ایجاد لابی</button>
+    </div>
+    
+    <!-- صفحه لابی - فقط یک دکمه خروج در منوی سه خط -->
+    <div id="lobby-page">
+        <div class="table-container">
+            <div class="table-wrapper">
+                <div class="table"></div>
+                
+                <!-- صندلی‌ها -->
+                <div id="chair-1" class="chair empty-chair" style="top: 18%; left: 16%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101652511_taae.png');"><div class="chair-avatar"></div><div class="chair-name">خالی</div></div>
+                <div id="chair-2" class="chair empty-chair" style="top: 36%; left: 16%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101652511_taae.png');"><div class="chair-avatar"></div><div class="chair-name">خالی</div></div>
+                <div id="chair-3" class="chair empty-chair" style="top: 54%; left: 16%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101652511_taae.png');"><div class="chair-avatar"></div><div class="chair-name">خالی</div></div>
+                <div id="chair-4" class="chair empty-chair" style="top: 72%; left: 16%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101652511_taae.png');"><div class="chair-avatar"></div><div class="chair-name">خالی</div></div>
+                <div id="chair-6" class="chair empty-chair" style="top: 72%; left: 84%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101625661_1tgd.png');"><div class="chair-avatar"></div><div class="chair-name">خالی</div></div>
+                <div id="chair-7" class="chair empty-chair" style="top: 54%; left: 84%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101625661_1tgd.png');"><div class="chair-avatar"></div><div class="chair-name">خالی</div></div>
+                <div id="chair-8" class="chair empty-chair" style="top: 36%; left: 84%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101625661_1tgd.png');"><div class="chair-avatar"></div><div class="chair-name">خالی</div></div>
+                <div id="chair-9" class="chair empty-chair" style="top: 18%; left: 84%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101625661_1tgd.png');"><div class="chair-avatar"></div><div class="chair-name">خالی</div></div>
+                <div id="chair-5" class="chair empty-chair" style="top: 88%; left: 50%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101720411_53m5.png');"><div class="chair-avatar"></div><div class="chair-name">خالی</div></div>
+                <div id="chair-10" class="chair empty-chair" style="top: 12%; left: 50%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_024911666_6b.png');"><div class="chair-avatar"></div><div class="chair-name">خالی</div></div>
+            </div>
+        </div>
+        
+        <!-- ناظرها -->
+        <div class="observers-area">
+            <div class="observer-chair left" id="observerChair2"><div class="observer-avatar" id="observerAvatar2" onclick="window.app.openObserverMenu(2)"></div><div class="observer-name" id="observerName2"></div></div>
+            <div class="observer-chair right" id="observerChair1"><div class="observer-avatar" id="observerAvatar1" onclick="window.app.openObserverMenu(1)"></div><div class="observer-name" id="observerName1"></div></div>
+        </div>
+        
+        <!-- میکروفون -->
+        <div class="mic-button" id="micBtn" onclick="window.app.toggleMic()">🎤</div>
+        
+        <!-- دکمه سه خط -->
+        <div class="menu-button" id="menuBtn" onclick="window.app.toggleMainMenu()">
+            <div class="menu-line"></div><div class="menu-line"></div><div class="menu-line"></div>
+        </div>
+        
+        <!-- منوی اصلی - فقط یک دکمه خروج اینجا هست -->
+        <div class="main-menu" id="mainMenu">
+            <div class="menu-item" onclick="window.app.toggleBanList()">🚫 مدیریت مسدودی‌ها</div>
+            <div id="bannedListContainer" style="display: none;" class="banned-submenu">
+                <div class="banned-title">لیست مسدود شده‌ها:</div>
+                <div id="bannedItems"></div>
+            </div>
+            <div class="menu-item danger" onclick="window.app.leaveLobby()">🚪 خروج از لابی</div>
+        </div>
+        
+        <!-- منوی مدیریت وسط -->
+        <div class="admin-menu" id="adminMenu">
+            <h4 id="menuPlayerName">مدیریت بازیکن</h4>
+            <div class="admin-menu-item observer1" id="observer1MenuItem" onclick="window.app.toggleObserver(1)">👁️ ناظر ۱ دادن</div>
+            <div class="admin-menu-item observer2" id="observer2MenuItem" onclick="window.app.toggleObserver(2)">👁️ ناظر ۲ دادن</div>
+            <div class="admin-menu-item transfer" onclick="window.app.transferOwnership()">👑 انتقال مالکیت</div>
+            <div class="admin-menu-item kick" onclick="window.app.kickPlayer()">👢 اخراج</div>
+            <div class="admin-menu-item ban" onclick="window.app.banPlayer()">🚫 مسدود کردن</div>
+            <div class="admin-menu-item remove-observer" id="removeObserverMenuItem" style="display: none;" onclick="window.app.removeFromObserver()">⬇️ حذف از ناظر</div>
+        </div>
     </div>
     
     <!-- صفحه پروفایل -->
     <div id="profile-page">
-        <div class="profile-back-btn" onclick="closeProfilePage()"></div>
-        
+        <div class="profile-back-btn" onclick="window.app.closeProfilePage()"></div>
         <div class="profile-content">
             <div class="profile-card">
-                <div class="avatar-circle" id="profileAvatarCircle" onclick="openAvatarPage()">
+                <div class="avatar-circle" id="profileAvatarCircle" onclick="window.app.openAvatarPage()">
                     <img id="profileAvatarImg" src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png">
                 </div>
-                
-                <div class="name-box" onclick="openEditModal()">
-                    <div class="user-name" id="profileUserName">
-                        بازیکن
-                    </div>
+                <div class="name-box" onclick="window.app.openEditModal()">
+                    <div class="user-name" id="profileUserName">بازیکن</div>
                     <span class="level-badge" id="profileLevelBadge">سطح ۱</span>
                 </div>
-                
                 <div class="edit-status" id="editStatus">
                     <span class="free-badge">⚡ ۱ بار رایگان</span>
-                    <span class="coin-badge">
-                        <span class="coin-icon">🪙</span>
-                        ۵ سکه
-                    </span>
+                    <span class="coin-badge"><span class="coin-icon">🪙</span>۵ سکه</span>
                 </div>
             </div>
-            
             <div class="stats-section">
-                <div class="user-id-block" onclick="copyUserId()">
-                    <span class="user-id-label">
-                        <span class="user-id-icon">🆔</span>
-                        کد کاربری
-                    </span>
+                <div class="user-id-block" onclick="window.app.copyUserId()">
+                    <span class="user-id-label"><span class="user-id-icon">🆔</span> کد کاربری</span>
                     <span class="user-id-value" id="userIdDisplay">۱۲۳۴۵۶</span>
                 </div>
-                
                 <div class="stats-row">
-                    <div class="stat-cell">
-                        <span class="stat-icon">🏆</span>
-                        <div class="stat-detail">
-                            <span class="stat-label">تعداد برد</span>
-                            <span class="stat-figure" id="winCount">۰</span>
-                        </div>
-                    </div>
-                    <div class="stat-cell">
-                        <span class="stat-icon">🕊️</span>
-                        <div class="stat-detail">
-                            <span class="stat-label">تعداد باخت</span>
-                            <span class="stat-figure" id="loseCount">۰</span>
-                        </div>
-                    </div>
+                    <div class="stat-cell"><span class="stat-icon">🏆</span><div class="stat-detail"><span class="stat-label">تعداد برد</span><span class="stat-figure" id="winCount">۰</span></div></div>
+                    <div class="stat-cell"><span class="stat-icon">🕊️</span><div class="stat-detail"><span class="stat-label">تعداد باخت</span><span class="stat-figure" id="loseCount">۰</span></div></div>
                 </div>
-                
                 <div class="stats-row">
-                    <div class="stat-cell">
-                        <span class="stat-icon">⏳</span>
-                        <div class="stat-detail">
-                            <span class="stat-label">ساعت بازی</span>
-                            <span class="stat-figure" id="hoursPlayed">۰</span>
-                            <span class="stat-unit">h</span>
-                        </div>
-                    </div>
-                    <div class="stat-cell">
-                        <span class="stat-icon">👁️</span>
-                        <div class="stat-detail">
-                            <span class="stat-label">تعداد ناظر</span>
-                            <span class="stat-figure" id="observerCount">۰</span>
-                        </div>
-                    </div>
+                    <div class="stat-cell"><span class="stat-icon">⏳</span><div class="stat-detail"><span class="stat-label">ساعت بازی</span><span class="stat-figure" id="hoursPlayed">۰</span></div></div>
+                    <div class="stat-cell"><span class="stat-icon">👁️</span><div class="stat-detail"><span class="stat-label">تعداد ناظر</span><span class="stat-figure" id="observerCount">۰</span></div></div>
                 </div>
-                
                 <div class="rank-section">
-                    <div class="rank-info">
-                        <span class="rank-icon">👑</span>
-                        <div class="rank-detail">
-                            <span class="rank-label">مقام</span>
-                            <span class="rank-name" id="rankName">کاربر</span>
-                        </div>
-                    </div>
+                    <div class="rank-info"><span class="rank-icon">👑</span><div class="rank-detail"><span class="rank-label">مقام</span><span class="rank-name" id="rankName">کاربر</span></div></div>
                     <span class="rank-tag" id="rankTag">بازیکن</span>
                 </div>
             </div>
         </div>
     </div>
     
-    <div id="copyNotification" class="copy-notification">✅ کد کاربری کپی شد</div>
-    
-    <!-- صفحه انتخاب آواتار -->
+    <!-- صفحه انتخاب آواتار - طرح جدید مثل مافیای آنلاین -->
     <div id="avatar-page">
         <div class="avatar-container">
             <div class="avatar-header">
                 <h2>انتخاب آواتار</h2>
-                <div class="avatar-close-btn" onclick="closeAvatarPage()"></div>
+                <div class="avatar-close-btn" onclick="window.app.closeAvatarPage()"></div>
             </div>
-            
             <div class="avatar-tabs">
-                <div class="avatar-tab active" onclick="switchAvatarTab('my')">آواتار من</div>
-                <div class="avatar-tab" onclick="switchAvatarTab('shop')">خرید آواتار</div>
+                <div class="avatar-tab active" onclick="window.app.switchAvatarTab('my')">آواتار من</div>
+                <div class="avatar-tab" onclick="window.app.switchAvatarTab('shop')">خرید آواتار</div>
             </div>
-            
-            <!-- آواتار من -->
             <div class="tab-panel active" id="myAvatarsPanel">
-                <div class="avatar-grid" id="myAvatarsGrid">
-                    <!-- آواتارهای پیشفرض - با لینک‌های درست شده -->
-                    <div class="avatar-card selected" id="avatar1" onclick="selectAvatar('avatar1')">
-                        <div class="avatar-thumb">
-                            <img src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png">
-                        </div>
-                        <div class="avatar-number">#۰۰۱</div>
-                        <button class="select-button" onclick="selectAvatar('avatar1'); event.stopPropagation();">انتخاب</button>
-                    </div>
-                    <div class="avatar-card" id="avatar2" onclick="selectAvatar('avatar2')">
-                        <div class="avatar-thumb">
-                            <img src="https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png">
-                        </div>
-                        <div class="avatar-number">#۰۰۲</div>
-                        <button class="select-button" onclick="selectAvatar('avatar2'); event.stopPropagation();">انتخاب</button>
-                    </div>
-                </div>
+                <div class="avatar-grid" id="myAvatarsGrid"></div>
             </div>
-            
-            <!-- خرید آواتار - با لینک‌های درست شده -->
             <div class="tab-panel" id="shopPanel">
-                <div class="shop-grid" id="shopGrid">
-                    <!-- آواتار نینجا -->
-                    <div class="shop-card" id="shopNinja">
-                        <div class="shop-thumb">
-                            <img src="https://s8.uupload.ir/files/inshot_20260212_151231364_umrq.png">
-                        </div>
-                        <div class="shop-number">#۰۰۳</div>
-                        <div class="shop-price">
-                            <span>💎</span> ۲۰۰ جم
-                        </div>
-                        <button class="buy-button" onclick="buyAvatar('ninja', '#۰۰۳', 'https://s8.uupload.ir/files/inshot_20260212_151231364_umrq.png', 200)">خرید</button>
-                    </div>
-                    <!-- آواتار سامورایی -->
-                    <div class="shop-card" id="shopSamurai">
-                        <div class="shop-thumb">
-                            <img src="https://s8.uupload.ir/files/inshot_20260212_151120584_7df6.png">
-                        </div>
-                        <div class="shop-number">#۰۰۴</div>
-                        <div class="shop-price">
-                            <span>💎</span> ۲۰۰ جم
-                        </div>
-                        <button class="buy-button" onclick="buyAvatar('samurai', '#۰۰۴', 'https://s8.uupload.ir/files/inshot_20260212_151120584_7df6.png', 200)">خرید</button>
-                    </div>
-                </div>
+                <div class="shop-grid" id="shopGrid"></div>
             </div>
         </div>
     </div>
     
+    <!-- نوتیفیکیشن و مودال -->
+    <div id="copyNotification" class="copy-notification">✅ کد کاربری کپی شد</div>
     <div class="edit-modal" id="editModal">
         <h3 id="modalTitle">تغییر نام</h3>
-        <div id="coinRequiredMessage" class="coin-message" style="display: none;">
-            <span>🪙</span> ۵ سکه نیاز است
-        </div>
+        <div id="coinRequiredMessage" class="coin-message" style="display: none;"><span>🪙</span> ۵ سکه نیاز است</div>
         <input type="text" class="edit-input" id="editNameInput" maxlength="12" placeholder="نام جدید">
         <div class="modal-actions">
-            <button class="save-action" onclick="saveUserName()">ذخیره</button>
-            <button class="cancel-action" onclick="closeEditModal()">لغو</button>
+            <button class="save-action" onclick="window.app.saveUserName()">ذخیره</button>
+            <button class="cancel-action" onclick="window.app.closeEditModal()">لغو</button>
         </div>
     </div>
-
-    <script>
-        // ========== اطلاعات سازنده ==========
-        const CREATOR_PHONE = '09904844031';
-        const CREATOR_PASSWORD = 'Admin16172-matin-1000';
-        const CREATOR_ID = 1;
-        
-        // ========== متغیرهای اصلی ==========
-        let currentAvatar = 'avatar1';
-        let userName = 'بازیکن';
-        let isCreator = false;
-        let editCount = 0;
-        let userCoins = 600;
-        let userGems = 100;
-        let userId = 0;
-        
-        // آواتارهای خریداری شده
-        let ownedAvatars = ['avatar1', 'avatar2'];
-        
-        // ========== فلگ جلوگیری از اجرای مجدد ==========
-        let initialized = false;
-        
-        // ========== بررسی اکانت سازنده ==========
-        function checkCreatorAccount() {
-            try {
-                // اول از localStorage
-                const savedPhone = localStorage.getItem('mafiaUserPhone');
-                const savedPassword = localStorage.getItem('mafiaUserPassword');
-                const savedIsCreator = localStorage.getItem('mafiaIsCreator');
-                const savedUserId = localStorage.getItem('mafiaUserId');
-                
-                // شرط سازنده
-                if (savedPhone === CREATOR_PHONE && savedPassword === CREATOR_PASSWORD) {
-                    return true;
-                }
-                if (savedIsCreator === 'true') {
-                    return true;
-                }
-                if (savedUserId && parseInt(savedUserId) === CREATOR_ID) {
-                    return true;
-                }
-                
-                // بررسی از URL
-                const urlParams = new URLSearchParams(window.location.search);
-                const phoneFromURL = urlParams.get('phone');
-                const passFromURL = urlParams.get('pass');
-                
-                if (phoneFromURL === CREATOR_PHONE && passFromURL === CREATOR_PASSWORD) {
-                    localStorage.setItem('mafiaUserPhone', phoneFromURL);
-                    localStorage.setItem('mafiaUserPassword', passFromURL);
-                    localStorage.setItem('mafiaUserId', '1');
-                    localStorage.setItem('mafiaIsCreator', 'true');
-                    return true;
-                }
-            } catch (e) {}
-            return false;
-        }
-        
-        // ========== مقداردهی اولیه ==========
-        function initializeGame() {
-            // اگر قبلاً مقداردهی شده، دوباره اجرا نکن
-            if (initialized) {
-                return;
-            }
-            initialized = true;
+    
+    <script src="script.js"></script>
+<script>
+// ========== script.js ==========
+// ========== شیء اصلی برنامه ==========
+const App = {
+    // ========== اطلاعات سازنده ==========
+    CREATOR_PHONE: '09904844031',
+    CREATOR_PASSWORD: 'Admin16172-matin-1000',
+    CREATOR_ID: 1,
+    
+    // ========== متغیرهای اصلی ==========
+    currentAvatar: 'avatar1',
+    userName: 'بازیکن',
+    isCreator: false,
+    editCount: 0,
+    userCoins: 6000, // افزایش برای تست خرید با سکه
+    userGems: 500,   // افزایش برای تست خرید با جم
+    userId: 0,
+    ownedAvatars: ['avatar1', 'avatar2'],
+    
+    // ========== متغیرهای لابی ==========
+    lobbies: [],
+    nextLobbyId: 1,
+    isPasswordEnabled: false,
+    maxPlayers: 8,
+    initialized: false,
+    
+    // ========== متغیرهای داخل لابی ==========
+    currentLobby: { id: null, name: '', creatorId: null, creatorName: '', maxPlayers: 10, players: [] },
+    bannedUsers: [],
+    activeSpeaker: null,
+    currentCreator: null,
+    selectedPlayerId: null,
+    selectedObserverType: null,
+    observer1: null,
+    observer2: null,
+    playersData: {},
+    
+    // ========== توابع کمکی ==========
+    getAvatarImage(avatar) {
+        const avatars = {
+            'avatar1': 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png',
+            'avatar2': 'https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png',
+            'ninja': 'https://s8.uupload.ir/files/inshot_20260212_151231364_umrq.png',
+            'samurai': 'https://s8.uupload.ir/files/inshot_20260212_151120584_7df6.png',
+            'avatar5': 'https://s8.uupload.ir/files/inshot_20260213_195059047_ln6h.png',
+            'avatar6': 'https://s8.uupload.ir/files/inshot_20260213_195217329_u6to.png',
+            'avatar7': 'https://s8.uupload.ir/files/inshot_20260213_093421818_xwo9.png',
+            'avatar8': 'https://s8.uupload.ir/files/inshot_20260213_093508335_djbv.png'
+        };
+        return avatars[avatar] || avatars.avatar1;
+    },
+    
+    // ========== بررسی اکانت سازنده ==========
+    checkCreatorAccount() {
+        try {
+            const savedPhone = localStorage.getItem('mafiaUserPhone');
+            const savedPassword = localStorage.getItem('mafiaUserPassword');
+            const savedIsCreator = localStorage.getItem('mafiaIsCreator');
+            const savedUserId = localStorage.getItem('mafiaUserId');
             
-            console.log('🚀 مقداردهی اولیه بازی...');
+            if (savedPhone === this.CREATOR_PHONE && savedPassword === this.CREATOR_PASSWORD) return true;
+            if (savedIsCreator === 'true') return true;
+            if (savedUserId && parseInt(savedUserId) === this.CREATOR_ID) return true;
             
-            // بررسی سازنده بودن
-            const isCreatorUser = checkCreatorAccount();
+            const urlParams = new URLSearchParams(window.location.search);
+            const phoneFromURL = urlParams.get('phone');
+            const passFromURL = urlParams.get('pass');
             
-            if (isCreatorUser) {
-                // ✅ کاربر سازنده
-                isCreator = true;
-                userName = 'سازنده';
-                userId = CREATOR_ID;
-                userGems = Infinity;
-                userCoins = Infinity;
-                ownedAvatars = ['avatar1', 'avatar2', 'ninja', 'samurai'];
-                editCount = 0;
-                currentAvatar = 'avatar1';
-                
-                // ذخیره اطلاعات سازنده
+            if (phoneFromURL === this.CREATOR_PHONE && passFromURL === this.CREATOR_PASSWORD) {
+                localStorage.setItem('mafiaUserPhone', phoneFromURL);
+                localStorage.setItem('mafiaUserPassword', passFromURL);
                 localStorage.setItem('mafiaUserId', '1');
                 localStorage.setItem('mafiaIsCreator', 'true');
-                localStorage.setItem('mafiaUserName', 'سازنده');
-                localStorage.setItem('mafiaUserGems', 'Infinity');
-                localStorage.setItem('mafiaUserCoins', 'Infinity');
-                localStorage.setItem('mafiaOwnedAvatars', JSON.stringify(['avatar1', 'avatar2', 'ninja', 'samurai']));
-                localStorage.setItem('mafiaEditCount', '0');
-                localStorage.setItem('mafiaUserAvatar', 'avatar1');
-                
-                console.log('👑 پنل سازنده فعال شد');
-            } else {
-                // 👤 کاربر عادی
-                isCreator = false;
-                
-                try {
-                    // بارگذاری اطلاعات کاربر عادی
-                    const savedName = localStorage.getItem('mafiaUserName');
-                    const savedUserId = localStorage.getItem('mafiaUserId');
-                    const savedOwnedAvatars = localStorage.getItem('mafiaOwnedAvatars');
-                    const savedGems = localStorage.getItem('mafiaUserGems');
-                    const savedCoins = localStorage.getItem('mafiaUserCoins');
-                    const savedEditCount = localStorage.getItem('mafiaEditCount');
-                    const savedAvatar = localStorage.getItem('mafiaUserAvatar');
-                    
-                    if (savedOwnedAvatars) {
-                        ownedAvatars = JSON.parse(savedOwnedAvatars);
-                    }
-                    if (savedGems) userGems = parseInt(savedGems);
-                    if (savedCoins) userCoins = parseInt(savedCoins);
-                    if (savedEditCount) editCount = parseInt(savedEditCount);
-                    if (savedName) userName = savedName.slice(0, 12);
-                    if (savedUserId) userId = parseInt(savedUserId);
-                    if (savedAvatar) currentAvatar = savedAvatar;
-                    
-                    // اگر userId وجود نداره، یه جدید بساز
-                    if (!userId || userId === 0) {
-                        userId = Math.floor(100000 + Math.random() * 9000000);
-                        localStorage.setItem('mafiaUserId', userId.toString());
-                    }
-                    
-                } catch (e) {
-                    console.log('خطا در بارگذاری:', e);
-                    userId = Math.floor(100000 + Math.random() * 9000000);
-                    localStorage.setItem('mafiaUserId', userId.toString());
-                }
-                
-                console.log('👤 کاربر عادی فعال شد');
+                return true;
             }
-            
-            // به‌روزرسانی نمایش
-            updateAllDisplays();
-            
-            // پاک کردن پارامترهای URL
-            if (window.location.search) {
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
-        }
+        } catch (e) {}
+        return false;
+    },
+    
+    // ========== مقداردهی اولیه ==========
+    initializeGame() {
+        if (this.initialized) return;
+        this.initialized = true;
         
-        // ========== به‌روزرسانی همه نمایشگرها ==========
-        function updateAllDisplays() {
-            // به‌روزرسانی پروفایل اصلی
-            updateMainProfile();
-            
-            // به‌روزرسانی صفحه پروفایل
-            updateProfilePage();
-            
-            // به‌روزرسانی آواتارها
-            updateMyAvatars();
-            updateShopAvatars();
-            
-            // به‌روزرسانی ارز
-            updateCurrencyDisplay();
-            
-            // به‌روزرسانی کد کاربری
-            const userIdDisplay = document.getElementById('userIdDisplay');
-            if (userIdDisplay) {
-                if (isCreator) {
-                    userIdDisplay.textContent = '۱';
-                } else {
-                    userIdDisplay.textContent = userId.toLocaleString('fa-IR');
-                }
-            }
-        }
+        console.log('🚀 مقداردهی اولیه بازی...');
+        this.loadLobbies();
         
-        // ========== به‌روزرسانی نمایش ارز ==========
-        function updateCurrencyDisplay() {
-            const gemDisplay = document.getElementById('gemDisplay');
-            const coinDisplay = document.getElementById('coinDisplay');
-            
-            if (isCreator) {
-                if (gemDisplay) gemDisplay.textContent = '∞';
-                if (coinDisplay) coinDisplay.textContent = '∞';
-            } else {
-                if (gemDisplay) gemDisplay.textContent = userGems.toLocaleString('fa-IR');
-                if (coinDisplay) coinDisplay.textContent = userCoins.toLocaleString('fa-IR');
-            }
-        }
+        const isCreatorUser = this.checkCreatorAccount();
         
-        // ========== به‌روزرسانی پروفایل اصلی ==========
-        function updateMainProfile() {
-            // آواتار
-            const profileAvatar = document.getElementById('mainProfileAvatar');
-            if (profileAvatar) {
-                let imgSrc = '';
-                if (currentAvatar === 'avatar1') imgSrc = 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png';
-                else if (currentAvatar === 'avatar2') imgSrc = 'https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png';
-                else if (currentAvatar === 'ninja') imgSrc = 'https://s8.uupload.ir/files/inshot_20260212_151231364_umrq.png';
-                else if (currentAvatar === 'samurai') imgSrc = 'https://s8.uupload.ir/files/inshot_20260212_151120584_7df6.png';
-                
-                profileAvatar.innerHTML = `<img src="${imgSrc}" style="width:100%; height:100%; border-radius:50%;">`;
-            }
+        if (isCreatorUser) {
+            this.isCreator = true;
+            this.userName = 'سازنده';
+            this.userId = this.CREATOR_ID;
+            this.userGems = Infinity;
+            this.userCoins = Infinity;
+            this.ownedAvatars = ['avatar1', 'avatar2', 'ninja', 'samurai', 'avatar5', 'avatar6', 'avatar7', 'avatar8'];
+            this.editCount = 0;
+            this.currentAvatar = 'avatar1';
             
-            // نام
-            const profileName = document.getElementById('mainProfileName');
-            const nameText = document.getElementById('mainProfileNameText');
-            if (profileName && nameText) {
-                let displayName = userName;
-                if (displayName.length > 10) displayName = displayName.slice(0, 9) + '...';
-                nameText.textContent = displayName;
-                
-                if (isCreator) {
-                    profileName.innerHTML = `<span class="verified-badge"></span><span class="profile-name-text" id="mainProfileNameText" title="${userName}">${displayName}</span>`;
-                }
-            }
+            localStorage.setItem('mafiaUserId', '1');
+            localStorage.setItem('mafiaIsCreator', 'true');
+            localStorage.setItem('mafiaUserName', 'سازنده');
+            localStorage.setItem('mafiaUserGems', 'Infinity');
+            localStorage.setItem('mafiaUserCoins', 'Infinity');
+            localStorage.setItem('mafiaOwnedAvatars', JSON.stringify(['avatar1', 'avatar2', 'ninja', 'samurai', 'avatar5', 'avatar6', 'avatar7', 'avatar8']));
+            localStorage.setItem('mafiaEditCount', '0');
+            localStorage.setItem('mafiaUserAvatar', 'avatar1');
             
-            // سطح
-            const profileLevel = document.querySelector('.profile-level');
-            if (profileLevel) {
-                profileLevel.textContent = isCreator ? 'سطح ∞' : 'سطح ۱';
-            }
-        }
-        
-        // ========== به‌روزرسانی صفحه پروفایل ==========
-        function updateProfilePage() {
-            // آواتار
-            const profileImg = document.getElementById('profileAvatarImg');
-            if (profileImg) {
-                if (currentAvatar === 'avatar1') profileImg.src = 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png';
-                else if (currentAvatar === 'avatar2') profileImg.src = 'https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png';
-                else if (currentAvatar === 'ninja') profileImg.src = 'https://s8.uupload.ir/files/inshot_20260212_151231364_umrq.png';
-                else if (currentAvatar === 'samurai') profileImg.src = 'https://s8.uupload.ir/files/inshot_20260212_151120584_7df6.png';
-            }
-            
-            // نام
-            const profileName = document.getElementById('profileUserName');
-            if (profileName) {
-                if (isCreator) {
-                    profileName.innerHTML = `${userName} <span class="verified-badge"></span>`;
-                } else {
-                    profileName.textContent = userName;
-                }
-            }
-            
-            // سطح
-            const levelBadge = document.getElementById('profileLevelBadge');
-            if (levelBadge) {
-                levelBadge.textContent = isCreator ? 'سازنده' : 'سطح ۱';
-            }
-            
-            // وضعیت ویرایش
-            const editStatus = document.getElementById('editStatus');
-            if (editStatus) {
-                if (isCreator) {
-                    editStatus.innerHTML = `
-                        <span class="free-badge">⚡ بی‌نهایت</span>
-                        <span class="coin-badge">
-                            <span class="coin-icon">🪙</span>
-                            ∞
-                        </span>
-                    `;
-                } else {
-                    editStatus.innerHTML = `
-                        <span class="free-badge">⚡ ${editCount === 0 ? '۱ بار رایگان' : 'پرداختی'}</span>
-                        <span class="coin-badge">
-                            <span class="coin-icon">🪙</span>
-                            ۵ سکه
-                        </span>
-                    `;
-                }
-            }
-            
-            // مقام
-            const rankName = document.getElementById('rankName');
-            const rankTag = document.getElementById('rankTag');
-            if (rankName && rankTag) {
-                rankName.textContent = isCreator ? 'سازنده' : 'کاربر';
-                rankTag.textContent = isCreator ? 'بنیانگذار' : 'بازیکن';
-            }
-            
-            // آمار
-            if (isCreator) {
-                const winCount = document.getElementById('winCount');
-                const loseCount = document.getElementById('loseCount');
-                const hoursPlayed = document.getElementById('hoursPlayed');
-                const observerCount = document.getElementById('observerCount');
-                
-                if (winCount) winCount.textContent = '∞';
-                if (loseCount) loseCount.textContent = '۰';
-                if (hoursPlayed) hoursPlayed.textContent = '∞';
-                if (observerCount) observerCount.textContent = '∞';
-            }
-        }
-        
-        // ========== به‌روزرسانی آواتارهای من ==========
-        function updateMyAvatars() {
-            const myAvatarsGrid = document.getElementById('myAvatarsGrid');
-            if (!myAvatarsGrid) return;
-            
-            let html = '';
-            
-            if (ownedAvatars.includes('avatar1')) {
-                html += `
-                    <div class="avatar-card ${currentAvatar === 'avatar1' ? 'selected' : ''}" id="avatar1" onclick="selectAvatar('avatar1')">
-                        <div class="avatar-thumb">
-                            <img src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png">
-                        </div>
-                        <div class="avatar-number">#۰۰۱</div>
-                        <button class="select-button" onclick="selectAvatar('avatar1'); event.stopPropagation();">انتخاب</button>
-                    </div>
-                `;
-            }
-            
-            if (ownedAvatars.includes('avatar2')) {
-                html += `
-                    <div class="avatar-card ${currentAvatar === 'avatar2' ? 'selected' : ''}" id="avatar2" onclick="selectAvatar('avatar2')">
-                        <div class="avatar-thumb">
-                            <img src="https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png">
-                        </div>
-                        <div class="avatar-number">#۰۰۲</div>
-                        <button class="select-button" onclick="selectAvatar('avatar2'); event.stopPropagation();">انتخاب</button>
-                    </div>
-                `;
-            }
-            
-            if (ownedAvatars.includes('ninja')) {
-                html += `
-                    <div class="avatar-card ${currentAvatar === 'ninja' ? 'selected' : ''}" id="avatarNinja" onclick="selectAvatar('ninja')">
-                        <div class="avatar-thumb">
-                            <img src="https://s8.uupload.ir/files/inshot_20260212_151231364_umrq.png">
-                        </div>
-                        <div class="avatar-number">#۰۰۳</div>
-                        <button class="select-button" onclick="selectAvatar('ninja'); event.stopPropagation();">انتخاب</button>
-                    </div>
-                `;
-            }
-            
-            if (ownedAvatars.includes('samurai')) {
-                html += `
-                    <div class="avatar-card ${currentAvatar === 'samurai' ? 'selected' : ''}" id="avatarSamurai" onclick="selectAvatar('samurai')">
-                        <div class="avatar-thumb">
-                            <img src="https://s8.uupload.ir/files/inshot_20260212_151120584_7df6.png">
-                        </div>
-                        <div class="avatar-number">#۰۰۴</div>
-                        <button class="select-button" onclick="selectAvatar('samurai'); event.stopPropagation();">انتخاب</button>
-                    </div>
-                `;
-            }
-            
-            myAvatarsGrid.innerHTML = html;
-        }
-        
-        // ========== به‌روزرسانی فروشگاه ==========
-        function updateShopAvatars() {
-            const shopNinja = document.getElementById('shopNinja');
-            if (shopNinja) {
-                shopNinja.style.display = ownedAvatars.includes('ninja') ? 'none' : 'block';
-            }
-            
-            const shopSamurai = document.getElementById('shopSamurai');
-            if (shopSamurai) {
-                shopSamurai.style.display = ownedAvatars.includes('samurai') ? 'none' : 'block';
-            }
-        }
-        
-        // ========== ذخیره اطلاعات ==========
-        function saveUserData() {
-            if (isCreator) return;
+            console.log('👑 پنل سازنده فعال شد');
+        } else {
+            this.isCreator = false;
             
             try {
-                localStorage.setItem('mafiaUserId', userId.toString());
-                localStorage.setItem('mafiaUserAvatar', currentAvatar);
-                localStorage.setItem('mafiaUserName', userName);
-                localStorage.setItem('mafiaOwnedAvatars', JSON.stringify(ownedAvatars));
-                localStorage.setItem('mafiaUserGems', userGems.toString());
-                localStorage.setItem('mafiaUserCoins', userCoins.toString());
-                localStorage.setItem('mafiaEditCount', editCount.toString());
-            } catch (e) {}
-        }
-        
-        // ========== انتخاب آواتار ==========
-        function selectAvatar(avatarId) {
-            currentAvatar = avatarId;
-            saveUserData();
-            updateMyAvatars();
-            updateMainProfile();
-            updateProfilePage();
-        }
-        
-        // ========== خرید آواتار ==========
-        function buyAvatar(avatarId, avatarNumber, avatarImage, price) {
-            if (isCreator) {
-                alert('✅ شما سازنده هستید و همه آواتارها در دسترس شماست');
-                return;
+                const savedName = localStorage.getItem('mafiaUserName');
+                const savedUserId = localStorage.getItem('mafiaUserId');
+                const savedOwnedAvatars = localStorage.getItem('mafiaOwnedAvatars');
+                const savedGems = localStorage.getItem('mafiaUserGems');
+                const savedCoins = localStorage.getItem('mafiaUserCoins');
+                const savedEditCount = localStorage.getItem('mafiaEditCount');
+                const savedAvatar = localStorage.getItem('mafiaUserAvatar');
+                
+                if (savedOwnedAvatars) this.ownedAvatars = JSON.parse(savedOwnedAvatars);
+                else this.ownedAvatars = ['avatar1', 'avatar2'];
+                
+                if (savedGems && savedGems !== 'Infinity') this.userGems = parseInt(savedGems);
+                if (savedCoins && savedCoins !== 'Infinity') this.userCoins = parseInt(savedCoins);
+                if (savedEditCount) this.editCount = parseInt(savedEditCount);
+                if (savedName) this.userName = savedName.slice(0, 12);
+                if (savedUserId) this.userId = parseInt(savedUserId);
+                if (savedAvatar) this.currentAvatar = savedAvatar;
+                
+                if (!this.userId || this.userId === 0) {
+                    this.userId = Math.floor(100000 + Math.random() * 9000000);
+                    localStorage.setItem('mafiaUserId', this.userId.toString());
+                }
+                
+            } catch (e) {
+                console.log('خطا در بارگذاری:', e);
+                this.userId = Math.floor(100000 + Math.random() * 9000000);
+                localStorage.setItem('mafiaUserId', this.userId.toString());
             }
             
-            if (userGems < price) {
-                alert(`❌ جم کافی ندارید! شما ${userGems} جم دارید و نیاز به ${price} جم است`);
-                return;
-            }
-            
-            if (ownedAvatars.includes(avatarId)) {
-                alert('⚠️ این آواتار را قبلاً خریداری کرده‌اید');
-                return;
-            }
-            
-            userGems -= price;
-            ownedAvatars.push(avatarId);
-            saveUserData();
-            updateCurrencyDisplay();
-            updateMyAvatars();
-            updateShopAvatars();
-            switchAvatarTab('my');
-            
-            const notification = document.getElementById('copyNotification');
-            notification.textContent = `✅ آواتار ${avatarNumber} با موفقیت خریداری شد`;
-            notification.style.display = 'block';
-            setTimeout(() => {
-                notification.style.display = 'none';
-                notification.textContent = '✅ کد کاربری کپی شد';
-            }, 3000);
+            console.log('👤 کاربر عادی فعال شد');
         }
         
-        // ========== کپی کد کاربری ==========
-        function copyUserId() {
-            const userIdElement = document.getElementById('userIdDisplay');
-            const userIdText = userIdElement.textContent;
+        this.updateAllDisplays();
+        
+        if (window.location.search) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    },
+    
+    // ========== توابع لابی ==========
+    loadLobbies() {
+        try {
+            const savedLobbies = localStorage.getItem('mafiaLobbies');
+            if (savedLobbies) {
+                this.lobbies = JSON.parse(savedLobbies);
+                if (this.lobbies.length > 0) {
+                    this.nextLobbyId = Math.max(...this.lobbies.map(l => l.id)) + 1;
+                }
+            }
+        } catch (e) {
+            console.log('خطا در بارگذاری لابی‌ها:', e);
+            this.lobbies = [];
+        }
+    },
+    
+    saveLobbies() {
+        try {
+            localStorage.setItem('mafiaLobbies', JSON.stringify(this.lobbies));
+        } catch (e) {
+            console.log('خطا در ذخیره لابی‌ها:', e);
+        }
+    },
+    
+    deleteLobby(lobbyId) {
+        this.lobbies = this.lobbies.filter(l => l.id !== lobbyId);
+        this.saveLobbies();
+    },
+    
+    openCreateLobbyMenu() {
+        document.getElementById('create-lobby-menu').style.display = 'block';
+        document.getElementById('lobby-name-input').value = '';
+        document.getElementById('lobby-password-input').value = '';
+        this.isPasswordEnabled = false;
+        this.maxPlayers = 8;
+        document.getElementById('player-count-value').textContent = '8';
+        document.getElementById('password-field').style.display = 'none';
+        document.getElementById('password-toggle-switch').classList.remove('active');
+    },
+    
+    closeCreateLobbyMenu() {
+        document.getElementById('create-lobby-menu').style.display = 'none';
+    },
+    
+    togglePasswordField() {
+        const toggleSwitch = document.getElementById('password-toggle-switch');
+        const passwordField = document.getElementById('password-field');
+        
+        this.isPasswordEnabled = !this.isPasswordEnabled;
+        
+        if (this.isPasswordEnabled) {
+            toggleSwitch.classList.add('active');
+            passwordField.style.display = 'block';
+        } else {
+            toggleSwitch.classList.remove('active');
+            passwordField.style.display = 'none';
+        }
+    },
+    
+    changePlayerCount(delta) {
+        this.maxPlayers += delta;
+        if (this.maxPlayers < 4) this.maxPlayers = 4;
+        if (this.maxPlayers > 16) this.maxPlayers = 16;
+        document.getElementById('player-count-value').textContent = this.maxPlayers;
+    },
+    
+    createLobby() {
+        const lobbyName = document.getElementById('lobby-name-input').value.trim();
+        
+        if (!lobbyName) {
+            alert('❌ لطفا نام لابی را وارد کنید');
+            return;
+        }
+        
+        let password = '';
+        if (this.isPasswordEnabled) {
+            password = document.getElementById('lobby-password-input').value.trim();
+            if (!password) {
+                alert('❌ لطفا رمزعبور را وارد کنید');
+                return;
+            }
+        }
+        
+        const newLobby = {
+            id: this.nextLobbyId++,
+            name: lobbyName,
+            creatorId: this.userId,
+            creatorName: this.userName,
+            creatorAvatar: this.currentAvatar,
+            creatorAvatarSrc: this.getAvatarImage(this.currentAvatar),
+            isCreator: this.isCreator,
+            password: password,
+            hasPassword: this.isPasswordEnabled,
+            maxPlayers: this.maxPlayers,
+            currentPlayers: 1,
+            createdAt: new Date().toISOString()
+        };
+        
+        this.lobbies.push(newLobby);
+        this.saveLobbies();
+        this.closeCreateLobbyMenu();
+        
+        // مستقیم وارد لابی می‌شویم
+        this.enterLobby(newLobby);
+    },
+    
+    joinLobby(lobbyId) {
+        const lobby = this.lobbies.find(l => l.id === lobbyId);
+        if (!lobby) {
+            alert('❌ لابی مورد نظر یافت نشد');
+            return;
+        }
+        
+        if (lobby.hasPassword) {
+            const enteredPassword = prompt('🔒 لطفا رمزعبور لابی را وارد کنید:');
+            if (enteredPassword !== lobby.password) {
+                alert('❌ رمزعبور اشتباه است');
+                return;
+            }
+        }
+        
+        this.enterLobby(lobby);
+    },
+    
+    enterLobby(lobby) {
+        document.getElementById('friendly-hall-page').style.display = 'none';
+        document.getElementById('lobby-page').style.display = 'block';
+        
+        this.currentLobby = {
+            id: lobby.id,
+            name: lobby.name,
+            creatorId: lobby.creatorId,
+            creatorName: lobby.creatorName,
+            maxPlayers: 10,
+            players: []
+        };
+        
+        this.currentCreator = lobby.creatorId;
+        this.playersData = {};
+        this.observer1 = null;
+        this.observer2 = null;
+        this.bannedUsers = [];
+        
+        // پاک کردن صندلی‌ها
+        for (let i = 1; i <= 10; i++) {
+            const chair = document.getElementById(`chair-${i}`);
+            chair.classList.add('empty-chair');
+            chair.innerHTML = `<div class="chair-avatar"></div><div class="chair-name">خالی</div>`;
+            delete chair.dataset.playerId;
+        }
+        
+        // پاک کردن ناظرها
+        document.getElementById('observerChair1').classList.remove('visible');
+        document.getElementById('observerChair2').classList.remove('visible');
+        
+        // اضافه کردن سازنده
+        this.addPlayerToLobby({ 
+            id: lobby.creatorId, 
+            name: lobby.creatorName, 
+            avatar: lobby.creatorAvatar, 
+            isCreator: (lobby.creatorId === this.userId) 
+        });
+        
+        // اگر کاربر فعلی سازنده نیست، خودش را اضافه کن
+        if (this.userId !== lobby.creatorId) {
+            this.addPlayerToLobby({ 
+                id: this.userId, 
+                name: this.userName, 
+                avatar: this.currentAvatar, 
+                isCreator: false 
+            });
+        }
+    },
+    
+    renderLobbies() {
+        const container = document.getElementById('lobbies-container');
+        
+        if (this.lobbies.length === 0) {
+            container.innerHTML = '<div class="empty-lobbies"> هنوز لابی‌ای یافت نشده است<br>اولین لابی را ایجاد کنید!</div>';
+            return;
+        }
+        
+        let html = '';
+        const sortedLobbies = [...this.lobbies].reverse();
+        
+        sortedLobbies.forEach(lobby => {
+            const avatarSrc = this.getAvatarImage(lobby.creatorAvatar);
+            const passwordIndicator = lobby.hasPassword ? '<div class="lobby-password-indicator">🔒 رمز دارد</div>' : '';
             
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(userIdText).then(() => {
-                    showCopyNotification();
-                }).catch(() => {
-                    fallbackCopy(userIdText);
-                });
+            html += `
+                <div class="lobby-card">
+                    <div class="lobby-name-section">
+                        <span class="lobby-name-text">🏷️ ${lobby.name}</span>
+                        ${passwordIndicator}
+                    </div>
+                    <div class="lobby-creator-box">
+                        <div class="lobby-creator-avatar"><img src="${avatarSrc}"></div>
+                        <div class="lobby-creator-details">
+                            <div class="lobby-creator-name">${lobby.creatorName}</div>
+                            <div class="lobby-players"><span>👥</span> ${lobby.currentPlayers}/${lobby.maxPlayers} بازیکن</div>
+                        </div>
+                        <button class="lobby-join-btn" onclick="app.joinLobby(${lobby.id})">ورود</button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = html;
+    },
+    
+    // ========== توابع داخل لابی ==========
+    addPlayerToLobby(player, specificChair = null) {
+        if (this.currentLobby.players.some(p => p.id === player.id)) return;
+        if (this.bannedUsers.includes(player.id)) return;
+        
+        this.currentLobby.players.push(player);
+        
+        if (specificChair) {
+            const chair = document.getElementById(`chair-${specificChair}`);
+            if (chair && chair.classList.contains('empty-chair')) {
+                this.placePlayerInChair(chair, player, specificChair);
+                return;
+            }
+        }
+        
+        for (let i = 1; i <= 10; i++) {
+            const chair = document.getElementById(`chair-${i}`);
+            if (chair && chair.classList.contains('empty-chair')) {
+                this.placePlayerInChair(chair, player, i);
+                break;
+            }
+        }
+    },
+    
+    placePlayerInChair(chair, player, chairNumber) {
+        chair.classList.remove('empty-chair');
+        const avatarImg = this.getAvatarImage(player.avatar);
+        
+        this.playersData[player.id] = { ...player, originalChair: chairNumber };
+        
+        const voiceWave = document.createElement('div');
+        voiceWave.className = 'voice-wave';
+        voiceWave.id = `wave-${player.id}`;
+        for (let j = 0; j < 5; j++) {
+            const bar = document.createElement('div');
+            bar.className = 'wave-bar';
+            voiceWave.appendChild(bar);
+        }
+        
+        chair.innerHTML = `
+            <div class="chair-avatar" onclick="app.openAdminMenu(${player.id}, '${player.name}')">
+                <img src="${avatarImg}">
+            </div>
+            <div class="chair-name" id="name-${player.id}">
+                ${player.isCreator ? '<span class="crown-icon"></span>' : ''}
+                <span>${player.name}</span>
+            </div>
+        `;
+        
+        chair.appendChild(voiceWave);
+        chair.dataset.playerId = player.id;
+    },
+    
+    removePlayerFromLobby(playerId) {
+        this.currentLobby.players = this.currentLobby.players.filter(p => p.id !== playerId);
+        
+        for (let i = 1; i <= 10; i++) {
+            const chair = document.getElementById(`chair-${i}`);
+            if (chair.dataset.playerId == playerId) {
+                chair.classList.add('empty-chair');
+                chair.innerHTML = `<div class="chair-avatar"></div><div class="chair-name">خالی</div>`;
+                delete chair.dataset.playerId;
+                break;
+            }
+        }
+    },
+    
+    // ========== سیستم ناظر ==========
+    toggleObserver(type) {
+        if (!this.selectedPlayerId) return;
+        
+        const playerData = this.playersData[this.selectedPlayerId];
+        if (!playerData) return;
+        
+        if (type === 1 && this.observer1 === this.selectedPlayerId) {
+            this.removeFromObserver(1);
+            return;
+        }
+        if (type === 2 && this.observer2 === this.selectedPlayerId) {
+            this.removeFromObserver(2);
+            return;
+        }
+        
+        if (type === 1) {
+            if (this.observer1) {
+                const prevPlayerData = this.playersData[this.observer1];
+                if (prevPlayerData) {
+                    this.addPlayerToLobby(prevPlayerData, prevPlayerData.originalChair);
+                }
+                this.observer1 = null;
+            }
+            
+            this.removePlayerFromLobby(this.selectedPlayerId);
+            this.observer1 = this.selectedPlayerId;
+            this.updateObserverDisplay(1, playerData);
+        } else {
+            if (this.observer2) {
+                const prevPlayerData = this.playersData[this.observer2];
+                if (prevPlayerData) {
+                    this.addPlayerToLobby(prevPlayerData, prevPlayerData.originalChair);
+                }
+                this.observer2 = null;
+            }
+            
+            this.removePlayerFromLobby(this.selectedPlayerId);
+            this.observer2 = this.selectedPlayerId;
+            this.updateObserverDisplay(2, playerData);
+        }
+        
+        this.closeAdminMenu();
+    },
+    
+    updateObserverDisplay(type, playerData) {
+        const avatarImg = this.getAvatarImage(playerData.avatar);
+        
+        if (type === 1) {
+            document.getElementById('observerChair1').classList.add('visible');
+            document.getElementById('observerAvatar1').innerHTML = `<img src="${avatarImg}">`;
+            document.getElementById('observerName1').textContent = playerData.name;
+        } else {
+            document.getElementById('observerChair2').classList.add('visible');
+            document.getElementById('observerAvatar2').innerHTML = `<img src="${avatarImg}">`;
+            document.getElementById('observerName2').textContent = playerData.name;
+        }
+    },
+    
+    removeFromObserver(type) {
+        if (type === 1 && this.observer1) {
+            const playerData = this.playersData[this.observer1];
+            if (playerData) {
+                // پیدا کردن یک صندلی خالی
+                for (let i = 1; i <= 10; i++) {
+                    const chair = document.getElementById(`chair-${i}`);
+                    if (chair && chair.classList.contains('empty-chair')) {
+                        this.addPlayerToLobby(playerData, i);
+                        break;
+                    }
+                }
+            }
+            this.observer1 = null;
+            document.getElementById('observerChair1').classList.remove('visible');
+        } else if (type === 2 && this.observer2) {
+            const playerData = this.playersData[this.observer2];
+            if (playerData) {
+                for (let i = 1; i <= 10; i++) {
+                    const chair = document.getElementById(`chair-${i}`);
+                    if (chair && chair.classList.contains('empty-chair')) {
+                        this.addPlayerToLobby(playerData, i);
+                        break;
+                    }
+                }
+            }
+            this.observer2 = null;
+            document.getElementById('observerChair2').classList.remove('visible');
+        }
+        this.closeAdminMenu();
+    },
+    
+    // ========== منوها ==========
+    openObserverMenu(type) {
+        if (this.currentCreator !== this.userId) return;
+        
+        let playerId, playerName;
+        if (type === 1 && this.observer1) {
+            playerId = this.observer1;
+            playerName = document.getElementById('observerName1').textContent;
+            this.selectedObserverType = 1;
+        } else if (type === 2 && this.observer2) {
+            playerId = this.observer2;
+            playerName = document.getElementById('observerName2').textContent;
+            this.selectedObserverType = 2;
+        } else {
+            return;
+        }
+        
+        this.selectedPlayerId = playerId;
+        document.getElementById('menuPlayerName').innerHTML = `مدیریت ${playerName}`;
+        
+        document.getElementById('observer1MenuItem').style.display = 'none';
+        document.getElementById('observer2MenuItem').style.display = 'none';
+        document.getElementById('removeObserverMenuItem').style.display = 'block';
+        
+        document.getElementById('adminMenu').classList.add('visible');
+    },
+    
+    openAdminMenu(playerId, playerName) {
+        if (this.currentCreator !== this.userId) return;
+        
+        this.selectedPlayerId = playerId;
+        this.selectedObserverType = null;
+        document.getElementById('menuPlayerName').innerHTML = `مدیریت ${playerName}`;
+        
+        document.getElementById('observer1MenuItem').style.display = 'block';
+        document.getElementById('observer2MenuItem').style.display = 'block';
+        document.getElementById('removeObserverMenuItem').style.display = 'none';
+        
+        document.getElementById('adminMenu').classList.add('visible');
+    },
+    
+    closeAdminMenu() {
+        document.getElementById('adminMenu').classList.remove('visible');
+    },
+    
+    toggleMainMenu() {
+        if (this.currentCreator !== this.userId) return;
+        const menu = document.getElementById('mainMenu');
+        menu.classList.toggle('visible');
+        if (menu.classList.contains('visible')) this.updateBannedList();
+    },
+    
+    toggleBanList() {
+        const container = document.getElementById('bannedListContainer');
+        container.style.display = container.style.display === 'none' ? 'block' : 'none';
+    },
+    
+    updateBannedList() {
+        const container = document.getElementById('bannedItems');
+        if (this.bannedUsers.length === 0) {
+            container.innerHTML = '<div style="color: #888; padding: 5px;">لیست خالی است</div>';
+            return;
+        }
+        
+        let html = '';
+        this.bannedUsers.forEach(userId => {
+            html += `
+                <div class="banned-user-item">
+                    <span>کاربر ${userId}</span>
+                    <button class="unban-small-btn" onclick="app.unbanUser(${userId})">رفع</button>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    },
+    
+    unbanUser(userId) {
+        this.bannedUsers = this.bannedUsers.filter(id => id !== userId);
+        this.updateBannedList();
+    },
+    
+    leaveLobby() {
+        // اگر سازنده لابی هستیم، لابی را پاک کن
+        if (this.currentCreator === this.userId && this.currentLobby.id) {
+            this.deleteLobby(this.currentLobby.id);
+        }
+        
+        document.getElementById('lobby-page').style.display = 'none';
+        document.getElementById('friendly-hall-page').style.display = 'block';
+        
+        // پاک کردن اطلاعات لابی
+        this.currentLobby = { id: null, name: '', creatorId: null, creatorName: '', maxPlayers: 10, players: [] };
+        this.currentCreator = null;
+        this.observer1 = null;
+        this.observer2 = null;
+        this.playersData = {};
+        this.bannedUsers = [];
+        
+        // پاک کردن صندلی‌ها
+        for (let i = 1; i <= 10; i++) {
+            const chair = document.getElementById(`chair-${i}`);
+            chair.classList.add('empty-chair');
+            chair.innerHTML = `<div class="chair-avatar"></div><div class="chair-name">خالی</div>`;
+            delete chair.dataset.playerId;
+        }
+        
+        // پاک کردن ناظرها
+        document.getElementById('observerChair1').classList.remove('visible');
+        document.getElementById('observerChair2').classList.remove('visible');
+        
+        // بروزرسانی لیست لابی‌ها
+        this.renderLobbies();
+    },
+    
+    transferOwnership() {
+        if (!this.selectedPlayerId) return;
+        
+        const newCreator = this.playersData[this.selectedPlayerId];
+        if (!newCreator) return;
+        
+        // حذف تاج از سازنده قبلی
+        const oldName = document.getElementById(`name-${this.currentCreator}`);
+        if (oldName) {
+            const oldPlayer = this.playersData[this.currentCreator];
+            oldName.innerHTML = `<span>${oldPlayer?.name || 'سازنده'}</span>`;
+        }
+        
+        // اضافه کردن تاج به سازنده جدید
+        const newName = document.getElementById(`name-${this.selectedPlayerId}`);
+        if (newName) {
+            newName.innerHTML = `<span class="crown-icon"></span><span>${newCreator.name}</span>`;
+        }
+        
+        this.currentCreator = this.selectedPlayerId;
+        this.closeAdminMenu();
+        alert(`مالکیت به ${newCreator.name} منتقل شد`);
+    },
+    
+    kickPlayer() {
+        if (!this.selectedPlayerId) return;
+        this.removePlayerFromLobby(this.selectedPlayerId);
+        this.closeAdminMenu();
+    },
+    
+    banPlayer() {
+        if (!this.selectedPlayerId) return;
+        this.bannedUsers.push(this.selectedPlayerId);
+        this.removePlayerFromLobby(this.selectedPlayerId);
+        this.closeAdminMenu();
+    },
+    
+    toggleMic() {
+        const micBtn = document.getElementById('micBtn');
+        micBtn.classList.toggle('active');
+        if (micBtn.classList.contains('active')) {
+            this.toggleSpeaker(this.userId);
+        } else {
+            this.toggleSpeaker(this.userId);
+        }
+    },
+    
+    toggleSpeaker(playerId) {
+        const wave = document.getElementById(`wave-${playerId}`);
+        if (wave) {
+            if (this.activeSpeaker === playerId) {
+                wave.classList.remove('active');
+                this.activeSpeaker = null;
             } else {
-                fallbackCopy(userIdText);
+                if (this.activeSpeaker) {
+                    const prev = document.getElementById(`wave-${this.activeSpeaker}`);
+                    if (prev) prev.classList.remove('active');
+                }
+                wave.classList.add('active');
+                this.activeSpeaker = playerId;
+            }
+        }
+    },
+    
+    // ========== به‌روزرسانی‌ها ==========
+    updateAllDisplays() {
+        this.updateMainProfile();
+        this.updateProfilePage();
+        this.updateMyAvatars();
+        this.updateShopAvatars();
+        this.updateCurrencyDisplay();
+        
+        const userIdDisplay = document.getElementById('userIdDisplay');
+        if (userIdDisplay) {
+            userIdDisplay.textContent = this.isCreator ? '۱' : this.userId.toLocaleString('fa-IR');
+        }
+    },
+    
+    updateCurrencyDisplay() {
+        const gemDisplay = document.getElementById('gemDisplay');
+        const coinDisplay = document.getElementById('coinDisplay');
+        
+        if (this.isCreator) {
+            if (gemDisplay) gemDisplay.textContent = '∞';
+            if (coinDisplay) coinDisplay.textContent = '∞';
+        } else {
+            if (gemDisplay) gemDisplay.textContent = this.userGems.toLocaleString('fa-IR');
+            if (coinDisplay) coinDisplay.textContent = this.userCoins.toLocaleString('fa-IR');
+        }
+    },
+    
+    updateMainProfile() {
+        const profileAvatar = document.getElementById('mainProfileAvatar');
+        if (profileAvatar) {
+            profileAvatar.innerHTML = `<img src="${this.getAvatarImage(this.currentAvatar)}" style="width:100%; height:100%; border-radius:50%;">`;
+        }
+        
+        const profileName = document.getElementById('mainProfileName');
+        const nameText = document.getElementById('mainProfileNameText');
+        if (profileName && nameText) {
+            let displayName = this.userName;
+            if (displayName.length > 10) displayName = displayName.slice(0, 9) + '...';
+            nameText.textContent = displayName;
+            
+            if (this.isCreator) {
+                profileName.innerHTML = `<span class="verified-badge"></span><span class="profile-name-text" id="mainProfileNameText" title="${this.userName}">${displayName}</span>`;
             }
         }
         
-        function fallbackCopy(text) {
+        const profileLevel = document.querySelector('.profile-level');
+        if (profileLevel) {
+            profileLevel.textContent = this.isCreator ? 'سطح ∞' : 'سطح ۱';
+        }
+    },
+    
+    updateProfilePage() {
+        const profileImg = document.getElementById('profileAvatarImg');
+        if (profileImg) {
+            profileImg.src = this.getAvatarImage(this.currentAvatar);
+        }
+        
+        const profileName = document.getElementById('profileUserName');
+        if (profileName) {
+            if (this.isCreator) {
+                profileName.innerHTML = `${this.userName} <span class="verified-badge"></span>`;
+            } else {
+                profileName.textContent = this.userName;
+            }
+        }
+        
+        const levelBadge = document.getElementById('profileLevelBadge');
+        if (levelBadge) {
+            levelBadge.textContent = this.isCreator ? 'سازنده' : 'سطح ۱';
+        }
+        
+        const editStatus = document.getElementById('editStatus');
+        if (editStatus) {
+            if (this.isCreator) {
+                editStatus.innerHTML = `<span class="free-badge">⚡ بی‌نهایت</span><span class="coin-badge"><span class="coin-icon">🪙</span>∞</span>`;
+            } else {
+                editStatus.innerHTML = `
+                    <span class="free-badge">⚡ ${this.editCount === 0 ? '۱ بار رایگان' : 'پرداختی'}</span>
+                    <span class="coin-badge"><span class="coin-icon">🪙</span>۵ سکه</span>
+                `;
+            }
+        }
+        
+        const rankName = document.getElementById('rankName');
+        const rankTag = document.getElementById('rankTag');
+        if (rankName && rankTag) {
+            rankName.textContent = this.isCreator ? 'سازنده' : 'کاربر';
+            rankTag.textContent = this.isCreator ? 'بنیانگذار' : 'بازیکن';
+        }
+        
+        if (this.isCreator) {
+            const winCount = document.getElementById('winCount');
+            const loseCount = document.getElementById('loseCount');
+            const hoursPlayed = document.getElementById('hoursPlayed');
+            const observerCount = document.getElementById('observerCount');
+            
+            if (winCount) winCount.textContent = '∞';
+            if (loseCount) loseCount.textContent = '۰';
+            if (hoursPlayed) hoursPlayed.textContent = '∞';
+            if (observerCount) observerCount.textContent = '∞';
+        }
+    },
+    
+    // ========== آواتار من - طرح جدید مثل مافیای آنلاین ==========
+    updateMyAvatars() {
+        const myAvatarsGrid = document.getElementById('myAvatarsGrid');
+        if (!myAvatarsGrid) return;
+
+        let html = '';
+        // لیست کامل آواتارها
+        const avatars = [
+            { id: 'avatar1', num: '#۰۰۱', img: 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png' },
+            { id: 'avatar2', num: '#۰۰۲', img: 'https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png' },
+            { id: 'ninja', num: '#۰۰۳', img: 'https://s8.uupload.ir/files/inshot_20260212_151231364_umrq.png' },
+            { id: 'samurai', num: '#۰۰۴', img: 'https://s8.uupload.ir/files/inshot_20260212_151120584_7df6.png' },
+            { id: 'avatar5', num: '#۰۰۵', img: 'https://s8.uupload.ir/files/inshot_20260213_195059047_ln6h.png' },
+            { id: 'avatar6', num: '#۰۰۶', img: 'https://s8.uupload.ir/files/inshot_20260213_195217329_u6to.png' },
+            { id: 'avatar7', num: '#۰۰۷', img: 'https://s8.uupload.ir/files/inshot_20260213_093421818_xwo9.png' },
+            { id: 'avatar8', num: '#۰۰۸', img: 'https://s8.uupload.ir/files/inshot_20260213_093508335_djbv.png' }
+        ];
+
+        avatars.forEach(avatar => {
+            if (this.ownedAvatars.includes(avatar.id)) {
+                html += `
+                    <div class="avatar-card ${this.currentAvatar === avatar.id ? 'selected' : ''}" onclick="app.selectAvatar('${avatar.id}')">
+                        <div class="avatar-thumb"><img src="${avatar.img}" alt="آواتار ${avatar.num}"></div>
+                        <div class="avatar-number">${avatar.num}</div>
+                        <button class="select-button" onclick="app.selectAvatar('${avatar.id}'); event.stopPropagation();">انتخاب</button>
+                    </div>
+                `;
+            }
+        });
+
+        myAvatarsGrid.innerHTML = html || '<div style="color: white; text-align: center; padding: 40px;">✨ شما هنوز آواتاری ندارید. از بخش خرید تهیه کنید!</div>';
+    },
+
+    // ========== فروشگاه آواتار - طرح جدید مثل مافیای آنلاین ==========
+    updateShopAvatars() {
+        const shopGrid = document.getElementById('shopGrid');
+        if (!shopGrid) return;
+
+        // تعریف آواتارهای فروشگاه با قیمت‌های جدید
+        const shopAvatars = [
+            { id: 'ninja', num: '#۰۰۳', img: 'https://s8.uupload.ir/files/inshot_20260212_151231364_umrq.png', price: 200, currency: 'gems' },
+            { id: 'samurai', num: '#۰۰۴', img: 'https://s8.uupload.ir/files/inshot_20260212_151120584_7df6.png', price: 200, currency: 'gems' },
+            { id: 'avatar5', num: '#۰۰۵', img: 'https://s8.uupload.ir/files/inshot_20260213_195059047_ln6h.png', price: 180, currency: 'gems' },
+            { id: 'avatar6', num: '#۰۰۶', img: 'https://s8.uupload.ir/files/inshot_20260213_195217329_u6to.png', price: 100, currency: 'gems' },
+            { id: 'avatar7', num: '#۰۰۷', img: 'https://s8.uupload.ir/files/inshot_20260213_093421818_xwo9.png', price: 2000, currency: 'coins' },
+            { id: 'avatar8', num: '#۰۰۸', img: 'https://s8.uupload.ir/files/inshot_20260213_093508335_djbv.png', price: 1200, currency: 'coins' }
+        ];
+
+        let html = '';
+        shopAvatars.forEach(avatar => {
+            // فقط آواتارهایی که کاربر ندارد نشان داده شود
+            if (!this.ownedAvatars.includes(avatar.id)) {
+                const priceIcon = avatar.currency === 'gems' ? '💎' : '🪙';
+                const priceText = avatar.price.toLocaleString('fa-IR');
+                html += `
+                    <div class="shop-card" id="shop-${avatar.id}">
+                        <div class="shop-thumb"><img src="${avatar.img}" alt="آواتار ${avatar.num}"></div>
+                        <div class="shop-number">${avatar.num}</div>
+                        <div class="shop-price"><span>${priceIcon}</span> ${priceText}</div>
+                        <button class="buy-button" onclick="app.buyAvatar('${avatar.id}', '${avatar.num}', '${avatar.img}', ${avatar.price}, '${avatar.currency}')">خرید</button>
+                    </div>
+                `;
+            }
+        });
+
+        shopGrid.innerHTML = html || '<div style="color: white; text-align: center; padding: 40px;">🎉 شما همه آواتارها را دارید!</div>';
+    },
+
+    // ========== خرید آواتار ==========
+    buyAvatar(avatarId, avatarNumber, avatarImage, price, currency = 'gems') {
+        if (this.isCreator) {
+            alert('👑 شما سازنده هستید و همه آواتارها رایگان هستند.');
+            if (!this.ownedAvatars.includes(avatarId)) {
+                this.ownedAvatars.push(avatarId);
+                this.saveUserData();
+                this.updateMyAvatars();
+                this.updateShopAvatars();
+                this.switchAvatarTab('my');
+            }
+            return;
+        }
+
+        // بررسی موجودی
+        let hasEnough = false;
+        if (currency === 'gems') {
+            hasEnough = this.userGems >= price;
+        } else {
+            hasEnough = this.userCoins >= price;
+        }
+
+        if (!hasEnough) {
+            const currencyName = currency === 'gems' ? 'جم' : 'سکه';
+            alert(`❌ ${currencyName} کافی ندارید! نیاز به ${price.toLocaleString('fa-IR')} ${currencyName} است.`);
+            return;
+        }
+
+        if (this.ownedAvatars.includes(avatarId)) {
+            alert('⚠️ این آواتار را قبلاً خریداری کرده‌اید');
+            return;
+        }
+
+        // کسر هزینه
+        if (currency === 'gems') {
+            this.userGems -= price;
+        } else {
+            this.userCoins -= price;
+        }
+
+        this.ownedAvatars.push(avatarId);
+        this.saveUserData();
+        this.updateCurrencyDisplay();
+        this.updateMyAvatars();
+        this.updateShopAvatars();
+        this.switchAvatarTab('my');
+
+        const notification = document.getElementById('copyNotification');
+        notification.textContent = `✅ آواتار ${avatarNumber} با موفقیت خریداری شد`;
+        notification.style.display = 'block';
+        setTimeout(() => {
+            notification.style.display = 'none';
+            notification.textContent = '✅ کد کاربری کپی شد';
+        }, 3000);
+    },
+    
+    saveUserData() {
+        if (this.isCreator) return;
+        
+        try {
+            localStorage.setItem('mafiaUserId', this.userId.toString());
+            localStorage.setItem('mafiaUserAvatar', this.currentAvatar);
+            localStorage.setItem('mafiaUserName', this.userName);
+            localStorage.setItem('mafiaOwnedAvatars', JSON.stringify(this.ownedAvatars));
+            localStorage.setItem('mafiaUserGems', this.userGems.toString());
+            localStorage.setItem('mafiaUserCoins', this.userCoins.toString());
+            localStorage.setItem('mafiaEditCount', this.editCount.toString());
+        } catch (e) {}
+    },
+    
+    selectAvatar(avatarId) {
+        this.currentAvatar = avatarId;
+        this.saveUserData();
+        this.updateMyAvatars();
+        this.updateMainProfile();
+        this.updateProfilePage();
+    },
+    
+    copyUserId() {
+        const userIdElement = document.getElementById('userIdDisplay');
+        const userIdText = userIdElement.textContent;
+        
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(userIdText).then(() => this.showCopyNotification());
+        } else {
             const textarea = document.createElement('textarea');
-            textarea.value = text;
+            textarea.value = userIdText;
             textarea.style.position = 'fixed';
             textarea.style.opacity = '0';
             document.body.appendChild(textarea);
             textarea.select();
             document.execCommand('copy');
             document.body.removeChild(textarea);
-            showCopyNotification();
+            this.showCopyNotification();
+        }
+    },
+    
+    showCopyNotification() {
+        const notification = document.getElementById('copyNotification');
+        notification.style.display = 'block';
+        setTimeout(() => notification.style.display = 'none', 1500);
+    },
+    
+    // ========== ناوبری ==========
+    openProfilePage() {
+        document.getElementById('main-game-page').style.display = 'none';
+        document.getElementById('friendly-hall-page').style.display = 'none';
+        document.getElementById('lobby-page').style.display = 'none';
+        document.getElementById('profile-page').style.display = 'block';
+        document.getElementById('avatar-page').style.display = 'none';
+        document.getElementById('create-lobby-menu').style.display = 'none';
+        this.updateProfilePage();
+        
+        const userIdDisplay = document.getElementById('userIdDisplay');
+        if (userIdDisplay) {
+            userIdDisplay.textContent = this.isCreator ? '۱' : this.userId.toLocaleString('fa-IR');
+        }
+    },
+    
+    closeProfilePage() {
+        document.getElementById('profile-page').style.display = 'none';
+        document.getElementById('main-game-page').style.display = 'block';
+        this.updateCurrencyDisplay();
+    },
+    
+    openAvatarPage() {
+        document.getElementById('avatar-page').style.display = 'block';
+        this.updateMyAvatars();
+        this.updateShopAvatars();
+    },
+    
+    closeAvatarPage() {
+        document.getElementById('avatar-page').style.display = 'none';
+    },
+    
+    switchAvatarTab(tab) {
+        const tabs = document.querySelectorAll('.avatar-tab');
+        const panels = document.querySelectorAll('.tab-panel');
+        
+        tabs.forEach(t => t.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
+        
+        if (tab === 'my') {
+            tabs[0].classList.add('active');
+            document.getElementById('myAvatarsPanel').classList.add('active');
+        } else {
+            tabs[1].classList.add('active');
+            document.getElementById('shopPanel').classList.add('active');
+            this.updateShopAvatars();
+        }
+    },
+    
+    openEditModal() {
+        if (this.isCreator) {
+            alert('⚡ شما سازنده هستید و نام کاربری ثابت است');
+            return;
         }
         
-        function showCopyNotification() {
-            const notification = document.getElementById('copyNotification');
-            notification.style.display = 'block';
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 1500);
+        const modal = document.getElementById('editModal');
+        const coinMessage = document.getElementById('coinRequiredMessage');
+        const modalTitle = document.getElementById('modalTitle');
+        const nameInput = document.getElementById('editNameInput');
+        
+        nameInput.value = this.userName;
+        
+        if (this.editCount === 0) {
+            modalTitle.innerHTML = 'تغییر نام (رایگان)';
+            coinMessage.style.display = 'none';
+        } else {
+            modalTitle.innerHTML = 'تغییر نام (۵ سکه)';
+            coinMessage.style.display = 'flex';
         }
         
-        // ========== توابع ناوبری ==========
-        function openProfilePage() {
-            document.getElementById('main-game-page').style.display = 'none';
-            document.getElementById('friendly-hall-page').style.display = 'none';
-            document.getElementById('profile-page').style.display = 'block';
-            document.getElementById('avatar-page').style.display = 'none';
-            updateProfilePage();
-            
-            const userIdDisplay = document.getElementById('userIdDisplay');
-            if (userIdDisplay) {
-                userIdDisplay.textContent = isCreator ? '۱' : userId.toLocaleString('fa-IR');
-            }
+        modal.style.display = 'block';
+    },
+    
+    closeEditModal() {
+        document.getElementById('editModal').style.display = 'none';
+    },
+    
+    saveUserName() {
+        if (this.isCreator) {
+            alert('⚡ شما سازنده هستید و نام کاربری ثابت است');
+            return;
         }
         
-        function closeProfilePage() {
-            document.getElementById('profile-page').style.display = 'none';
-            document.getElementById('main-game-page').style.display = 'block';
-            updateCurrencyDisplay();
+        const nameInput = document.getElementById('editNameInput');
+        let newName = nameInput.value.trim();
+        
+        if (!newName || newName.length < 2 || newName.length > 12) {
+            alert('❌ نام باید بین ۲ تا ۱۲ حرف باشد');
+            return;
         }
         
-        function openAvatarPage() {
-            document.getElementById('avatar-page').style.display = 'block';
-            updateMyAvatars();
-            updateShopAvatars();
+        if (this.editCount > 0 && this.userCoins < 5) {
+            alert('❌ سکه کافی ندارید! نیاز به ۵ سکه');
+            return;
         }
         
-        function closeAvatarPage() {
-            document.getElementById('avatar-page').style.display = 'none';
-        }
+        if (this.editCount > 0) this.userCoins -= 5;
         
-        function switchAvatarTab(tab) {
-            const tabs = document.querySelectorAll('.avatar-tab');
-            const panels = document.querySelectorAll('.tab-panel');
-            
-            tabs.forEach(t => t.classList.remove('active'));
-            panels.forEach(p => p.classList.remove('active'));
-            
-            if (tab === 'my') {
-                tabs[0].classList.add('active');
-                document.getElementById('myAvatarsPanel').classList.add('active');
-            } else {
-                tabs[1].classList.add('active');
-                document.getElementById('shopPanel').classList.add('active');
-                updateShopAvatars();
-            }
-        }
+        this.userName = newName;
+        this.editCount++;
+        this.saveUserData();
+        this.updateMainProfile();
+        this.updateProfilePage();
+        this.updateCurrencyDisplay();
+        this.closeEditModal();
         
-        function openEditModal() {
-            if (isCreator) {
-                alert('⚡ شما سازنده هستید و نام کاربری ثابت است');
-                return;
-            }
-            
-            const modal = document.getElementById('editModal');
-            const coinMessage = document.getElementById('coinRequiredMessage');
-            const modalTitle = document.getElementById('modalTitle');
-            const nameInput = document.getElementById('editNameInput');
-            
-            nameInput.value = userName;
-            
-            if (editCount === 0) {
-                modalTitle.innerHTML = 'تغییر نام (رایگان)';
-                coinMessage.style.display = 'none';
-            } else {
-                modalTitle.innerHTML = 'تغییر نام (۵ سکه)';
-                coinMessage.style.display = 'flex';
-            }
-            
-            modal.style.display = 'block';
-        }
-        
-        function closeEditModal() {
-            document.getElementById('editModal').style.display = 'none';
-        }
-        
-        function saveUserName() {
-            if (isCreator) {
-                alert('⚡ شما سازنده هستید و نام کاربری ثابت است');
-                return;
-            }
-            
-            const nameInput = document.getElementById('editNameInput');
-            let newName = nameInput.value.trim();
-            
-            if (!newName) {
-                alert('❌ لطفا نام جدید را وارد کنید');
-                return;
-            }
-            
-            if (newName.length < 2) {
-                alert('❌ نام باید حداقل ۲ حرف باشد');
-                return;
-            }
-            
-            if (newName.length > 12) {
-                alert('❌ نام نمی‌تواند بیشتر از ۱۲ حرف باشد');
-                return;
-            }
-            
-            if (editCount > 0) {
-                if (userCoins < 5) {
-                    alert('❌ سکه کافی ندارید! نیاز به ۵ سکه');
-                    return;
-                }
-                userCoins -= 5;
-            }
-            
-            userName = newName;
-            editCount++;
-            saveUserData();
-            updateMainProfile();
-            updateProfilePage();
-            updateCurrencyDisplay();
-            closeEditModal();
-            
-            if (editCount === 1) {
-                alert('✅ نام کاربری با موفقیت تغییر کرد (۱ بار رایگان)');
-            } else {
-                alert('✅ نام کاربری با موفقیت تغییر کرد (۵ سکه کسر شد)');
-            }
-        }
-        
-        function openFriendlyHall() {
-            document.getElementById('main-game-page').style.display = 'none';
-            document.getElementById('friendly-hall-page').style.display = 'block';
-            document.getElementById('profile-page').style.display = 'none';
-            document.getElementById('avatar-page').style.display = 'none';
-        }
-        
-        function goBackToGame() {
-            document.getElementById('friendly-hall-page').style.display = 'none';
-            document.getElementById('main-game-page').style.display = 'block';
-            document.getElementById('profile-page').style.display = 'none';
-            document.getElementById('avatar-page').style.display = 'none';
-        }
-        
-        // ========== اجرا در لحظه لود صفحه ==========
-        (function() {
-            // اجرا بلافاصله
-            initializeGame();
-        })();
-        
-        // جلوگیری از اجرای مجدد با DOMContentLoaded
-        window.addEventListener('DOMContentLoaded', function() {
-            // فقط اگه مقداردهی نشده بود
-            if (!initialized) {
-                initializeGame();
-            }
-        });
-    </script>
+        alert(this.editCount === 1 ? '✅ نام کاربری با موفقیت تغییر کرد (۱ بار رایگان)' : '✅ نام کاربری با موفقیت تغییر کرد (۵ سکه کسر شد)');
+    },
+    
+    openFriendlyHall() {
+        document.getElementById('main-game-page').style.display = 'none';
+        document.getElementById('friendly-hall-page').style.display = 'block';
+        document.getElementById('profile-page').style.display = 'none';
+        document.getElementById('lobby-page').style.display = 'none';
+        document.getElementById('avatar-page').style.display = 'none';
+        document.getElementById('create-lobby-menu').style.display = 'none';
+        this.renderLobbies();
+    },
+    
+    goBackToGame() {
+        document.getElementById('friendly-hall-page').style.display = 'none';
+        document.getElementById('main-game-page').style.display = 'block';
+        document.getElementById('profile-page').style.display = 'none';
+        document.getElementById('lobby-page').style.display = 'none';
+        document.getElementById('avatar-page').style.display = 'none';
+        document.getElementById('create-lobby-menu').style.display = 'none';
+    }
+};
+
+// ========== اتصال به رویدادها ==========
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.admin-menu') && !e.target.closest('.chair-avatar') && !e.target.closest('.observer-avatar')) {
+        App.closeAdminMenu();
+    }
+    if (!e.target.closest('.menu-button') && !e.target.closest('.main-menu')) {
+        document.getElementById('mainMenu')?.classList.remove('visible');
+    }
+});
+
+window.addEventListener('DOMContentLoaded', function() {
+    App.initializeGame();
+});
+
+// ========== قرار دادن در scope سراسری ==========
+window.app = App;
+</script>
 </body>
 </html>
