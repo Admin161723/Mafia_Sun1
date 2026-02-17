@@ -4,2369 +4,2405 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>مافیا سان | بازی آنلاین</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Vazirmatn', 'Inter', sans-serif;
-            overflow: hidden;
-            background: #0a0c10;
-        }
-
-        #main-game-page, #friendly-hall-page, #profile-page, #avatar-page, #lobby-page, #other-profile-page, #report-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            display: none;
-            overflow-y: auto;
-        }
-
-        #main-game-page {
-            background: url('https://s8.uupload.ir/files/img_20260208_152349_053_b8yg.jpg') no-repeat center center fixed;
-            background-size: cover;
-            display: block;
-        }
-
-        #friendly-hall-page {
-            background: url('https://s8.uupload.ir/files/img_20260208_174730_422_inei.jpg') no-repeat center center;
-            background-size: cover;
-        }
-
-        #profile-page {
-            background: url('https://s8.uupload.ir/files/img_20260212_001408_558_g4g9.jpg') no-repeat center center;
-            background-size: cover;
-        }
-
-        #other-profile-page {
-            background: url('https://s8.uupload.ir/files/img_20260212_001408_558_g4g9.jpg') no-repeat center center;
-            background-size: cover;
-            z-index: 10000;
-        }
-
-        #avatar-page {
-            background: url('https://s8.uupload.ir/files/img_20260212_001408_558_g4g9.jpg') no-repeat center center;
-            background-size: cover;
-        }
-
-        #lobby-page {
-            background: url('https://s8.uupload.ir/files/inshot_20260213_024334942_qu0p.jpg') no-repeat center center;
-            background-size: cover;
-        }
-
-        #report-modal {
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
-            z-index: 20000;
-            display: none;
-        }
-
-        .game-header {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            z-index: 1001;
-        }
-
-        .currency-card {
-            background: rgba(20, 25, 35, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 6px 15px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            border: 1px solid #3a4050;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        .currency-icon {
-            font-size: 16px;
-        }
-
-        .gem-icon { color: #6eacda; }
-        .coin-icon { color: #f9d77e; }
-
-        .currency-info {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .currency-label {
-            color: #8f9aa7;
-            font-size: 11px;
-        }
-
-        .currency-value {
-            color: #fff;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .profile-container {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(20, 25, 35, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 8px 18px;
-            border-radius: 40px;
-            border: 1px solid #3a4050;
-            cursor: pointer;
-            z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
-        }
-
-        .profile-container:hover {
-            border-color: #6eacda;
-            transform: translateY(-2px);
-        }
-
-        .profile-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 2px solid #6eacda;
-        }
-
-        .profile-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .profile-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .profile-name {
-            color: #fff;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .profile-level {
-            color: #8f9aa7;
-            font-size: 11px;
-        }
-
-        .start-button {
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            cursor: pointer;
-            width: 140px;
-            height: 140px;
-            transition: all 0.3s;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
-        }
-
-        .start-button:hover {
-            transform: translateX(-50%) scale(1.05);
-            filter: drop-shadow(0 15px 30px rgba(110, 172, 218, 0.3));
-        }
-
-        .start-button img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .bottom-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 60px;
-            background: rgba(10, 15, 25, 0.95);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-top: 1px solid #2a2f38;
-        }
-
-        .house-img {
-            width: 40px;
-            height: 40px;
-            opacity: 0.8;
-            filter: brightness(0.8);
-            transition: all 0.3s;
-        }
-
-        .house-img:hover {
-            opacity: 1;
-            filter: brightness(1);
-        }
-
-        .house-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .hall-back-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 45px;
-            height: 45px;
-            background: rgba(20, 25, 35, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 1px solid #3a4050;
-            color: #fff;
-            font-size: 24px;
-            transition: all 0.3s;
-            z-index: 2000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        .hall-back-btn::after {
-            content: "←";
-        }
-
-        .hall-back-btn:hover {
-            border-color: #6eacda;
-            transform: rotate(180deg);
-        }
-
-        .hall-create-lobby-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(145deg, #2a8a5e, #1e6a4a);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 3px solid #6eacda;
-            color: white;
-            font-size: 36px;
-            transition: all 0.3s;
-            z-index: 2000;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        }
-
-        .hall-create-lobby-btn::after {
-            content: "+";
-        }
-
-        .hall-create-lobby-btn:hover {
-            transform: scale(1.1) rotate(90deg);
-            border-color: #f9d77e;
-        }
-
-        .lobbies-container {
-            max-width: 500px;
-            margin: 80px auto 20px;
-            padding: 0 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .lobby-card {
-            background: rgba(20, 25, 35, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
-            border: 1px solid #3a4050;
-            transition: all 0.3s;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-
-        .lobby-card:hover {
-            transform: translateY(-3px);
-            border-color: #6eacda;
-            box-shadow: 0 15px 30px rgba(110, 172, 218, 0.2);
-        }
-
-        .lobby-name-section {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
-        .lobby-name-text {
-            color: #fff;
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .lobby-password-indicator {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: #f9d77e;
-            font-size: 13px;
-            background: rgba(0,0,0,0.3);
-            padding: 5px 12px;
-            border-radius: 30px;
-            border: 1px solid #f9d77e;
-        }
-
-        .lobby-creator-box {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 15px;
-            padding: 12px;
-        }
-
-        .lobby-creator-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 2px solid #6eacda;
-        }
-
-        .lobby-creator-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .lobby-creator-details {
-            flex: 1;
-        }
-
-        .lobby-creator-name {
-            color: #fff;
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .lobby-players {
-            color: #8f9aa7;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .lobby-join-btn {
-            background: #2a8a5e;
-            color: white;
-            border: none;
-            padding: 8px 25px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid transparent;
-        }
-
-        .lobby-join-btn:hover {
-            background: #1e6a4a;
-            transform: scale(1.05);
-            border-color: #f9d77e;
-        }
-
-        .empty-lobbies {
-            text-align: center;
-            color: #8f9aa7;
-            padding: 60px 30px;
-            background: rgba(20, 25, 35, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            font-size: 16px;
-            border: 1px solid #3a4050;
-            margin-top: 30px;
-        }
-
-        #create-lobby-menu {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 400px;
-            background: rgba(20, 25, 35, 0.98);
-            backdrop-filter: blur(20px);
-            border: 1px solid #6eacda;
-            border-radius: 30px;
-            padding: 30px;
-            z-index: 10000;
-            display: none;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-        }
-
-        .menu-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 25px;
-        }
-
-        .menu-header h2 {
-            color: #fff;
-            font-size: 24px;
-            font-weight: 600;
-        }
-
-        .close-menu-btn {
-            width: 40px;
-            height: 40px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 1px solid #5a6a7a;
-            color: #fff;
-            font-size: 20px;
-            transition: all 0.3s;
-        }
-
-        .close-menu-btn:hover {
-            background: #ff5555;
-            border-color: #ff5555;
-            transform: rotate(90deg);
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
-            display: block;
-            color: #8f9aa7;
-            font-size: 13px;
-            margin-bottom: 8px;
-        }
-
-        .lobby-input {
-            width: 100%;
-            padding: 12px 18px;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid #3a4050;
-            border-radius: 30px;
-            color: #fff;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-
-        .lobby-input:focus {
-            outline: none;
-            border-color: #6eacda;
-            background: rgba(0,0,0,0.5);
-        }
-
-        .password-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .toggle-label {
-            color: #fff;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .toggle-switch {
-            position: relative;
-            width: 50px;
-            height: 26px;
-            background: #2a3038;
-            border-radius: 30px;
-            border: 1px solid #3a4050;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .toggle-switch.active {
-            background: #2a8a5e;
-            border-color: #6eacda;
-        }
-
-        .toggle-slider {
-            position: absolute;
-            width: 22px;
-            height: 22px;
-            background: #fff;
-            border-radius: 50%;
-            top: 1px;
-            left: 2px;
-            transition: 0.3s;
-        }
-
-        .toggle-switch.active .toggle-slider {
-            left: 26px;
-        }
-
-        #password-field {
-            display: none;
-            margin-bottom: 20px;
-        }
-
-        .players-selector {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(0,0,0,0.3);
-            border-radius: 30px;
-            padding: 8px 15px;
-            border: 1px solid #3a4050;
-            margin-bottom: 25px;
-        }
-
-        .player-count-control {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .player-count-btn {
-            width: 35px;
-            height: 35px;
-            background: #2a3640;
-            border: 1px solid #3a4050;
-            border-radius: 50%;
-            color: white;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .player-count-btn:hover {
-            background: #3a4650;
-            border-color: #6eacda;
-        }
-
-        #player-count-value {
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            min-width: 30px;
-            text-align: center;
-        }
-
-        .create-btn {
-            width: 100%;
-            background: linear-gradient(145deg, #2a8a5e, #1e6a4a);
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 40px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid #6eacda;
-        }
-
-        .create-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(110, 172, 218, 0.3);
-        }
-
-        .table-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: min(1400px, 98vw);
-            height: min(1200px, 95vh);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .table-wrapper {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .table {
-            width: min(600px, 60vw);
-            height: min(650px, 65vh);
-            background: url('https://s8.uupload.ir/files/inshot_20260213_024704366_un99.png') no-repeat center center;
-            background-size: contain;
-            position: absolute;
-            z-index: 10;
-            filter: drop-shadow(0 20px 35px rgba(0,0,0,0.7));
-        }
-
-        .chair {
-            position: absolute;
-            width: 130px;
-            height: 130px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 20;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6));
-            transform: translate(-50%, -50%) !important;
-        }
-
-        .chair-avatar {
-            width: 75px;
-            height: 75px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid #6eacda;
-            background: #1a1e24;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.7);
-            position: absolute;
-            top: 40%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 25;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .chair-avatar:hover {
-            transform: translate(-50%, -50%) scale(1.05);
-            border-color: #f9d77e;
-        }
-
-        .chair-avatar.ready {
-            border-color: #2a8a5e !important;
-            box-shadow: 0 0 15px #2a8a5e;
-        }
-
-        .chair-avatar.not-ready {
-            border-color: #dc3545 !important;
-            box-shadow: 0 0 15px #dc3545;
-        }
-
-        .chair-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .chair-name {
-            color: white;
-            font-size: 12px;
-            font-weight: 500;
-            white-space: nowrap;
-            max-width: 100px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            position: absolute;
-            bottom: 15%;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 30;
-            background: #000000;
-            padding: 3px 10px;
-            border-radius: 20px;
-            border: 1px solid #3a4050;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .crown-icon {
-            display: inline-block;
-            width: 14px;
-            height: 14px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FFD700"><path d="M12 2L15 8L21 9L17 14L18 21L12 17.5L6 21L7 14L3 9L9 8L12 2Z"/></svg>') no-repeat center center;
-            background-size: contain;
-        }
-
-        .empty-chair .chair-avatar {
-            opacity: 0.8;
-            border: 3px dashed #8f9aa7;
-            background: rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .empty-chair .chair-avatar::after {
-            content: "+";
-            font-size: 40px;
-            color: white;
-            font-weight: 300;
-            text-shadow: 0 2px 10px black;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .observers-area {
-            position: fixed;
-            top: 10px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 100px;
-            z-index: 200;
-            pointer-events: none;
-        }
-
-        .observer-chair {
-            width: 140px;
-            height: 140px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-image: url('https://s8.uupload.ir/files/inshot_20260213_155824768_och.png');
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
-            pointer-events: auto;
-            display: none;
-        }
-
-        .observer-chair.visible {
-            display: flex;
-        }
-
-        .observer-avatar {
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid #6eacda;
-            background: #1a1e24;
-            position: absolute;
-            top: 35%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .observer-avatar:hover {
-            transform: translate(-50%, -50%) scale(1.05);
-            border-color: #f9d77e;
-        }
-
-        .observer-avatar.ready {
-            border-color: #2a8a5e !important;
-            box-shadow: 0 0 15px #2a8a5e;
-        }
-
-        .observer-avatar.not-ready {
-            border-color: #dc3545 !important;
-            box-shadow: 0 0 15px #dc3545;
-        }
-
-        .observer-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .observer-name {
-            color: white;
-            font-size: 12px;
-            font-weight: 500;
-            position: absolute;
-            bottom: 18%;
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
-            background: #000000;
-            padding: 3px 10px;
-            border-radius: 20px;
-            border: 1px solid #3a4050;
-        }
-
-        .ready-container {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 1000;
-        }
-
-        .ready-toggle {
-            width: 120px;
-            height: 50px;
-            background: rgba(20, 25, 35, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            border: 2px solid #3a4050;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .ready-toggle.ready {
-            background: linear-gradient(145deg, #2a8a5e, #1e6a4a);
-            border-color: #6eacda;
-        }
-
-        .ready-toggle.not-ready {
-            background: linear-gradient(145deg, #8b0000, #6a0000);
-            border-color: #dc3545;
-        }
-
-        .ready-toggle span {
-            position: relative;
-            z-index: 2;
-            color: white;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .ready-toggle:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-
-        .menu-button {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            background: rgba(20, 25, 35, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid #3a4050;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            cursor: pointer;
-            z-index: 2000;
-            transition: all 0.3s;
-        }
-
-        .menu-button:hover {
-            border-color: #6eacda;
-            transform: rotate(90deg);
-        }
-
-        .menu-line {
-            width: 22px;
-            height: 2px;
-            background: white;
-            border-radius: 2px;
-            transition: all 0.3s;
-        }
-
-        .menu-button:hover .menu-line {
-            background: #6eacda;
-        }
-
-        .main-menu {
-            position: fixed;
-            top: 75px;
-            right: 20px;
-            width: 220px;
-            background: rgba(20, 25, 35, 0.98);
-            backdrop-filter: blur(10px);
-            border: 1px solid #3a4050;
-            border-radius: 15px;
-            padding: 10px;
-            z-index: 2000;
-            display: none;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .main-menu.visible {
-            display: block;
-        }
-
-        .menu-item {
-            padding: 12px 15px;
-            margin: 5px 0;
-            border-radius: 10px;
-            cursor: pointer;
-            color: white;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-
-        .menu-item:hover {
-            background: rgba(110, 172, 218, 0.2);
-            transform: translateX(-5px);
-        }
-
-        .menu-item.danger {
-            color: #ff6b6b;
-        }
-
-        .menu-item.danger:hover {
-            background: rgba(255, 107, 107, 0.2);
-        }
-
-        .banned-submenu {
-            margin-top: 10px;
-            border-top: 1px solid #3a4050;
-            padding-top: 10px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .banned-title {
-            color: #ff6b6b;
-            font-size: 12px;
-            padding: 5px 10px;
-        }
-
-        .banned-user-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px;
-            margin: 5px 0;
-            background: rgba(0,0,0,0.3);
-            border-radius: 8px;
-            font-size: 12px;
-            color: white;
-        }
-
-        .unban-small-btn {
-            background: #ff6b6b;
-            border: none;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 11px;
-            transition: all 0.3s;
-        }
-
-        .unban-small-btn:hover {
-            background: #ff4444;
-            transform: scale(1.05);
-        }
-
-        .admin-panel {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 320px;
-            background: linear-gradient(145deg, #1a1f2a, #0f1219);
-            backdrop-filter: blur(20px);
-            border: 3px solid #6eacda;
-            border-radius: 30px;
-            padding: 25px;
-            z-index: 15000;
-            display: none;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 30px rgba(110, 172, 218, 0.3);
-        }
-
-        .admin-panel.visible {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translate(-50%, -40%); }
-            to { opacity: 1; transform: translate(-50%, -50%); }
-        }
-
-        .admin-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #3a4050;
-        }
-
-        .admin-header h3 {
-            color: #6eacda;
-            font-size: 18px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .admin-header h3::before {
-            content: "👑";
-            font-size: 20px;
-        }
-
-        .admin-close-btn {
-            width: 35px;
-            height: 35px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 1px solid #5a6a7a;
-            color: #fff;
-            font-size: 18px;
-            transition: all 0.3s;
-        }
-
-        .admin-close-btn:hover {
-            background: #ff5555;
-            border-color: #ff5555;
-            transform: rotate(90deg);
-        }
-
-        .admin-player-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 20px;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid #3a4050;
-        }
-
-        .admin-player-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid #6eacda;
-        }
-
-        .admin-player-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .admin-player-details {
-            flex: 1;
-        }
-
-        .admin-player-name {
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .admin-player-id {
-            color: #8f9aa7;
-            font-size: 12px;
-            font-family: monospace;
-            background: rgba(0,0,0,0.3);
-            padding: 4px 10px;
-            border-radius: 30px;
-            display: inline-block;
-        }
-
-        .admin-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .admin-action-btn {
-            padding: 14px;
-            border-radius: 20px;
-            border: 1px solid transparent;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.3s;
-            background: rgba(0,0,0,0.3);
-            color: white;
-            border-color: #3a4050;
-        }
-
-        .admin-action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-
-        .admin-action-btn.observer {
-            color: #6eacda;
-            border-color: #6eacda;
-        }
-
-        .admin-action-btn.observer:hover {
-            background: rgba(110, 172, 218, 0.2);
-        }
-
-        .admin-action-btn.transfer {
-            color: #f9d77e;
-            border-color: #f9d77e;
-        }
-
-        .admin-action-btn.transfer:hover {
-            background: rgba(249, 215, 126, 0.2);
-        }
-
-        .admin-action-btn.kick {
-            color: #ffaa00;
-            border-color: #ffaa00;
-        }
-
-        .admin-action-btn.kick:hover {
-            background: rgba(255, 170, 0, 0.2);
-        }
-
-        .admin-action-btn.ban {
-            color: #ff5555;
-            border-color: #ff5555;
-        }
-
-        .admin-action-btn.ban:hover {
-            background: rgba(255, 85, 85, 0.2);
-        }
-
-        .admin-action-btn.report {
-            color: #ff6b6b;
-            border-color: #ff6b6b;
-        }
-
-        .admin-action-btn.report:hover {
-            background: rgba(255, 107, 107, 0.2);
-        }
-
-        .admin-action-btn.profile {
-            color: #6eacda;
-            border-color: #6eacda;
-        }
-
-        .admin-action-btn.remove-observer {
-            color: #ffaa00;
-            border-color: #ffaa00;
-        }
-
-        .admin-warning {
-            margin-top: 15px;
-            padding: 10px;
-            background: rgba(255, 85, 85, 0.1);
-            border: 1px solid #ff5555;
-            border-radius: 15px;
-            color: #ff9999;
-            font-size: 12px;
-            text-align: center;
-        }
-
-        .game-creator-panel {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 350px;
-            background: linear-gradient(145deg, #1a1f2a, #0f1219);
-            backdrop-filter: blur(20px);
-            border: 3px solid #ff5555;
-            border-radius: 30px;
-            padding: 25px;
-            z-index: 20000;
-            display: none;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 30px rgba(255, 85, 85, 0.3);
-        }
-
-        .game-creator-panel.visible {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .creator-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #ff5555;
-        }
-
-        .creator-header h3 {
-            color: #ff5555;
-            font-size: 18px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .creator-header h3::before {
-            content: "⚡";
-            font-size: 20px;
-        }
-
-        .creator-close-btn {
-            width: 35px;
-            height: 35px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 1px solid #5a6a7a;
-            color: #fff;
-            font-size: 18px;
-            transition: all 0.3s;
-        }
-
-        .creator-close-btn:hover {
-            background: #ff5555;
-            border-color: #ff5555;
-            transform: rotate(90deg);
-        }
-
-        .creator-stats {
-            background: rgba(0,0,0,0.3);
-            border-radius: 20px;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid #ff5555;
-        }
-
-        .creator-stat-row {
-            display: flex;
-            justify-content: space-between;
-            color: white;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-
-        .creator-stat-label {
-            color: #ff9999;
-        }
-
-        .creator-stat-value {
-            color: #ff5555;
-            font-weight: 600;
-        }
-
-        .creator-action-btn {
-            padding: 14px;
-            border-radius: 20px;
-            border: 1px solid transparent;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.3s;
-            background: rgba(0,0,0,0.3);
-            color: white;
-            border-color: #ff5555;
-            margin-bottom: 10px;
-        }
-
-        .creator-action-btn:hover {
-            background: rgba(255, 85, 85, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .creator-action-btn.danger {
-            color: #ff5555;
-        }
-
-        .blacklist-container {
-            max-height: 150px;
-            overflow-y: auto;
-            margin-top: 15px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 15px;
-            padding: 10px;
-        }
-
-        .user-profile-menu {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 280px;
-            background: rgba(20, 25, 35, 0.98);
-            backdrop-filter: blur(20px);
-            border: 2px solid #6eacda;
-            border-radius: 20px;
-            padding: 20px;
-            z-index: 5000;
-            display: none;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-        }
-
-        .user-profile-menu.visible {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .user-profile-menu h4 {
-            color: #6eacda;
-            font-size: 16px;
-            margin-bottom: 15px;
-            text-align: center;
-            border-bottom: 1px solid #3a4050;
-            padding-bottom: 10px;
-        }
-
-        .profile-menu-item {
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 10px;
-            cursor: pointer;
-            color: white;
-            font-size: 14px;
-            text-align: center;
-            border: 1px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .profile-menu-item:hover {
-            background: rgba(110, 172, 218, 0.2);
-            border-color: #6eacda;
-        }
-
-        .profile-menu-item.report {
-            color: #ff6b6b;
-            border-color: #ff6b6b;
-        }
-
-        .profile-menu-item.report:hover {
-            background: rgba(255, 107, 107, 0.2);
-        }
-
-        .profile-menu-item.profile {
-            color: #6eacda;
-            border-color: #6eacda;
-        }
-
-        .profile-menu-item.close {
-            border-color: #3a4050;
-        }
-
-        .other-profile-content {
-            max-width: 600px;
-            margin: 80px auto 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            padding: 0 20px 30px;
-        }
-
-        .other-profile-card {
-            background: rgba(20, 25, 35, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            border: 1px solid #3a4050;
-            width: 100%;
-            max-width: 450px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-
-        .other-avatar-circle {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid #6eacda;
-        }
-
-        .other-avatar-circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .other-name-box {
-            background: rgba(0,0,0,0.3);
-            border-radius: 40px;
-            padding: 12px 25px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid #3a4050;
-        }
-
-        .other-user-name {
-            color: white;
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        .other-level-badge {
-            background: #6eacda;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .other-stats-section {
-            background: rgba(20, 25, 35, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            padding: 25px;
-            border: 1px solid #3a4050;
-            width: 100%;
-            max-width: 450px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-
-        .other-user-id-block {
-            background: rgba(0,0,0,0.3);
-            border-radius: 15px;
-            padding: 12px 20px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid #3a4050;
-        }
-
-        .other-user-id-label {
-            color: #8f9aa7;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .other-user-id-value {
-            color: #6eacda;
-            font-size: 16px;
-            font-weight: 600;
-            font-family: monospace;
-            background: rgba(0,0,0,0.3);
-            padding: 5px 15px;
-            border-radius: 30px;
-        }
-
-        .other-stats-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .other-stat-cell {
-            background: rgba(0,0,0,0.3);
-            border-radius: 15px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid #3a4050;
-        }
-
-        .other-stat-icon {
-            font-size: 24px;
-            min-width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            color: #6eacda;
-        }
-
-        .other-stat-detail {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .other-stat-label {
-            color: #8f9aa7;
-            font-size: 11px;
-        }
-
-        .other-stat-figure {
-            color: white;
-            font-size: 20px;
-            font-weight: 600;
-        }
-
-        .other-rank-section {
-            background: rgba(0,0,0,0.3);
-            border-radius: 15px;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid #3a4050;
-            margin-top: 15px;
-        }
-
-        .other-rank-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .other-rank-icon {
-            font-size: 24px;
-            background: rgba(0,0,0,0.3);
-            padding: 8px;
-            border-radius: 10px;
-            color: #f9d77e;
-        }
-
-        .other-rank-label {
-            color: #8f9aa7;
-            font-size: 11px;
-        }
-
-        .other-rank-name {
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .other-rank-tag {
-            background: #6eacda;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 30px;
-            font-size: 12px;
-        }
-
-        .other-close-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 45px;
-            height: 45px;
-            background: rgba(20, 25, 35, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 1px solid #3a4050;
-            color: white;
-            font-size: 24px;
-            z-index: 2000;
-            transition: all 0.3s;
-        }
-
-        .other-close-btn::after {
-            content: "←";
-        }
-
-        .other-close-btn:hover {
-            border-color: #ff6b6b;
-            transform: rotate(180deg);
-        }
-
-        .report-modal-content {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 350px;
-            background: rgba(20, 25, 35, 0.98);
-            backdrop-filter: blur(20px);
-            border: 2px solid #ff6b6b;
-            border-radius: 20px;
-            padding: 25px;
-            z-index: 21000;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-        }
-
-        .report-modal-content h3 {
-            color: #ff6b6b;
-            font-size: 18px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .report-reason {
-            margin-bottom: 15px;
-        }
-
-        .report-reason label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: white;
-            font-size: 14px;
-            padding: 10px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .report-reason label:hover {
-            background: rgba(255, 107, 107, 0.2);
-        }
-
-        .report-reason input[type="radio"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        .report-description {
-            margin: 20px 0;
-        }
-
-        .report-description textarea {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid #3a4050;
-            background: rgba(0,0,0,0.3);
-            color: white;
-            font-size: 14px;
-            resize: none;
-            height: 80px;
-        }
-
-        .report-description textarea:focus {
-            outline: none;
-            border-color: #ff6b6b;
-        }
-
-        .report-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .report-send {
-            flex: 2;
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .report-send:hover {
-            background: #ff4444;
-        }
-
-        .report-cancel {
-            flex: 1;
-            background: transparent;
-            color: white;
-            border: 1px solid #3a4050;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .report-cancel:hover {
-            border-color: white;
-        }
-
-        .ban-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 350px;
-            background: rgba(20, 25, 35, 0.98);
-            backdrop-filter: blur(20px);
-            border: 3px solid #ff5555;
-            border-radius: 20px;
-            padding: 25px;
-            z-index: 25000;
-            display: none;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-        }
-
-        .ban-modal h3 {
-            color: #ff5555;
-            font-size: 18px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .ban-input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid #ff5555;
-            background: rgba(0,0,0,0.3);
-            color: white;
-            font-size: 14px;
-            margin-bottom: 20px;
-            direction: rtl;
-        }
-
-        .ban-input:focus {
-            outline: none;
-            border-color: #ff6b6b;
-        }
-
-        .ban-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .ban-confirm {
-            flex: 2;
-            background: #ff5555;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .ban-confirm:hover {
-            background: #ff4444;
-        }
-
-        .ban-cancel {
-            flex: 1;
-            background: transparent;
-            color: white;
-            border: 1px solid #3a4050;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .ban-cancel:hover {
-            border-color: #ff5555;
-        }
-
-        .profile-content {
-            max-width: 600px;
-            margin: 80px auto 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            padding: 0 20px 30px;
-        }
-
-        .profile-card {
-            background: rgba(20, 25, 35, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            border: 1px solid #3a4050;
-            width: 100%;
-            max-width: 450px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-
-        .avatar-circle {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid #6eacda;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .avatar-circle:hover {
-            transform: scale(1.05);
-            border-color: #f9d77e;
-        }
-
-        .avatar-circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .name-box {
-            background: rgba(0,0,0,0.3);
-            border-radius: 40px;
-            padding: 12px 25px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid #3a4050;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .name-box:hover {
-            border-color: #6eacda;
-        }
-
-        .user-name {
-            color: white;
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        .level-badge {
-            background: #6eacda;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .edit-status {
-            display: flex;
-            gap: 15px;
-            width: 100%;
-            margin-top: 10px;
-            padding-top: 15px;
-            border-top: 1px solid #3a4050;
-        }
-
-        .free-badge, .coin-badge {
-            background: rgba(0,0,0,0.3);
-            padding: 5px 15px;
-            border-radius: 30px;
-            font-size: 12px;
-            color: #8f9aa7;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .stats-section {
-            background: rgba(20, 25, 35, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            padding: 25px;
-            border: 1px solid #3a4050;
-            width: 100%;
-            max-width: 450px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-
-        .user-id-block {
-            background: rgba(0,0,0,0.3);
-            border-radius: 15px;
-            padding: 12px 20px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid #3a4050;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .user-id-block:hover {
-            border-color: #6eacda;
-        }
-
-        .user-id-label {
-            color: #8f9aa7;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .user-id-value {
-            color: #6eacda;
-            font-size: 16px;
-            font-weight: 600;
-            font-family: monospace;
-            background: rgba(0,0,0,0.3);
-            padding: 5px 15px;
-            border-radius: 30px;
-        }
-
-        .stats-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .stat-cell {
-            background: rgba(0,0,0,0.3);
-            border-radius: 15px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid #3a4050;
-            transition: all 0.3s;
-        }
-
-        .stat-cell:hover {
-            border-color: #6eacda;
-        }
-
-        .stat-icon {
-            font-size: 24px;
-            min-width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            color: #6eacda;
-        }
-
-        .stat-detail {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .stat-label {
-            color: #8f9aa7;
-            font-size: 11px;
-        }
-
-        .stat-figure {
-            color: white;
-            font-size: 20px;
-            font-weight: 600;
-        }
-
-        .rank-section {
-            background: rgba(0,0,0,0.3);
-            border-radius: 15px;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid #3a4050;
-            margin-top: 15px;
-        }
-
-        .rank-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .rank-icon {
-            font-size: 24px;
-            background: rgba(0,0,0,0.3);
-            padding: 8px;
-            border-radius: 10px;
-            color: #f9d77e;
-        }
-
-        .rank-label {
-            color: #8f9aa7;
-            font-size: 11px;
-        }
-
-        .rank-name {
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .rank-tag {
-            background: #6eacda;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 30px;
-            font-size: 12px;
-        }
-
-        .avatar-container {
-            max-width: 800px;
-            margin: 80px auto 0;
-            padding: 0 20px 30px;
-        }
-
-        .avatar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 25px;
-        }
-
-        .avatar-header h2 {
-            color: white;
-            font-size: 24px;
-            font-weight: 500;
-        }
-
-        .avatar-close-btn {
-            width: 45px;
-            height: 45px;
-            background: rgba(20, 25, 35, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 1px solid #3a4050;
-            color: white;
-            font-size: 22px;
-            transition: all 0.3s;
-        }
-
-        .avatar-close-btn::after {
-            content: "←";
-        }
-
-        .avatar-close-btn:hover {
-            border-color: #ff6b6b;
-            transform: rotate(90deg);
-        }
-
-        .avatar-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-            background: rgba(20, 25, 35, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 5px;
-            border-radius: 40px;
-            border: 1px solid #3a4050;
-            width: fit-content;
-        }
-
-        .avatar-tab {
-            padding: 10px 25px;
-            color: #8f9aa7;
-            font-size: 14px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .avatar-tab.active {
-            background: #6eacda;
-            color: white;
-        }
-
-        .tab-panel {
-            display: none;
-            background: rgba(20, 25, 35, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            padding: 30px;
-            border: 1px solid #3a4050;
-        }
-
-        .tab-panel.active {
-            display: block;
-        }
-
-        .avatar-grid, .shop-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .avatar-card, .shop-card {
-            background: rgba(0,0,0,0.3);
-            border-radius: 20px;
-            padding: 20px 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid #3a4050;
-        }
-
-        .avatar-card:hover, .shop-card:hover {
-            transform: translateY(-5px);
-            border-color: #6eacda;
-            box-shadow: 0 10px 20px rgba(110, 172, 218, 0.2);
-        }
-
-        .avatar-card.selected {
-            border-color: #f9d77e;
-            background: rgba(249, 215, 126, 0.1);
-        }
-
-        .avatar-thumb, .shop-thumb {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid #6eacda;
-            margin: 0 auto 10px;
-        }
-
-        .avatar-thumb img, .shop-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .avatar-number, .shop-number {
-            color: #8f9aa7;
-            font-size: 13px;
-            margin-bottom: 10px;
-        }
-
-        .select-button, .buy-button {
-            background: #2a8a5e;
-            color: white;
-            border: none;
-            padding: 6px 20px;
-            border-radius: 30px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .select-button:hover, .buy-button:hover {
-            background: #1e6a4a;
-            transform: scale(1.05);
-        }
-
-        .shop-price {
-            color: #f9d77e;
-            font-size: 14px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        .copy-notification {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #2a8a5e;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 40px;
-            font-size: 14px;
-            z-index: 3000;
-            display: none;
-            animation: slideUp 1.5s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .ban-notification {
-            background: #ff5555;
-        }
-
-        @keyframes slideUp {
-            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
-            15% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            85% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-        }
-
-        .edit-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(20, 25, 35, 0.98);
-            backdrop-filter: blur(20px);
-            border: 1px solid #6eacda;
-            border-radius: 30px;
-            padding: 30px;
-            width: 90%;
-            max-width: 350px;
-            display: none;
-            z-index: 10000;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-        }
-
-        .edit-modal h3 {
-            color: white;
-            font-size: 20px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .coin-message {
-            color: #f9d77e;
-            font-size: 13px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: rgba(0,0,0,0.3);
-            padding: 8px;
-            border-radius: 30px;
-        }
-
-        .edit-input {
-            width: 100%;
-            padding: 12px 18px;
-            border-radius: 30px;
-            border: 1px solid #3a4050;
-            background: rgba(0,0,0,0.3);
-            color: white;
-            font-size: 14px;
-            margin-bottom: 20px;
-            direction: rtl;
-        }
-
-        .edit-input:focus {
-            outline: none;
-            border-color: #6eacda;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .save-action {
-            flex: 2;
-            background: #2a8a5e;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 30px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .save-action:hover {
-            background: #1e6a4a;
-        }
-
-        .cancel-action {
-            flex: 1;
-            background: transparent;
-            color: white;
-            border: 1px solid #3a4050;
-            padding: 12px;
-            border-radius: 30px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .cancel-action:hover {
-            border-color: #ff6b6b;
-        }
-
-        .profile-back-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 45px;
-            height: 45px;
-            background: rgba(20, 25, 35, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 1px solid #3a4050;
-            color: white;
-            font-size: 24px;
-            z-index: 2000;
-            transition: all 0.3s;
-        }
-
-        .profile-back-btn::after {
-            content: "←";
-        }
-
-        .profile-back-btn:hover {
-            border-color: #6eacda;
-            transform: rotate(180deg);
-        }
-
-        #chair-1 { top: 18%; left: 16%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101652511_taae.png'); }
-        #chair-2 { top: 36%; left: 16%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101652511_taae.png'); }
-        #chair-3 { top: 54%; left: 16%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101652511_taae.png'); }
-        #chair-4 { top: 72%; left: 16%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101652511_taae.png'); }
-        #chair-5 { top: 88%; left: 50%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101720411_53m5.png'); }
-        #chair-6 { top: 72%; left: 84%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101625661_1tgd.png'); }
-        #chair-7 { top: 54%; left: 84%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101625661_1tgd.png'); }
-        #chair-8 { top: 36%; left: 84%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101625661_1tgd.png'); }
-        #chair-9 { top: 18%; left: 84%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101625661_1tgd.png'); }
-        #chair-10 { top: 12%; left: 50%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_024911666_6b.png'); }
-
-        @media (max-width: 600px) {
-            .chair { width: 100px; height: 100px; }
-            .chair-avatar { width: 60px; height: 60px; }
-            .observers-area { padding: 0 20px; }
-            .observer-chair { width: 110px; height: 110px; }
-            .observer-avatar { width: 50px; height: 50px; }
-            .ready-toggle { width: 100px; height: 45px; }
-            .ready-toggle span { font-size: 12px; }
-            .avatar-grid, .shop-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
-    <!-- دکمه خروج به طور کامل حذف شد -->
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+body {
+    font-family: 'Vazirmatn', 'Inter', sans-serif;
+    overflow: hidden;
+    background: #0a0c10;
+}
+
+#main-game-page, #friendly-hall-page, #profile-page, #avatar-page, #lobby-page, #other-profile-page, #report-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: none;
+    overflow-y: auto;
+}
+
+#main-game-page {
+    background: url('https://s8.uupload.ir/files/img_20260208_152349_053_b8yg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: block;
+}
+
+#friendly-hall-page {
+    background: url('https://s8.uupload.ir/files/img_20260208_174730_422_inei.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+#profile-page {
+    background: url('https://s8.uupload.ir/files/img_20260212_001408_558_g4g9.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+#other-profile-page {
+    background: url('https://s8.uupload.ir/files/img_20260212_001408_558_g4g9.jpg') no-repeat center center;
+    background-size: cover;
+    z-index: 10000;
+}
+
+#avatar-page {
+    background: url('https://s8.uupload.ir/files/img_20260212_001408_558_g4g9.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+#lobby-page {
+    background: url('https://s8.uupload.ir/files/inshot_20260213_024334942_qu0p.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+#report-modal {
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+    z-index: 20000;
+    display: none;
+}
+
+.game-header {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 1001;
+}
+
+.currency-card {
+    background: rgba(20, 25, 35, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    padding: 6px 15px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid #3a4050;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.currency-icon {
+    font-size: 16px;
+}
+
+.gem-icon { color: #6eacda; }
+.coin-icon { color: #f9d77e; }
+
+.currency-info {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.currency-label {
+    color: #8f9aa7;
+    font-size: 11px;
+}
+
+.currency-value {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.profile-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(20, 25, 35, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 8px 18px;
+    border-radius: 40px;
+    border: 1px solid #3a4050;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+.profile-container:hover {
+    border-color: #6eacda;
+    transform: translateY(-2px);
+}
+
+.profile-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #6eacda;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-name {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.profile-level {
+    color: #8f9aa7;
+    font-size: 11px;
+}
+
+.start-button {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    width: 140px;
+    height: 140px;
+    transition: all 0.3s;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+}
+
+.start-button:hover {
+    transform: translateX(-50%) scale(1.05);
+    filter: drop-shadow(0 15px 30px rgba(110, 172, 218, 0.3));
+}
+
+.start-button img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: rgba(10, 15, 25, 0.95);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid #2a2f38;
+}
+
+.house-img {
+    width: 40px;
+    height: 40px;
+    opacity: 0.8;
+    filter: brightness(0.8);
+    transition: all 0.3s;
+}
+
+.house-img:hover {
+    opacity: 1;
+    filter: brightness(1);
+}
+
+.house-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.hall-back-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background: rgba(20, 25, 35, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid #3a4050;
+    color: #fff;
+    font-size: 24px;
+    transition: all 0.3s;
+    z-index: 2000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.hall-back-btn::after {
+    content: "←";
+}
+
+.hall-back-btn:hover {
+    border-color: #6eacda;
+    transform: rotate(180deg);
+}
+
+.hall-create-lobby-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(145deg, #2a8a5e, #1e6a4a);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 3px solid #6eacda;
+    color: white;
+    font-size: 36px;
+    transition: all 0.3s;
+    z-index: 2000;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.hall-create-lobby-btn::after {
+    content: "+";
+}
+
+.hall-create-lobby-btn:hover {
+    transform: scale(1.1) rotate(90deg);
+    border-color: #f9d77e;
+}
+
+.lobbies-container {
+    max-width: 500px;
+    margin: 80px auto 20px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.lobby-card {
+    background: rgba(20, 25, 35, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid #3a4050;
+    transition: all 0.3s;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.lobby-card:hover {
+    transform: translateY(-3px);
+    border-color: #6eacda;
+    box-shadow: 0 15px 30px rgba(110, 172, 218, 0.2);
+}
+
+.lobby-name-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.lobby-name-text {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.lobby-password-indicator {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #f9d77e;
+    font-size: 13px;
+    background: rgba(0,0,0,0.3);
+    padding: 5px 12px;
+    border-radius: 30px;
+    border: 1px solid #f9d77e;
+}
+
+.lobby-creator-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 15px;
+    padding: 12px;
+}
+
+.lobby-creator-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #6eacda;
+}
+
+.lobby-creator-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.lobby-creator-details {
+    flex: 1;
+}
+
+.lobby-creator-name {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.lobby-players {
+    color: #8f9aa7;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.lobby-join-btn {
+    background: #2a8a5e;
+    color: white;
+    border: none;
+    padding: 8px 25px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 1px solid transparent;
+}
+
+.lobby-join-btn:hover {
+    background: #1e6a4a;
+    transform: scale(1.05);
+    border-color: #f9d77e;
+}
+
+.empty-lobbies {
+    text-align: center;
+    color: #8f9aa7;
+    padding: 60px 30px;
+    background: rgba(20, 25, 35, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    font-size: 16px;
+    border: 1px solid #3a4050;
+    margin-top: 30px;
+}
+
+#create-lobby-menu {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px;
+    background: rgba(20, 25, 35, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid #6eacda;
+    border-radius: 30px;
+    padding: 30px;
+    z-index: 10000;
+    display: none;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+}
+
+.menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.menu-header h2 {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.close-menu-btn {
+    width: 40px;
+    height: 40px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid #5a6a7a;
+    color: #fff;
+    font-size: 20px;
+    transition: all 0.3s;
+}
+
+.close-menu-btn:hover {
+    background: #ff5555;
+    border-color: #ff5555;
+    transform: rotate(90deg);
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    color: #8f9aa7;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.lobby-input {
+    width: 100%;
+    padding: 12px 18px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid #3a4050;
+    border-radius: 30px;
+    color: #fff;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.lobby-input:focus {
+    outline: none;
+    border-color: #6eacda;
+    background: rgba(0,0,0,0.5);
+}
+
+.password-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.toggle-label {
+    color: #fff;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 26px;
+    background: #2a3038;
+    border-radius: 30px;
+    border: 1px solid #3a4050;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.toggle-switch.active {
+    background: #2a8a5e;
+    border-color: #6eacda;
+}
+
+.toggle-slider {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background: #fff;
+    border-radius: 50%;
+    top: 1px;
+    left: 2px;
+    transition: 0.3s;
+}
+
+.toggle-switch.active .toggle-slider {
+    left: 26px;
+}
+
+#password-field {
+    display: none;
+    margin-bottom: 20px;
+}
+
+.players-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0,0,0,0.3);
+    border-radius: 30px;
+    padding: 8px 15px;
+    border: 1px solid #3a4050;
+    margin-bottom: 25px;
+}
+
+.player-count-control {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.player-count-btn {
+    width: 35px;
+    height: 35px;
+    background: #2a3640;
+    border: 1px solid #3a4050;
+    border-radius: 50%;
+    color: white;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.player-count-btn:hover {
+    background: #3a4650;
+    border-color: #6eacda;
+}
+
+#player-count-value {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    min-width: 30px;
+    text-align: center;
+}
+
+.create-btn {
+    width: 100%;
+    background: linear-gradient(145deg, #2a8a5e, #1e6a4a);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 40px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 1px solid #6eacda;
+}
+
+.create-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(110, 172, 218, 0.3);
+}
+
+.table-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(1400px, 98vw);
+    height: min(1200px, 95vh);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.table-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.table {
+    width: min(600px, 60vw);
+    height: min(650px, 65vh);
+    background: url('https://s8.uupload.ir/files/inshot_20260213_024704366_un99.png') no-repeat center center;
+    background-size: contain;
+    position: absolute;
+    z-index: 10;
+    filter: drop-shadow(0 20px 35px rgba(0,0,0,0.7));
+}
+
+.chair {
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6));
+    transform: translate(-50%, -50%) !important;
+}
+
+.chair-avatar {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #6eacda;
+    background: #1a1e24;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.7);
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 25;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.chair-avatar:hover {
+    transform: translate(-50%, -50%) scale(1.05);
+    border-color: #f9d77e;
+}
+
+.chair-avatar.ready {
+    border-color: #2a8a5e !important;
+    box-shadow: 0 0 15px #2a8a5e;
+}
+
+.chair-avatar.not-ready {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 15px #dc3545;
+}
+
+.chair-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.chair-name {
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    background: #000000;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid #3a4050;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.crown-icon {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FFD700"><path d="M12 2L15 8L21 9L17 14L18 21L12 17.5L6 21L7 14L3 9L9 8L12 2Z"/></svg>') no-repeat center center;
+    background-size: contain;
+}
+
+.blue-tick {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%233B82F0"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>') no-repeat center center;
+    background-size: contain;
+}
+
+.empty-chair .chair-avatar {
+    opacity: 0.8;
+    border: 3px dashed #8f9aa7;
+    background: rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.empty-chair .chair-avatar::after {
+    content: "+";
+    font-size: 40px;
+    color: white;
+    font-weight: 300;
+    text-shadow: 0 2px 10px black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.observers-area {
+    position: fixed;
+    top: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 100px;
+    z-index: 200;
+    pointer-events: none;
+}
+
+.observer-chair {
+    width: 140px;
+    height: 140px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('https://s8.uupload.ir/files/inshot_20260213_155824768_och.png');
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+    pointer-events: auto;
+    display: none;
+}
+
+.observer-chair.visible {
+    display: flex;
+}
+
+.observer-avatar {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #6eacda;
+    background: #1a1e24;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.observer-avatar:hover {
+    transform: translate(-50%, -50%) scale(1.05);
+    border-color: #f9d77e;
+}
+
+.observer-avatar.ready {
+    border-color: #2a8a5e !important;
+    box-shadow: 0 0 15px #2a8a5e;
+}
+
+.observer-avatar.not-ready {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 15px #dc3545;
+}
+
+.observer-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.observer-name {
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    position: absolute;
+    bottom: 18%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    background: #000000;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid #3a4050;
+}
+
+.ready-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+
+.ready-toggle {
+    width: 120px;
+    height: 50px;
+    background: rgba(20, 25, 35, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    border: 2px solid #3a4050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.ready-toggle.ready {
+    background: linear-gradient(145deg, #2a8a5e, #1e6a4a);
+    border-color: #6eacda;
+}
+
+.ready-toggle.not-ready {
+    background: linear-gradient(145deg, #8b0000, #6a0000);
+    border-color: #dc3545;
+}
+
+.ready-toggle span {
+    position: relative;
+    z-index: 2;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.ready-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.menu-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    background: rgba(20, 25, 35, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid #3a4050;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    z-index: 2000;
+    transition: all 0.3s;
+}
+
+.menu-button:hover {
+    border-color: #6eacda;
+    transform: rotate(90deg);
+}
+
+.menu-line {
+    width: 22px;
+    height: 2px;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.3s;
+}
+
+.menu-button:hover .menu-line {
+    background: #6eacda;
+}
+
+.main-menu {
+    position: fixed;
+    top: 75px;
+    right: 20px;
+    width: 220px;
+    background: rgba(20, 25, 35, 0.98);
+    backdrop-filter: blur(10px);
+    border: 1px solid #3a4050;
+    border-radius: 15px;
+    padding: 10px;
+    z-index: 2000;
+    display: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.main-menu.visible {
+    display: block;
+}
+
+.menu-item {
+    padding: 12px 15px;
+    margin: 5px 0;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.menu-item:hover {
+    background: rgba(110, 172, 218, 0.2);
+    transform: translateX(-5px);
+}
+
+.menu-item.danger {
+    color: #ff6b6b;
+}
+
+.menu-item.danger:hover {
+    background: rgba(255, 107, 107, 0.2);
+}
+
+.banned-submenu {
+    margin-top: 10px;
+    border-top: 1px solid #3a4050;
+    padding-top: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.banned-title {
+    color: #ff6b6b;
+    font-size: 12px;
+    padding: 5px 10px;
+}
+
+.banned-user-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    margin: 5px 0;
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    font-size: 12px;
+    color: white;
+}
+
+.unban-small-btn {
+    background: #ff6b6b;
+    border: none;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: all 0.3s;
+}
+
+.unban-small-btn:hover {
+    background: #ff4444;
+    transform: scale(1.05);
+}
+
+.admin-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 320px;
+    background: linear-gradient(145deg, #1a1f2a, #0f1219);
+    backdrop-filter: blur(20px);
+    border: 3px solid #6eacda;
+    border-radius: 30px;
+    padding: 25px;
+    z-index: 15000;
+    display: none;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 30px rgba(110, 172, 218, 0.3);
+}
+
+.admin-panel.visible {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -40%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+.admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #3a4050;
+}
+
+.admin-header h3 {
+    color: #6eacda;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-header h3::before {
+    content: "👑";
+    font-size: 20px;
+}
+
+.admin-close-btn {
+    width: 35px;
+    height: 35px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid #5a6a7a;
+    color: #fff;
+    font-size: 18px;
+    transition: all 0.3s;
+}
+
+.admin-close-btn:hover {
+    background: #ff5555;
+    border-color: #ff5555;
+    transform: rotate(90deg);
+}
+
+.admin-player-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 20px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #3a4050;
+}
+
+.admin-player-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #6eacda;
+}
+
+.admin-player-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.admin-player-details {
+    flex: 1;
+}
+
+.admin-player-name {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.admin-player-id {
+    color: #8f9aa7;
+    font-size: 12px;
+    font-family: monospace;
+    background: rgba(0,0,0,0.3);
+    padding: 4px 10px;
+    border-radius: 30px;
+    display: inline-block;
+}
+
+.admin-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.admin-action-btn {
+    padding: 14px;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+    background: rgba(0,0,0,0.3);
+    color: white;
+    border-color: #3a4050;
+}
+
+.admin-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.admin-action-btn.observer {
+    color: #6eacda;
+    border-color: #6eacda;
+}
+
+.admin-action-btn.observer:hover {
+    background: rgba(110, 172, 218, 0.2);
+}
+
+.admin-action-btn.transfer {
+    color: #f9d77e;
+    border-color: #f9d77e;
+}
+
+.admin-action-btn.transfer:hover {
+    background: rgba(249, 215, 126, 0.2);
+}
+
+.admin-action-btn.kick {
+    color: #ffaa00;
+    border-color: #ffaa00;
+}
+
+.admin-action-btn.kick:hover {
+    background: rgba(255, 170, 0, 0.2);
+}
+
+.admin-action-btn.ban {
+    color: #ff5555;
+    border-color: #ff5555;
+}
+
+.admin-action-btn.ban:hover {
+    background: rgba(255, 85, 85, 0.2);
+}
+
+.admin-action-btn.report {
+    color: #ff6b6b;
+    border-color: #ff6b6b;
+}
+
+.admin-action-btn.report:hover {
+    background: rgba(255, 107, 107, 0.2);
+}
+
+.admin-action-btn.profile {
+    color: #6eacda;
+    border-color: #6eacda;
+}
+
+.admin-action-btn.remove-observer {
+    color: #ffaa00;
+    border-color: #ffaa00;
+}
+
+.admin-warning {
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(255, 85, 85, 0.1);
+    border: 1px solid #ff5555;
+    border-radius: 15px;
+    color: #ff9999;
+    font-size: 12px;
+    text-align: center;
+}
+
+.game-creator-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    background: linear-gradient(145deg, #1a1f2a, #0f1219);
+    backdrop-filter: blur(20px);
+    border: 3px solid #ff5555;
+    border-radius: 30px;
+    padding: 25px;
+    z-index: 20000;
+    display: none;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 30px rgba(255, 85, 85, 0.3);
+}
+
+.game-creator-panel.visible {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.creator-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #ff5555;
+}
+
+.creator-header h3 {
+    color: #ff5555;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.creator-header h3::before {
+    content: "⚡";
+    font-size: 20px;
+}
+
+.creator-close-btn {
+    width: 35px;
+    height: 35px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid #5a6a7a;
+    color: #fff;
+    font-size: 18px;
+    transition: all 0.3s;
+}
+
+.creator-close-btn:hover {
+    background: #ff5555;
+    border-color: #ff5555;
+    transform: rotate(90deg);
+}
+
+.creator-stats {
+    background: rgba(0,0,0,0.3);
+    border-radius: 20px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ff5555;
+}
+
+.creator-stat-row {
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.creator-stat-label {
+    color: #ff9999;
+}
+
+.creator-stat-value {
+    color: #ff5555;
+    font-weight: 600;
+}
+
+.creator-action-btn {
+    padding: 14px;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+    background: rgba(0,0,0,0.3);
+    color: white;
+    border-color: #ff5555;
+    margin-bottom: 10px;
+}
+
+.creator-action-btn:hover {
+    background: rgba(255, 85, 85, 0.2);
+    transform: translateY(-2px);
+}
+
+.creator-action-btn.danger {
+    color: #ff5555;
+}
+
+.blacklist-container {
+    max-height: 150px;
+    overflow-y: auto;
+    margin-top: 15px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.user-profile-menu {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+    background: rgba(20, 25, 35, 0.98);
+    backdrop-filter: blur(20px);
+    border: 2px solid #6eacda;
+    border-radius: 20px;
+    padding: 20px;
+    z-index: 5000;
+    display: none;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+}
+
+.user-profile-menu.visible {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.user-profile-menu h4 {
+    color: #6eacda;
+    font-size: 16px;
+    margin-bottom: 15px;
+    text-align: center;
+    border-bottom: 1px solid #3a4050;
+    padding-bottom: 10px;
+}
+
+.profile-menu-item {
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    border: 1px solid transparent;
+    transition: all 0.3s;
+}
+
+.profile-menu-item:hover {
+    background: rgba(110, 172, 218, 0.2);
+    border-color: #6eacda;
+}
+
+.profile-menu-item.report {
+    color: #ff6b6b;
+    border-color: #ff6b6b;
+}
+
+.profile-menu-item.report:hover {
+    background: rgba(255, 107, 107, 0.2);
+}
+
+.profile-menu-item.profile {
+    color: #6eacda;
+    border-color: #6eacda;
+}
+
+.profile-menu-item.close {
+    border-color: #3a4050;
+}
+
+.other-profile-content {
+    max-width: 600px;
+    margin: 80px auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 0 20px 30px;
+}
+
+.other-profile-card {
+    background: rgba(20, 25, 35, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid #3a4050;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.other-avatar-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #6eacda;
+}
+
+.other-avatar-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.other-name-box {
+    background: rgba(0,0,0,0.3);
+    border-radius: 40px;
+    padding: 12px 25px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #3a4050;
+}
+
+.other-user-name {
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.other-level-badge {
+    background: #6eacda;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.other-stats-section {
+    background: rgba(20, 25, 35, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 25px;
+    border: 1px solid #3a4050;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.other-user-id-block {
+    background: rgba(0,0,0,0.3);
+    border-radius: 15px;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #3a4050;
+}
+
+.other-user-id-label {
+    color: #8f9aa7;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.other-user-id-value {
+    color: #6eacda;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: monospace;
+    background: rgba(0,0,0,0.3);
+    padding: 5px 15px;
+    border-radius: 30px;
+}
+
+.other-stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.other-stat-cell {
+    background: rgba(0,0,0,0.3);
+    border-radius: 15px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #3a4050;
+}
+
+.other-stat-icon {
+    font-size: 24px;
+    min-width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+    color: #6eacda;
+}
+
+.other-stat-detail {
+    display: flex;
+    flex-direction: column;
+}
+
+.other-stat-label {
+    color: #8f9aa7;
+    font-size: 11px;
+}
+
+.other-stat-figure {
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.other-rank-section {
+    background: rgba(0,0,0,0.3);
+    border-radius: 15px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #3a4050;
+    margin-top: 15px;
+}
+
+.other-rank-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.other-rank-icon {
+    font-size: 24px;
+    background: rgba(0,0,0,0.3);
+    padding: 8px;
+    border-radius: 10px;
+    color: #f9d77e;
+}
+
+.other-rank-label {
+    color: #8f9aa7;
+    font-size: 11px;
+}
+
+.other-rank-name {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.other-rank-tag {
+    background: #6eacda;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 30px;
+    font-size: 12px;
+}
+
+.other-close-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background: rgba(20, 25, 35, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid #3a4050;
+    color: white;
+    font-size: 24px;
+    z-index: 2000;
+    transition: all 0.3s;
+}
+
+.other-close-btn::after {
+    content: "←";
+}
+
+.other-close-btn:hover {
+    border-color: #ff6b6b;
+    transform: rotate(180deg);
+}
+
+.report-modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 350px;
+    background: rgba(20, 25, 35, 0.98);
+    backdrop-filter: blur(20px);
+    border: 2px solid #ff6b6b;
+    border-radius: 20px;
+    padding: 25px;
+    z-index: 21000;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+}
+
+.report-modal-content h3 {
+    color: #ff6b6b;
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.report-reason {
+    margin-bottom: 15px;
+}
+
+.report-reason label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-size: 14px;
+    padding: 10px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.report-reason label:hover {
+    background: rgba(255, 107, 107, 0.2);
+}
+
+.report-reason input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.report-description {
+    margin: 20px 0;
+}
+
+.report-description textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #3a4050;
+    background: rgba(0,0,0,0.3);
+    color: white;
+    font-size: 14px;
+    resize: none;
+    height: 80px;
+}
+
+.report-description textarea:focus {
+    outline: none;
+    border-color: #ff6b6b;
+}
+
+.report-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.report-send {
+    flex: 2;
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.report-send:hover {
+    background: #ff4444;
+}
+
+.report-cancel {
+    flex: 1;
+    background: transparent;
+    color: white;
+    border: 1px solid #3a4050;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.report-cancel:hover {
+    border-color: white;
+}
+
+.ban-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 350px;
+    background: rgba(20, 25, 35, 0.98);
+    backdrop-filter: blur(20px);
+    border: 3px solid #ff5555;
+    border-radius: 20px;
+    padding: 25px;
+    z-index: 25000;
+    display: none;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+}
+
+.ban-modal h3 {
+    color: #ff5555;
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.ban-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ff5555;
+    background: rgba(0,0,0,0.3);
+    color: white;
+    font-size: 14px;
+    margin-bottom: 20px;
+    direction: rtl;
+}
+
+.ban-input:focus {
+    outline: none;
+    border-color: #ff6b6b;
+}
+
+.ban-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.ban-confirm {
+    flex: 2;
+    background: #ff5555;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.ban-confirm:hover {
+    background: #ff4444;
+}
+
+.ban-cancel {
+    flex: 1;
+    background: transparent;
+    color: white;
+    border: 1px solid #3a4050;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.ban-cancel:hover {
+    border-color: #ff5555;
+}
+
+.profile-content {
+    max-width: 600px;
+    margin: 80px auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 0 20px 30px;
+}
+
+.profile-card {
+    background: rgba(20, 25, 35, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid #3a4050;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.avatar-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #6eacda;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.avatar-circle:hover {
+    transform: scale(1.05);
+    border-color: #f9d77e;
+}
+
+.avatar-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.name-box {
+    background: rgba(0,0,0,0.3);
+    border-radius: 40px;
+    padding: 12px 25px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #3a4050;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.name-box:hover {
+    border-color: #6eacda;
+}
+
+.user-name {
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.level-badge {
+    background: #6eacda;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.edit-status {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    margin-top: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #3a4050;
+}
+
+.free-badge, .coin-badge {
+    background: rgba(0,0,0,0.3);
+    padding: 5px 15px;
+    border-radius: 30px;
+    font-size: 12px;
+    color: #8f9aa7;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.stats-section {
+    background: rgba(20, 25, 35, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 25px;
+    border: 1px solid #3a4050;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.user-id-block {
+    background: rgba(0,0,0,0.3);
+    border-radius: 15px;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #3a4050;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.user-id-block:hover {
+    border-color: #6eacda;
+}
+
+.user-id-label {
+    color: #8f9aa7;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-id-value {
+    color: #6eacda;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: monospace;
+    background: rgba(0,0,0,0.3);
+    padding: 5px 15px;
+    border-radius: 30px;
+}
+
+.stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.stat-cell {
+    background: rgba(0,0,0,0.3);
+    border-radius: 15px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #3a4050;
+    transition: all 0.3s;
+}
+
+.stat-cell:hover {
+    border-color: #6eacda;
+}
+
+.stat-icon {
+    font-size: 24px;
+    min-width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+    color: #6eacda;
+}
+
+.stat-detail {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    color: #8f9aa7;
+    font-size: 11px;
+}
+
+.stat-figure {
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.rank-section {
+    background: rgba(0,0,0,0.3);
+    border-radius: 15px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #3a4050;
+    margin-top: 15px;
+}
+
+.rank-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.rank-icon {
+    font-size: 24px;
+    background: rgba(0,0,0,0.3);
+    padding: 8px;
+    border-radius: 10px;
+    color: #f9d77e;
+}
+
+.rank-label {
+    color: #8f9aa7;
+    font-size: 11px;
+}
+
+.rank-name {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.rank-tag {
+    background: #6eacda;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 30px;
+    font-size: 12px;
+}
+
+.avatar-container {
+    max-width: 800px;
+    margin: 80px auto 0;
+    padding: 0 20px 30px;
+}
+
+.avatar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.avatar-header h2 {
+    color: white;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.avatar-close-btn {
+    width: 45px;
+    height: 45px;
+    background: rgba(20, 25, 35, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid #3a4050;
+    color: white;
+    font-size: 22px;
+    transition: all 0.3s;
+}
+
+.avatar-close-btn::after {
+    content: "←";
+}
+
+.avatar-close-btn:hover {
+    border-color: #ff6b6b;
+    transform: rotate(90deg);
+}
+
+.avatar-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    background: rgba(20, 25, 35, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 5px;
+    border-radius: 40px;
+    border: 1px solid #3a4050;
+    width: fit-content;
+}
+
+.avatar-tab {
+    padding: 10px 25px;
+    color: #8f9aa7;
+    font-size: 14px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.avatar-tab.active {
+    background: #6eacda;
+    color: white;
+}
+
+.tab-panel {
+    display: none;
+    background: rgba(20, 25, 35, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 30px;
+    border: 1px solid #3a4050;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+.avatar-grid, .shop-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.avatar-card, .shop-card {
+    background: rgba(0,0,0,0.3);
+    border-radius: 20px;
+    padding: 20px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 2px solid #3a4050;
+}
+
+.avatar-card:hover, .shop-card:hover {
+    transform: translateY(-5px);
+    border-color: #6eacda;
+    box-shadow: 0 10px 20px rgba(110, 172, 218, 0.2);
+}
+
+.avatar-card.selected {
+    border-color: #f9d77e;
+    background: rgba(249, 215, 126, 0.1);
+}
+
+.avatar-thumb, .shop-thumb {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #6eacda;
+    margin: 0 auto 10px;
+}
+
+.avatar-thumb img, .shop-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-number, .shop-number {
+    color: #8f9aa7;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.select-button, .buy-button {
+    background: #2a8a5e;
+    color: white;
+    border: none;
+    padding: 6px 20px;
+    border-radius: 30px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.select-button:hover, .buy-button:hover {
+    background: #1e6a4a;
+    transform: scale(1.05);
+}
+
+.shop-price {
+    color: #f9d77e;
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.copy-notification {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2a8a5e;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 40px;
+    font-size: 14px;
+    z-index: 3000;
+    display: none;
+    animation: slideUp 1.5s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.ban-notification {
+    background: #ff5555;
+}
+
+@keyframes slideUp {
+    0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    85% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+}
+
+.edit-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(20, 25, 35, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid #6eacda;
+    border-radius: 30px;
+    padding: 30px;
+    width: 90%;
+    max-width: 350px;
+    display: none;
+    z-index: 10000;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+}
+
+.edit-modal h3 {
+    color: white;
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.coin-message {
+    color: #f9d77e;
+    font-size: 13px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(0,0,0,0.3);
+    padding: 8px;
+    border-radius: 30px;
+}
+
+.edit-input {
+    width: 100%;
+    padding: 12px 18px;
+    border-radius: 30px;
+    border: 1px solid #3a4050;
+    background: rgba(0,0,0,0.3);
+    color: white;
+    font-size: 14px;
+    margin-bottom: 20px;
+    direction: rtl;
+}
+
+.edit-input:focus {
+    outline: none;
+    border-color: #6eacda;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.save-action {
+    flex: 2;
+    background: #2a8a5e;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 30px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.save-action:hover {
+    background: #1e6a4a;
+}
+
+.cancel-action {
+    flex: 1;
+    background: transparent;
+    color: white;
+    border: 1px solid #3a4050;
+    padding: 12px;
+    border-radius: 30px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.cancel-action:hover {
+    border-color: #ff6b6b;
+}
+
+.profile-back-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background: rgba(20, 25, 35, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid #3a4050;
+    color: white;
+    font-size: 24px;
+    z-index: 2000;
+    transition: all 0.3s;
+}
+
+.profile-back-btn::after {
+    content: "←";
+}
+
+.profile-back-btn:hover {
+    border-color: #6eacda;
+    transform: rotate(180deg);
+}
+
+.game-link {
+    position: fixed;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #8f9aa7;
+    font-size: 12px;
+    text-decoration: none;
+    background: rgba(20, 25, 35, 0.7);
+    padding: 5px 15px;
+    border-radius: 20px;
+    border: 1px solid #3a4050;
+    z-index: 100;
+}
+
+.game-link:hover {
+    color: #6eacda;
+    border-color: #6eacda;
+}
+
+#chair-1 { top: 18%; left: 16%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101652511_taae.png'); }
+#chair-2 { top: 36%; left: 16%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101652511_taae.png'); }
+#chair-3 { top: 54%; left: 16%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101652511_taae.png'); }
+#chair-4 { top: 72%; left: 16%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101652511_taae.png'); }
+#chair-5 { top: 88%; left: 50%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101720411_53m5.png'); }
+#chair-6 { top: 72%; left: 84%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101625661_1tgd.png'); }
+#chair-7 { top: 54%; left: 84%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101625661_1tgd.png'); }
+#chair-8 { top: 36%; left: 84%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101625661_1tgd.png'); }
+#chair-9 { top: 18%; left: 84%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101625661_1tgd.png'); }
+#chair-10 { top: 12%; left: 50%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_024911666_6b.png'); }
+
+@media (max-width: 600px) {
+    .chair { width: 100px; height: 100px; }
+    .chair-avatar { width: 60px; height: 60px; }
+    .observers-area { padding: 0 20px; }
+    .observer-chair { width: 110px; height: 110px; }
+    .observer-avatar { width: 50px; height: 50px; }
+    .ready-toggle { width: 100px; height: 45px; }
+    .ready-toggle span { font-size: 12px; }
+    .avatar-grid, .shop-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+<body>
     <div id="main-game-page">
         <div class="game-header">
             <div class="currency-card">
@@ -2390,9 +2426,7 @@
                 <img src="https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png">
             </div>
             <div class="profile-info">
-                <div class="profile-name">
-                    <span id="mainProfileName">بازیکن</span>
-                </div>
+                <div class="profile-name" id="mainProfileName">بازیکن</div>
                 <div class="profile-level" id="mainProfileLevel">سطح ۱</div>
             </div>
         </div>
@@ -2406,6 +2440,8 @@
                 <img src="https://s8.uupload.ir/files/inshot_20260208_175045137_2eb2.png" alt="خانه">
             </div>
         </div>
+
+    
     </div>
     
     <div id="friendly-hall-page">
@@ -2534,8 +2570,10 @@
                 </div>
             </div>
             <div class="creator-action-btn" onclick="window.app.showBlacklist()">📋 نمایش لیست سیاه</div>
+            <div class="creator-action-btn" onclick="window.app.viewReports()">📋 مشاهده گزارشات</div>
             <div class="creator-action-btn danger" onclick="window.app.deleteAllLobbies()">🗑️ حذف همه لابی‌ها</div>
             <div class="blacklist-container" id="blacklistContainer" style="display: none;"></div>
+            <div class="blacklist-container" id="reportsContainer" style="display: none;"></div>
         </div>
         
         <div class="user-profile-menu" id="userProfileMenu">
@@ -2749,23 +2787,59 @@
     
     <script src="game.js"></script>
 <script>
-// ========== game.js ==========
 // ========== تنظیمات سرور ==========
 const JSONBIN_ID = '6984ae3a43b1c97be967c32b';
 const JSONBIN_KEY = '$2a$10$P2f/7ECPzq3HSI.6DSdcr.MaV748WQF7smMQL1bczP6YF4XKwjNvG';
 
 // ========== آدرس صفحه ثبت‌نام ==========
 const AUTH_PAGE_URL = 'index.html';
+const GAME_PAGE_URL = 'https://admin161723.github.io/Mafia_Sun1/';
 
 // ========== شماره سازنده ==========
 const CREATOR_PHONE = '09904844031';
+
+// ========== آواتارهای جدید با قیمت (لینک‌های شما) ==========
+const NEW_AVATARS = [
+    { 
+        id: 'avatar13', 
+        url: 'https://s8.uupload.ir/files/inshot_20260217_183611271_wt7s.png', 
+        price: 300, 
+        currency: 'gems', 
+        num: '#۰۱۳',
+        name: 'آواتار ۱۳'
+    },
+    { 
+        id: 'avatar14', 
+        url: 'https://s8.uupload.ir/files/inshot_20260216_031531507_0k5x.png', 
+        price: 300, 
+        currency: 'gems', 
+        num: '#۰۱۴',
+        name: 'آواتار ۱۴'
+    },
+    { 
+        id: 'avatar15', 
+        url: 'https://s8.uupload.ir/files/inshot_20260216_031443956_hnie.png', 
+        price: 300, 
+        currency: 'gems', 
+        num: '#۰۱۵',
+        name: 'آواتار ۱۵'
+    },
+    { 
+        id: 'avatar16', 
+        url: 'https://s8.uupload.ir/files/inshot_20260216_031355260_y72k.png', 
+        price: 50, 
+        currency: 'gems', 
+        num: '#۰۱۶',
+        name: 'آواتار ۱۶'
+    }
+];
 
 // ========== شیء اصلی برنامه ==========
 const App = {
     currentAvatar: 'avatar1',
     userName: 'بازیکن',
     userPhone: '',
-    userId: 0,
+    userId: Date.now(),
     isGameCreator: false,
     isLobbyCreator: false,
     userGems: 100,
@@ -2776,7 +2850,10 @@ const App = {
         wins: 0,
         losses: 0,
         gamesPlayed: 0,
-        totalHours: 0
+        totalHours: 0,
+        observerCount: 0,
+        rank: 'تازه‌وارد',
+        rankTag: 'برنزی'
     },
     
     lobbies: [],
@@ -2798,7 +2875,9 @@ const App = {
     
     syncInterval: null,
     lastSync: 0,
+    reports: [],
     
+    // ========== آواتارها با لینک‌های جدید ==========
     avatars: {
         'avatar1': 'https://s8.uupload.ir/files/inshot_20260208_214035107_wkwk.png',
         'avatar2': 'https://s8.uupload.ir/files/inshot_20260208_214116629_6joe.png',
@@ -2807,7 +2886,11 @@ const App = {
         'avatar5': 'https://s8.uupload.ir/files/inshot_20260213_195059047_ln6h.png',
         'avatar6': 'https://s8.uupload.ir/files/inshot_20260213_195217329_u6to.png',
         'avatar7': 'https://s8.uupload.ir/files/inshot_20260213_093421818_xwo9.png',
-        'avatar8': 'https://s8.uupload.ir/files/inshot_20260213_093508335_djbv.png'
+        'avatar8': 'https://s8.uupload.ir/files/inshot_20260213_093508335_djbv.png',
+        'avatar13': 'https://s8.uupload.ir/files/inshot_20260217_183611271_wt7s.png',
+        'avatar14': 'https://s8.uupload.ir/files/inshot_20260216_031531507_0k5x.png',
+        'avatar15': 'https://s8.uupload.ir/files/inshot_20260216_031443956_hnie.png',
+        'avatar16': 'https://s8.uupload.ir/files/inshot_20260216_031355260_y72k.png'
     },
     
     getAvatarImage(avatar) {
@@ -2816,67 +2899,138 @@ const App = {
     
     showNotification(message, isBan = false) {
         const notification = document.getElementById('copyNotification');
+        if (!notification) return;
         notification.textContent = message;
         notification.classList.toggle('ban-notification', isBan);
         notification.style.display = 'block';
         setTimeout(() => notification.style.display = 'none', 2000);
     },
     
-    // ========== تابع خروج - حذف شد ==========
-    // logout() {
-    //     if (confirm('آیا می‌خواهید از حساب خود خارج شوید؟')) {
-    //         localStorage.removeItem('mafiaSun_currentUser');
-    //         localStorage.removeItem('mafiaSun_userData');
-    //         window.location.href = AUTH_PAGE_URL;
-    //     }
-    // },
-    
+    // ========== لود اطلاعات کاربر ==========
     loadUserData() {
         try {
-            const currentUser = localStorage.getItem('mafiaSun_currentUser');
+            let currentUser = localStorage.getItem('mafiaSun_currentUser');
+            
             if (!currentUser) {
-                window.location.href = AUTH_PAGE_URL;
-                return;
+                const newUser = {
+                    phone: '0912' + Math.floor(Math.random() * 10000000),
+                    timestamp: Date.now()
+                };
+                localStorage.setItem('mafiaSun_currentUser', JSON.stringify(newUser));
+                currentUser = JSON.stringify(newUser);
             }
 
-            const savedData = localStorage.getItem('mafiaSun_userData');
-            if (savedData) {
-                const userData = JSON.parse(savedData);
-                
-                this.userId = userData.userId || Date.now();
-                this.userPhone = userData.userPhone || '';
-                this.userName = userData.userName || 'بازیکن';
-                
-                this.isGameCreator = false;
-                if (userData.isCreator === true) this.isGameCreator = true;
-                if (this.userPhone === CREATOR_PHONE) this.isGameCreator = true;
-                if (this.userId === 1) this.isGameCreator = true;
-                if (localStorage.getItem('mafiaIsCreator') === 'true') this.isGameCreator = true;
-                
-                if (this.isGameCreator) {
-                    this.userGems = Infinity;
-                    this.userCoins = Infinity;
-                    this.ownedAvatars = ['avatar1', 'avatar2', 'ninja', 'samurai', 'avatar5', 'avatar6', 'avatar7', 'avatar8'];
-                    this.editCount = 0;
-                    localStorage.setItem('mafiaIsCreator', 'true');
-                    localStorage.setItem('mafiaUserId', '1');
-                } else {
-                    this.userGems = userData.userGems !== undefined ? userData.userGems : 100;
-                    this.userCoins = userData.userCoins !== undefined ? userData.userCoins : 600;
-                    this.ownedAvatars = userData.ownedAvatars || ['avatar1', 'avatar2'];
-                    this.editCount = userData.editCount || 0;
-                }
-                
-                this.currentAvatar = userData.currentAvatar || 'avatar1';
-                this.userStats = userData.userStats || { wins: 0, losses: 0, gamesPlayed: 0, totalHours: 0 };
-                
-                this.updateAllDisplays();
-            } else {
-                window.location.href = AUTH_PAGE_URL;
+            let savedData = localStorage.getItem('mafiaSun_userData');
+            
+            if (!savedData) {
+                const newUserData = {
+                    userId: Date.now(),
+                    userPhone: JSON.parse(currentUser).phone,
+                    userName: 'بازیکن_' + Math.floor(Math.random() * 1000),
+                    isCreator: false,
+                    userGems: 100,
+                    userCoins: 600,
+                    ownedAvatars: ['avatar1', 'avatar2'],
+                    currentAvatar: 'avatar1',
+                    editCount: 0,
+                    userStats: {
+                        wins: 0,
+                        losses: 0,
+                        gamesPlayed: 0,
+                        totalHours: 0,
+                        observerCount: 0,
+                        rank: 'تازه‌وارد',
+                        rankTag: 'برنزی'
+                    }
+                };
+                localStorage.setItem('mafiaSun_userData', JSON.stringify(newUserData));
+                savedData = JSON.stringify(newUserData);
             }
+
+            const userData = JSON.parse(savedData);
+            
+            this.userId = userData.userId;
+            this.userPhone = userData.userPhone || '';
+            this.userName = userData.userName || 'بازیکن';
+            
+            this.isGameCreator = false;
+            if (userData.isCreator === true) this.isGameCreator = true;
+            if (this.userPhone === CREATOR_PHONE) this.isGameCreator = true;
+            if (this.userId === 1) this.isGameCreator = true;
+            if (localStorage.getItem('mafiaIsCreator') === 'true') this.isGameCreator = true;
+            
+            if (this.isGameCreator) {
+                this.userGems = Infinity;
+                this.userCoins = Infinity;
+                this.ownedAvatars = [
+                    'avatar1', 'avatar2', 'ninja', 'samurai', 
+                    'avatar5', 'avatar6', 'avatar7', 'avatar8',
+                    'avatar13', 'avatar14', 'avatar15', 'avatar16'
+                ];
+                this.editCount = 0;
+                localStorage.setItem('mafiaIsCreator', 'true');
+                localStorage.setItem('mafiaUserId', '1');
+            } else {
+                this.userGems = userData.userGems !== undefined ? userData.userGems : 100;
+                this.userCoins = userData.userCoins !== undefined ? userData.userCoins : 600;
+                this.ownedAvatars = userData.ownedAvatars || ['avatar1', 'avatar2'];
+                this.editCount = userData.editCount || 0;
+            }
+            
+            this.currentAvatar = userData.currentAvatar || 'avatar1';
+            this.userStats = userData.userStats || { 
+                wins: 0, 
+                losses: 0, 
+                gamesPlayed: 0, 
+                totalHours: 0, 
+                observerCount: 0, 
+                rank: 'تازه‌وارد', 
+                rankTag: 'برنزی' 
+            };
+            
+            this.updateAllDisplays();
+            
         } catch (e) {
-            window.location.href = AUTH_PAGE_URL;
+            console.log('خطا در لود دیتا:', e);
+            this.createDefaultUser();
         }
+    },
+    
+    createDefaultUser() {
+        const newUserData = {
+            userId: Date.now(),
+            userPhone: '0912' + Math.floor(Math.random() * 10000000),
+            userName: 'بازیکن',
+            isCreator: false,
+            userGems: 100,
+            userCoins: 600,
+            ownedAvatars: ['avatar1', 'avatar2'],
+            currentAvatar: 'avatar1',
+            editCount: 0,
+            userStats: {
+                wins: 0,
+                losses: 0,
+                gamesPlayed: 0,
+                totalHours: 0,
+                observerCount: 0,
+                rank: 'تازه‌وارد',
+                rankTag: 'برنزی'
+            }
+        };
+        localStorage.setItem('mafiaSun_userData', JSON.stringify(newUserData));
+        localStorage.setItem('mafiaSun_currentUser', JSON.stringify({ phone: newUserData.userPhone, timestamp: Date.now() }));
+        
+        this.userId = newUserData.userId;
+        this.userPhone = newUserData.userPhone;
+        this.userName = newUserData.userName;
+        this.isGameCreator = false;
+        this.userGems = 100;
+        this.userCoins = 600;
+        this.ownedAvatars = ['avatar1', 'avatar2'];
+        this.currentAvatar = 'avatar1';
+        this.userStats = newUserData.userStats;
+        
+        this.updateAllDisplays();
     },
     
     saveUserData() {
@@ -2904,11 +3058,16 @@ const App = {
         
         this.loadUserData();
         
-        const serverData = await this.fetchFromServer();
-        if (serverData) {
-            if (serverData.lobbies) this.lobbies = serverData.lobbies;
-            if (serverData.blacklist) this.blacklist = serverData.blacklist;
-            this.nextLobbyId = serverData.nextLobbyId || 1;
+        try {
+            const serverData = await this.fetchFromServer();
+            if (serverData) {
+                if (serverData.lobbies) this.lobbies = serverData.lobbies;
+                if (serverData.blacklist) this.blacklist = serverData.blacklist;
+                if (serverData.reports) this.reports = serverData.reports;
+                this.nextLobbyId = serverData.nextLobbyId || 1;
+            }
+        } catch (e) {
+            console.log('خطا در اتصال به سرور:', e);
         }
         
         this.startAutoSync();
@@ -2943,7 +3102,8 @@ const App = {
         const data = {
             lobbies: this.lobbies,
             nextLobbyId: this.nextLobbyId,
-            blacklist: this.blacklist
+            blacklist: this.blacklist,
+            reports: this.reports
         };
         await this.saveToServer(data);
     },
@@ -2958,61 +3118,69 @@ const App = {
         if (now - this.lastSync < 3000) return;
         this.lastSync = now;
         
-        const serverData = await this.fetchFromServer();
-        if (!serverData) return;
-        
-        if (serverData.lobbies) this.lobbies = serverData.lobbies;
-        if (serverData.blacklist) this.blacklist = serverData.blacklist;
-        this.nextLobbyId = serverData.nextLobbyId || 1;
-        
-        if (document.getElementById('friendly-hall-page').style.display === 'block') {
-            this.renderLobbies();
-        }
-        
-        if (this.currentLobby) {
-            const updatedLobby = this.lobbies.find(l => l.id === this.currentLobby.id);
-            if (updatedLobby) {
-                this.currentLobby = updatedLobby;
-                this.bannedUsers = updatedLobby.bannedUsers || [];
-                this.currentCreator = updatedLobby.creatorId;
-                this.syncPlayersWithServer(updatedLobby);
-                
-                if (updatedLobby.readyStatus) {
-                    this.playersReady = updatedLobby.readyStatus;
-                    for (let playerId in this.playersReady) {
-                        this.updatePlayerReadyStatus(parseInt(playerId), this.playersReady[playerId]);
-                    }
-                }
-            } else {
-                this.showNotification('⚠️ لابی توسط سازنده حذف شد');
-                this.leaveLobby();
+        try {
+            const serverData = await this.fetchFromServer();
+            if (!serverData) return;
+            
+            if (serverData.lobbies) this.lobbies = serverData.lobbies;
+            if (serverData.blacklist) this.blacklist = serverData.blacklist;
+            if (serverData.reports) this.reports = serverData.reports;
+            this.nextLobbyId = serverData.nextLobbyId || 1;
+            
+            const friendlyHall = document.getElementById('friendly-hall-page');
+            if (friendlyHall && friendlyHall.style.display === 'block') {
+                this.renderLobbies();
             }
-        }
-        
-        if (this.blacklist.includes(this.userId) && !this.isGameCreator) {
-            this.showNotification('🚫 شما توسط سازنده بازی بن شده‌اید', true);
-            // تابع خروج حذف شده - به جای آن صفحه رفرش می‌شود
-            setTimeout(() => {
-                window.location.reload();
-            }, 2000);
+            
+            if (this.currentLobby) {
+                const updatedLobby = this.lobbies.find(l => l.id === this.currentLobby.id);
+                if (updatedLobby) {
+                    const wasCreator = this.isLobbyCreator;
+                    this.currentLobby = updatedLobby;
+                    this.bannedUsers = updatedLobby.bannedUsers || [];
+                    this.currentCreator = updatedLobby.creatorId;
+                    this.isLobbyCreator = (this.userId === updatedLobby.creatorId);
+                    this.syncPlayersWithServer(updatedLobby);
+                    
+                    if (updatedLobby.readyStatus) {
+                        this.playersReady = updatedLobby.readyStatus;
+                        for (let playerId in this.playersReady) {
+                            this.updatePlayerReadyStatus(parseInt(playerId), this.playersReady[playerId]);
+                        }
+                    }
+                    
+                    if (wasCreator !== this.isLobbyCreator) {
+                        this.updateMainMenu();
+                    }
+                } else if (this.currentLobby) {
+                    this.showNotification('⚠️ لابی توسط سازنده حذف شد');
+                    this.leaveLobby();
+                }
+            }
+            
+            if (this.blacklist.includes(this.userId) && !this.isGameCreator) {
+                this.showNotification('🚫 شما توسط سازنده بازی بن شده‌اید', true);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        } catch (e) {
+            console.log('خطا در همگام‌سازی:', e);
         }
     },
     
     syncPlayersWithServer(lobby) {
-        if (lobby.players) {
-            lobby.players.forEach(player => {
-                if (!this.playersData[player.id]) {
-                    this.addPlayerToLobby(player, player.chair);
-                    this.showNotification(`👤 ${player.name} وارد لابی شد`);
-                }
-            });
-            
-            for (let id in this.playersData) {
-                if (!lobby.players.some(p => p.id == id)) {
-                    const playerName = this.playersData[id].name;
-                    this.removePlayerFromLobby(parseInt(id));
-                    this.showNotification(`🚪 ${playerName} از لابی خارج شد`);
-                }
+        if (!lobby || !lobby.players) return;
+        
+        lobby.players.forEach(player => {
+            if (!this.playersData[player.id]) {
+                this.addPlayerToLobby(player, player.chair);
+            }
+        });
+        
+        for (let id in this.playersData) {
+            if (!lobby.players.some(p => p.id == id)) {
+                this.removePlayerFromLobby(parseInt(id));
             }
         }
         
@@ -3031,6 +3199,7 @@ const App = {
     
     renderLobbies() {
         const container = document.getElementById('lobbies-container');
+        if (!container) return;
         
         if (this.lobbies.length === 0) {
             container.innerHTML = '<div class="empty-lobbies">🎮 هنوز لابی‌ای ایجاد نشده<br>اولین لابی را ایجاد کنید!</div>';
@@ -3041,9 +3210,16 @@ const App = {
         const sortedLobbies = [...this.lobbies].reverse();
         
         sortedLobbies.forEach(lobby => {
+            if (!lobby) return;
+            
             const avatarSrc = this.getAvatarImage(lobby.creatorAvatar);
             const passwordIndicator = lobby.hasPassword ? '<div class="lobby-password-indicator">🔒 رمز دارد</div>' : '';
             const playerCount = lobby.players ? lobby.players.length : 1;
+            
+            let creatorName = lobby.creatorName;
+            if (lobby.creatorId === 1 || lobby.creatorId === this.userId && this.isGameCreator) {
+                creatorName = `${lobby.creatorName} <span class="blue-tick"></span>`;
+            }
             
             const deleteButton = this.isGameCreator ? 
                 `<button class="lobby-join-btn" style="background: #ff5555; margin-left: 10px;" onclick="app.deleteLobby(${lobby.id})">🗑️ حذف</button>` : '';
@@ -3051,14 +3227,14 @@ const App = {
             html += `
                 <div class="lobby-card">
                     <div class="lobby-name-section">
-                        <span class="lobby-name-text">${lobby.name}</span>
+                        <span class="lobby-name-text">${lobby.name || 'بدون نام'}</span>
                         ${passwordIndicator}
                     </div>
                     <div class="lobby-creator-box">
                         <div class="lobby-creator-avatar"><img src="${avatarSrc}"></div>
                         <div class="lobby-creator-details">
-                            <div class="lobby-creator-name">${lobby.creatorName}</div>
-                            <div class="lobby-players"><span>👥</span> ${playerCount}/${lobby.maxPlayers}</div>
+                            <div class="lobby-creator-name">${creatorName}</div>
+                            <div class="lobby-players"><span>👥</span> ${playerCount}/${lobby.maxPlayers || 8}</div>
                         </div>
                         <div style="display: flex; gap: 5px;">
                             ${deleteButton}
@@ -3258,13 +3434,17 @@ const App = {
         
         for (let i = 1; i <= 10; i++) {
             const chair = document.getElementById(`chair-${i}`);
-            chair.classList.add('empty-chair');
-            chair.innerHTML = `<div class="chair-avatar"></div><div class="chair-name">خالی</div>`;
-            delete chair.dataset.playerId;
+            if (chair) {
+                chair.classList.add('empty-chair');
+                chair.innerHTML = `<div class="chair-avatar"></div><div class="chair-name">خالی</div>`;
+                delete chair.dataset.playerId;
+            }
         }
         
-        document.getElementById('observerChair1').classList.remove('visible');
-        document.getElementById('observerChair2').classList.remove('visible');
+        const observerChair1 = document.getElementById('observerChair1');
+        const observerChair2 = document.getElementById('observerChair2');
+        if (observerChair1) observerChair1.classList.remove('visible');
+        if (observerChair2) observerChair2.classList.remove('visible');
         
         if (lobby.players) {
             lobby.players.forEach(player => {
@@ -3283,22 +3463,25 @@ const App = {
         
         const readyToggle = document.getElementById('readyToggle');
         const readyText = document.getElementById('readyText');
-        if (isReady) {
-            readyToggle.classList.add('ready');
-            readyToggle.classList.remove('not-ready');
-            readyText.textContent = 'آماده هستم';
-        } else {
-            readyToggle.classList.add('not-ready');
-            readyToggle.classList.remove('ready');
-            readyText.textContent = 'آماده نیستم';
-        }
         
-        if (this.isGameCreator) {
-            readyToggle.style.opacity = '0.5';
-            readyToggle.style.pointerEvents = 'none';
-        } else {
-            readyToggle.style.opacity = '1';
-            readyToggle.style.pointerEvents = 'auto';
+        if (readyToggle && readyText) {
+            if (isReady) {
+                readyToggle.classList.add('ready');
+                readyToggle.classList.remove('not-ready');
+                readyText.textContent = 'آماده هستم';
+            } else {
+                readyToggle.classList.add('not-ready');
+                readyToggle.classList.remove('ready');
+                readyText.textContent = 'آماده نیستم';
+            }
+            
+            if (this.isGameCreator) {
+                readyToggle.style.opacity = '0.5';
+                readyToggle.style.pointerEvents = 'none';
+            } else {
+                readyToggle.style.opacity = '1';
+                readyToggle.style.pointerEvents = 'auto';
+            }
         }
         
         this.updateMainMenu();
@@ -3306,6 +3489,8 @@ const App = {
     
     updateMainMenu() {
         const menu = document.getElementById('mainMenu');
+        if (!menu) return;
+        
         let menuHTML = '';
         
         if (this.isGameCreator) {
@@ -3330,7 +3515,7 @@ const App = {
     },
     
     addPlayerToLobby(player, chairNumber = null) {
-        if (this.playersData[player.id]) return;
+        if (!player || this.playersData[player.id]) return;
         
         if (chairNumber) {
             const chair = document.getElementById(`chair-${chairNumber}`);
@@ -3349,6 +3534,8 @@ const App = {
     },
     
     placePlayerInChair(chair, player, chairNumber) {
+        if (!chair || !player) return;
+        
         chair.classList.remove('empty-chair');
         const avatarImg = this.getAvatarImage(player.avatar);
         
@@ -3358,8 +3545,8 @@ const App = {
         const readyClass = isPlayerReady ? 'ready' : 'not-ready';
         
         let nameHTML = `<span>${player.name}</span>`;
-        if (player.id === 1 || player.phone === CREATOR_PHONE || (player.id === this.userId && this.isGameCreator)) {
-            nameHTML = `<span style="color: #FFD700;">👑 ${player.name}</span>`;
+        if (player.id === 1 || player.phone === CREATOR_PHONE) {
+            nameHTML = `<span><span class="blue-tick"></span> ${player.name}</span>`;
         }
         
         chair.innerHTML = `
@@ -3376,7 +3563,10 @@ const App = {
     },
     
     handleChairClick(playerId, playerName) {
-        if (playerId === this.userId) return;
+        if (playerId === this.userId) {
+            this.openProfilePage();
+            return;
+        }
         
         if (this.isGameCreator) {
             this.openGameCreatorAdminPanel(playerId);
@@ -3401,11 +3591,13 @@ const App = {
         
         if (this.observer1 == playerId) {
             this.observer1 = null;
-            document.getElementById('observerChair1').classList.remove('visible');
+            const observerChair1 = document.getElementById('observerChair1');
+            if (observerChair1) observerChair1.classList.remove('visible');
         }
         if (this.observer2 == playerId) {
             this.observer2 = null;
-            document.getElementById('observerChair2').classList.remove('visible');
+            const observerChair2 = document.getElementById('observerChair2');
+            if (observerChair2) observerChair2.classList.remove('visible');
         }
     },
     
@@ -3429,7 +3621,38 @@ const App = {
     },
     
     toggleMainMenu() {
-        document.getElementById('mainMenu').classList.toggle('visible');
+        const menu = document.getElementById('mainMenu');
+        if (menu) menu.classList.toggle('visible');
+    },
+    
+    viewReports() {
+        if (!this.isGameCreator) return;
+        
+        const container = document.getElementById('reportsContainer');
+        if (!container) return;
+        
+        if (!this.reports || this.reports.length === 0) {
+            container.innerHTML = '<div style="color: white; text-align: center; padding: 10px;">هیچ گزارشی وجود ندارد</div>';
+        } else {
+            let html = '<div class="banned-title">📋 گزارشات:</div>';
+            this.reports.forEach((report, index) => {
+                const date = new Date(report.timestamp).toLocaleString('fa-IR');
+                html += `
+                    <div class="banned-user-item" style="flex-direction: column; align-items: flex-start;">
+                        <div><strong>گزارش دهنده:</strong> ${report.reporterName}</div>
+                        <div><strong>کاربر:</strong> ${report.reportedName}</div>
+                        <div><strong>دلیل:</strong> ${report.reason}</div>
+                        <div><strong>توضیحات:</strong> ${report.description}</div>
+                        <div><strong>زمان:</strong> ${date}</div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+        
+        container.style.display = 'block';
+        const blacklistContainer = document.getElementById('blacklistContainer');
+        if (blacklistContainer) blacklistContainer.style.display = 'none';
     },
     
     viewBannedList() {
@@ -3503,13 +3726,17 @@ const App = {
         
         for (let i = 1; i <= 10; i++) {
             const chair = document.getElementById(`chair-${i}`);
-            chair.classList.add('empty-chair');
-            chair.innerHTML = `<div class="chair-avatar"></div><div class="chair-name">خالی</div>`;
-            delete chair.dataset.playerId;
+            if (chair) {
+                chair.classList.add('empty-chair');
+                chair.innerHTML = `<div class="chair-avatar"></div><div class="chair-name">خالی</div>`;
+                delete chair.dataset.playerId;
+            }
         }
         
-        document.getElementById('observerChair1').classList.remove('visible');
-        document.getElementById('observerChair2').classList.remove('visible');
+        const observerChair1 = document.getElementById('observerChair1');
+        const observerChair2 = document.getElementById('observerChair2');
+        if (observerChair1) observerChair1.classList.remove('visible');
+        if (observerChair2) observerChair2.classList.remove('visible');
         
         this.renderLobbies();
     },
@@ -3523,16 +3750,23 @@ const App = {
         this.selectedPlayerId = playerId;
         this.selectedPlayerData = player;
         
-        document.getElementById('adminPlayerAvatar').innerHTML = `<img src="${this.getAvatarImage(player.avatar)}">`;
-        document.getElementById('adminPlayerName').innerHTML = player.name;
-        document.getElementById('adminPlayerId').innerHTML = player.id;
+        const adminPlayerAvatar = document.getElementById('adminPlayerAvatar');
+        const adminPlayerName = document.getElementById('adminPlayerName');
+        const adminPlayerId = document.getElementById('adminPlayerId');
+        const adminWarning = document.getElementById('adminWarning');
+        const adminActions = document.getElementById('adminActions');
+        const adminPanel = document.getElementById('adminPanel');
+        
+        if (!adminPlayerAvatar || !adminPlayerName || !adminPlayerId || !adminWarning || !adminActions || !adminPanel) return;
+        
+        adminPlayerAvatar.innerHTML = `<img src="${this.getAvatarImage(player.avatar)}">`;
+        adminPlayerName.innerHTML = player.name;
+        adminPlayerId.innerHTML = player.id;
         
         const isBanned = this.blacklist.includes(playerId);
-        const warningElement = document.getElementById('adminWarning');
-        warningElement.style.display = isBanned ? 'block' : 'none';
-        if (isBanned) warningElement.innerHTML = '⚠️ این کاربر در لیست سیاه است';
+        adminWarning.style.display = isBanned ? 'block' : 'none';
+        if (isBanned) adminWarning.innerHTML = '⚠️ این کاربر در لیست سیاه است';
         
-        const actionsContainer = document.getElementById('adminActions');
         let actionsHTML = '';
         
         actionsHTML += `<div class="admin-action-btn profile" onclick="app.viewOtherProfileFromAdmin()">👤 پروفایل</div>`;
@@ -3559,8 +3793,8 @@ const App = {
             actionsHTML += `<div class="admin-action-btn" style="color: #ffaa00; border-color: #ffaa00;" onclick="app.tempBanPlayer()">⛔ مسدود موقت</div>`;
         }
         
-        actionsContainer.innerHTML = actionsHTML;
-        document.getElementById('adminPanel').classList.add('visible');
+        adminActions.innerHTML = actionsHTML;
+        adminPanel.classList.add('visible');
     },
     
     openGameCreatorAdminPanel(playerId) {
@@ -3572,16 +3806,23 @@ const App = {
         this.selectedPlayerId = playerId;
         this.selectedPlayerData = player;
         
-        document.getElementById('adminPlayerAvatar').innerHTML = `<img src="${this.getAvatarImage(player.avatar)}">`;
-        document.getElementById('adminPlayerName').innerHTML = player.name;
-        document.getElementById('adminPlayerId').innerHTML = player.id;
+        const adminPlayerAvatar = document.getElementById('adminPlayerAvatar');
+        const adminPlayerName = document.getElementById('adminPlayerName');
+        const adminPlayerId = document.getElementById('adminPlayerId');
+        const adminWarning = document.getElementById('adminWarning');
+        const adminActions = document.getElementById('adminActions');
+        const adminPanel = document.getElementById('adminPanel');
+        
+        if (!adminPlayerAvatar || !adminPlayerName || !adminPlayerId || !adminWarning || !adminActions || !adminPanel) return;
+        
+        adminPlayerAvatar.innerHTML = `<img src="${this.getAvatarImage(player.avatar)}">`;
+        adminPlayerName.innerHTML = player.name;
+        adminPlayerId.innerHTML = player.id;
         
         const isBanned = this.blacklist.includes(playerId);
-        const warningElement = document.getElementById('adminWarning');
-        warningElement.style.display = isBanned ? 'block' : 'none';
-        if (isBanned) warningElement.innerHTML = '⚠️ این کاربر در لیست سیاه است';
+        adminWarning.style.display = isBanned ? 'block' : 'none';
+        if (isBanned) adminWarning.innerHTML = '⚠️ این کاربر در لیست سیاه است';
         
-        const actionsContainer = document.getElementById('adminActions');
         let actionsHTML = '';
         
         actionsHTML += `<div class="admin-action-btn profile" onclick="app.viewOtherProfileFromAdmin()">👤 پروفایل</div>`;
@@ -3611,12 +3852,13 @@ const App = {
             }
         }
         
-        actionsContainer.innerHTML = actionsHTML;
-        document.getElementById('adminPanel').classList.add('visible');
+        adminActions.innerHTML = actionsHTML;
+        adminPanel.classList.add('visible');
     },
     
     closeAdminPanel() {
-        document.getElementById('adminPanel').classList.remove('visible');
+        const adminPanel = document.getElementById('adminPanel');
+        if (adminPanel) adminPanel.classList.remove('visible');
         this.selectedPlayerId = null;
         this.selectedPlayerData = null;
     },
@@ -3670,7 +3912,8 @@ const App = {
                 }
             }
             this.observer1 = null;
-            document.getElementById('observerChair1').classList.remove('visible');
+            const observerChair1 = document.getElementById('observerChair1');
+            if (observerChair1) observerChair1.classList.remove('visible');
             if (this.currentLobby) this.currentLobby.observer1 = null;
         } else if (type === 2 && this.observer2) {
             const playerData = this.playersData[this.observer2];
@@ -3684,7 +3927,8 @@ const App = {
                 }
             }
             this.observer2 = null;
-            document.getElementById('observerChair2').classList.remove('visible');
+            const observerChair2 = document.getElementById('observerChair2');
+            if (observerChair2) observerChair2.classList.remove('visible');
             if (this.currentLobby) this.currentLobby.observer2 = null;
         }
         
@@ -3694,20 +3938,34 @@ const App = {
     },
     
     updateObserverDisplay(type, playerData) {
+        if (!playerData) return;
+        
         const avatarImg = this.getAvatarImage(playerData.avatar);
         const isPlayerReady = this.playersReady[playerData.id] !== undefined ? this.playersReady[playerData.id] : true;
         const readyClass = isPlayerReady ? 'ready' : 'not-ready';
         
         if (type === 1) {
-            document.getElementById('observerChair1').classList.add('visible');
-            document.getElementById('observerAvatar1').innerHTML = `<img src="${avatarImg}">`;
-            document.getElementById('observerName1').innerHTML = playerData.name;
-            document.getElementById('observerAvatar1').classList.add(readyClass);
+            const observerChair1 = document.getElementById('observerChair1');
+            const observerAvatar1 = document.getElementById('observerAvatar1');
+            const observerName1 = document.getElementById('observerName1');
+            
+            if (observerChair1) observerChair1.classList.add('visible');
+            if (observerAvatar1) {
+                observerAvatar1.innerHTML = `<img src="${avatarImg}">`;
+                observerAvatar1.className = `observer-avatar ${readyClass}`;
+            }
+            if (observerName1) observerName1.innerHTML = playerData.name;
         } else {
-            document.getElementById('observerChair2').classList.add('visible');
-            document.getElementById('observerAvatar2').innerHTML = `<img src="${avatarImg}">`;
-            document.getElementById('observerName2').innerHTML = playerData.name;
-            document.getElementById('observerAvatar2').classList.add(readyClass);
+            const observerChair2 = document.getElementById('observerChair2');
+            const observerAvatar2 = document.getElementById('observerAvatar2');
+            const observerName2 = document.getElementById('observerName2');
+            
+            if (observerChair2) observerChair2.classList.add('visible');
+            if (observerAvatar2) {
+                observerAvatar2.innerHTML = `<img src="${avatarImg}">`;
+                observerAvatar2.className = `observer-avatar ${readyClass}`;
+            }
+            if (observerName2) observerName2.innerHTML = playerData.name;
         }
     },
     
@@ -3718,19 +3976,11 @@ const App = {
         const newCreator = this.playersData[this.selectedPlayerId];
         if (!newCreator) return;
         
-        const oldName = document.getElementById(`name-${this.currentCreator}`);
-        if (oldName) {
-            const oldPlayer = this.playersData[this.currentCreator];
-            oldName.innerHTML = `${oldPlayer.isCreator ? '<span class="crown-icon"></span>' : ''}<span>${oldPlayer.name}</span>`;
-        }
-        
-        const newName = document.getElementById(`name-${this.selectedPlayerId}`);
-        if (newName) {
-            newName.innerHTML = `<span class="crown-icon"></span><span>${newCreator.name}</span>`;
-        }
-        
         if (this.currentLobby) {
             this.currentLobby.creatorId = this.selectedPlayerId;
+            this.currentLobby.creatorName = newCreator.name;
+            this.currentLobby.creatorAvatar = newCreator.avatar;
+            
             const playerIndex = this.currentLobby.players.findIndex(p => p.id === this.selectedPlayerId);
             if (playerIndex !== -1) this.currentLobby.players[playerIndex].isCreator = true;
             const oldCreatorIndex = this.currentLobby.players.findIndex(p => p.id === this.currentCreator);
@@ -3739,6 +3989,7 @@ const App = {
         
         this.currentCreator = this.selectedPlayerId;
         this.isLobbyCreator = (this.userId === this.selectedPlayerId);
+        
         this.saveLobbiesToServer();
         this.closeAdminPanel();
         this.updateMainMenu();
@@ -3783,17 +4034,20 @@ const App = {
     
     openBanModal() {
         if (!this.isGameCreator) return;
-        document.getElementById('banModal').style.display = 'block';
+        const banModal = document.getElementById('banModal');
+        if (banModal) banModal.style.display = 'block';
     },
     
     closeBanModal() {
-        document.getElementById('banModal').style.display = 'none';
+        const banModal = document.getElementById('banModal');
+        if (banModal) banModal.style.display = 'none';
     },
     
     async confirmBan() {
         if (!this.isGameCreator || !this.selectedPlayerId) return;
         
-        const banMessage = document.getElementById('banMessageInput').value.trim() || 'شما توسط سازنده بازی بن شدید';
+        const banMessageInput = document.getElementById('banMessageInput');
+        const banMessage = banMessageInput ? banMessageInput.value.trim() : 'شما توسط سازنده بازی بن شدید';
         
         if (!this.blacklist.includes(this.selectedPlayerId)) {
             this.blacklist.push(this.selectedPlayerId);
@@ -3828,25 +4082,43 @@ const App = {
     openGameCreatorPanel() {
         if (!this.isGameCreator) return;
         
-        document.getElementById('totalLobbiesCount').textContent = this.lobbies.length;
+        const totalLobbiesCount = document.getElementById('totalLobbiesCount');
+        const onlineUsersCount = document.getElementById('onlineUsersCount');
+        const blacklistCount = document.getElementById('blacklistCount');
+        const gameCreatorPanel = document.getElementById('gameCreatorPanel');
+        const reportsContainer = document.getElementById('reportsContainer');
+        const blacklistContainer = document.getElementById('blacklistContainer');
+        
+        if (totalLobbiesCount) totalLobbiesCount.textContent = this.lobbies.length;
         
         let onlineUsers = 0;
         this.lobbies.forEach(lobby => {
             onlineUsers += lobby.players ? lobby.players.length : 0;
         });
-        document.getElementById('onlineUsersCount').textContent = onlineUsers;
-        document.getElementById('blacklistCount').textContent = this.blacklist.length;
         
-        document.getElementById('gameCreatorPanel').classList.add('visible');
+        if (onlineUsersCount) onlineUsersCount.textContent = onlineUsers;
+        if (blacklistCount) blacklistCount.textContent = this.blacklist.length;
+        
+        if (gameCreatorPanel) gameCreatorPanel.classList.add('visible');
+        if (reportsContainer) reportsContainer.style.display = 'none';
+        if (blacklistContainer) blacklistContainer.style.display = 'none';
     },
     
     closeGameCreatorPanel() {
-        document.getElementById('gameCreatorPanel').classList.remove('visible');
-        document.getElementById('blacklistContainer').style.display = 'none';
+        const gameCreatorPanel = document.getElementById('gameCreatorPanel');
+        const blacklistContainer = document.getElementById('blacklistContainer');
+        const reportsContainer = document.getElementById('reportsContainer');
+        
+        if (gameCreatorPanel) gameCreatorPanel.classList.remove('visible');
+        if (blacklistContainer) blacklistContainer.style.display = 'none';
+        if (reportsContainer) reportsContainer.style.display = 'none';
     },
     
     showBlacklist() {
         const container = document.getElementById('blacklistContainer');
+        const reportsContainer = document.getElementById('reportsContainer');
+        
+        if (!container) return;
         
         if (this.blacklist.length === 0) {
             container.innerHTML = '<div style="color: white; text-align: center; padding: 10px;">لیست سیاه خالی است</div>';
@@ -3864,6 +4136,7 @@ const App = {
         }
         
         container.style.display = 'block';
+        if (reportsContainer) reportsContainer.style.display = 'none';
     },
     
     async unbanUserFromList(userId) {
@@ -3877,12 +4150,17 @@ const App = {
     openUserProfileMenu(playerId, playerName) {
         this.selectedPlayerId = playerId;
         this.selectedPlayerData = this.playersData[playerId];
-        document.getElementById('profileMenuUserName').innerHTML = `پروفایل ${playerName}`;
-        document.getElementById('userProfileMenu').classList.add('visible');
+        
+        const profileMenuUserName = document.getElementById('profileMenuUserName');
+        const userProfileMenu = document.getElementById('userProfileMenu');
+        
+        if (profileMenuUserName) profileMenuUserName.innerHTML = `پروفایل ${playerName}`;
+        if (userProfileMenu) userProfileMenu.classList.add('visible');
     },
     
     closeUserProfileMenu() {
-        document.getElementById('userProfileMenu').classList.remove('visible');
+        const userProfileMenu = document.getElementById('userProfileMenu');
+        if (userProfileMenu) userProfileMenu.classList.remove('visible');
         this.selectedPlayerId = null;
         this.selectedPlayerData = null;
     },
@@ -3900,52 +4178,84 @@ const App = {
     },
     
     showOtherProfile(player) {
+        if (!player) return;
+        
         const stats = this.userStats || {
             wins: 0, losses: 0, hours: 0, observerCount: 0,
             rank: 'تازه‌وارد', rankTag: 'برنزی'
         };
         
-        document.getElementById('otherProfileAvatar').innerHTML = `<img src="${this.getAvatarImage(player.avatar)}">`;
-        document.getElementById('otherProfileUserName').innerHTML = player.name;
-        document.getElementById('otherProfileLevelBadge').innerHTML = player.isCreator ? 'سازنده' : 'سطح ۱';
-        document.getElementById('otherUserIdDisplay').innerHTML = player.id;
-        document.getElementById('otherWinCount').innerHTML = stats.wins || 0;
-        document.getElementById('otherLoseCount').innerHTML = stats.losses || 0;
-        document.getElementById('otherHoursPlayed').innerHTML = stats.hours || 0;
-        document.getElementById('otherObserverCount').innerHTML = stats.observerCount || 0;
-        document.getElementById('otherRankName').innerHTML = stats.rank || 'تازه‌وارد';
-        document.getElementById('otherRankTag').innerHTML = stats.rankTag || 'برنزی';
+        const otherProfileAvatar = document.getElementById('otherProfileAvatar');
+        const otherProfileUserName = document.getElementById('otherProfileUserName');
+        const otherProfileLevelBadge = document.getElementById('otherProfileLevelBadge');
+        const otherUserIdDisplay = document.getElementById('otherUserIdDisplay');
+        const otherWinCount = document.getElementById('otherWinCount');
+        const otherLoseCount = document.getElementById('otherLoseCount');
+        const otherHoursPlayed = document.getElementById('otherHoursPlayed');
+        const otherObserverCount = document.getElementById('otherObserverCount');
+        const otherRankName = document.getElementById('otherRankName');
+        const otherRankTag = document.getElementById('otherRankTag');
+        const lobbyPage = document.getElementById('lobby-page');
+        const otherProfilePage = document.getElementById('other-profile-page');
         
-        document.getElementById('lobby-page').style.display = 'none';
-        document.getElementById('other-profile-page').style.display = 'block';
+        if (otherProfileAvatar) otherProfileAvatar.innerHTML = `<img src="${this.getAvatarImage(player.avatar)}">`;
+        if (otherProfileUserName) otherProfileUserName.innerHTML = player.isCreator ? `<span class="blue-tick"></span> ${player.name}` : player.name;
+        if (otherProfileLevelBadge) otherProfileLevelBadge.innerHTML = player.isCreator ? 'سازنده' : 'سطح ۱';
+        if (otherUserIdDisplay) otherUserIdDisplay.innerHTML = player.id;
+        if (otherWinCount) otherWinCount.innerHTML = stats.wins || 0;
+        if (otherLoseCount) otherLoseCount.innerHTML = stats.losses || 0;
+        if (otherHoursPlayed) otherHoursPlayed.innerHTML = stats.hours || 0;
+        if (otherObserverCount) otherObserverCount.innerHTML = stats.observerCount || 0;
+        if (otherRankName) otherRankName.innerHTML = stats.rank || 'تازه‌وارد';
+        if (otherRankTag) otherRankTag.innerHTML = stats.rankTag || 'برنزی';
+        
+        if (lobbyPage) lobbyPage.style.display = 'none';
+        if (otherProfilePage) otherProfilePage.style.display = 'block';
     },
     
     closeOtherProfile() {
-        document.getElementById('other-profile-page').style.display = 'none';
-        document.getElementById('lobby-page').style.display = 'block';
+        const otherProfilePage = document.getElementById('other-profile-page');
+        const lobbyPage = document.getElementById('lobby-page');
+        
+        if (otherProfilePage) otherProfilePage.style.display = 'none';
+        if (lobbyPage) lobbyPage.style.display = 'block';
     },
     
     openReportModal() {
         if (!this.selectedPlayerData) return;
-        document.getElementById('report-modal').style.display = 'block';
+        const reportModal = document.getElementById('report-modal');
+        if (reportModal) reportModal.style.display = 'block';
         this.closeUserProfileMenu();
     },
     
     openReportModalFromAdmin() {
         if (!this.selectedPlayerData) return;
-        document.getElementById('report-modal').style.display = 'block';
+        const reportModal = document.getElementById('report-modal');
+        if (reportModal) reportModal.style.display = 'block';
         this.closeAdminPanel();
     },
     
     closeReportModal() {
-        document.getElementById('report-modal').style.display = 'none';
-        document.getElementById('reportDescription').value = '';
-        document.querySelectorAll('input[name="reportReason"]')[0].checked = true;
+        const reportModal = document.getElementById('report-modal');
+        const reportDescription = document.getElementById('reportDescription');
+        const reportReasons = document.querySelectorAll('input[name="reportReason"]');
+        
+        if (reportModal) reportModal.style.display = 'none';
+        if (reportDescription) reportDescription.value = '';
+        if (reportReasons && reportReasons[0]) reportReasons[0].checked = true;
     },
     
     sendReport() {
-        const reason = document.querySelector('input[name="reportReason"]:checked').value;
-        const description = document.getElementById('reportDescription').value.trim();
+        const reasonElements = document.querySelectorAll('input[name="reportReason"]');
+        let reason = 'بی احترامی';
+        for (let elem of reasonElements) {
+            if (elem.checked) {
+                reason = elem.value;
+                break;
+            }
+        }
+        
+        const description = document.getElementById('reportDescription')?.value.trim() || '';
         if (!this.selectedPlayerData) return;
         
         const reportData = {
@@ -3959,9 +4269,10 @@ const App = {
             lobbyId: this.currentLobby?.id
         };
         
-        const reports = JSON.parse(localStorage.getItem('mafiaReports') || '[]');
-        reports.push(reportData);
-        localStorage.setItem('mafiaReports', JSON.stringify(reports));
+        if (!this.reports) this.reports = [];
+        this.reports.push(reportData);
+        this.saveLobbiesToServer();
+        
         this.showNotification('✅ گزارش شما ارسال شد');
         this.closeReportModal();
     },
@@ -3982,7 +4293,7 @@ const App = {
         if (profileImg) profileImg.src = this.getAvatarImage(this.currentAvatar);
         
         const profileName = document.getElementById('profileUserName');
-        if (profileName) profileName.innerHTML = this.userName;
+        if (profileName) profileName.innerHTML = this.isGameCreator ? `<span class="blue-tick"></span> ${this.userName}` : this.userName;
         
         const levelBadge = document.getElementById('profileLevelBadge');
         if (levelBadge) levelBadge.textContent = this.isGameCreator ? 'سازنده بازی' : 'سطح ۱';
@@ -4023,11 +4334,13 @@ const App = {
         panels.forEach(p => p.classList.remove('active'));
         
         if (tab === 'my') {
-            tabs[0].classList.add('active');
-            document.getElementById('myAvatarsPanel').classList.add('active');
+            if (tabs[0]) tabs[0].classList.add('active');
+            const myPanel = document.getElementById('myAvatarsPanel');
+            if (myPanel) myPanel.classList.add('active');
         } else {
-            tabs[1].classList.add('active');
-            document.getElementById('shopPanel').classList.add('active');
+            if (tabs[1]) tabs[1].classList.add('active');
+            const shopPanel = document.getElementById('shopPanel');
+            if (shopPanel) shopPanel.classList.add('active');
             this.updateShopAvatars();
         }
     },
@@ -4038,14 +4351,18 @@ const App = {
 
         let html = '';
         const avatarsList = [
-            { id: 'avatar1', num: '#۰۰۱', img: this.avatars.avatar1 },
-            { id: 'avatar2', num: '#۰۰۲', img: this.avatars.avatar2 },
-            { id: 'ninja', num: '#۰۰۳', img: this.avatars.ninja },
-            { id: 'samurai', num: '#۰۰۴', img: this.avatars.samurai },
-            { id: 'avatar5', num: '#۰۰۵', img: this.avatars.avatar5 },
-            { id: 'avatar6', num: '#۰۰۶', img: this.avatars.avatar6 },
-            { id: 'avatar7', num: '#۰۰۷', img: this.avatars.avatar7 },
-            { id: 'avatar8', num: '#۰۰۸', img: this.avatars.avatar8 }
+            { id: 'avatar1', num: '#۰۰۱', img: this.avatars.avatar1, name: 'آواتار ۱' },
+            { id: 'avatar2', num: '#۰۰۲', img: this.avatars.avatar2, name: 'آواتار ۲' },
+            { id: 'ninja', num: '#۰۰۳', img: this.avatars.ninja, name: 'نینجا' },
+            { id: 'samurai', num: '#۰۰۴', img: this.avatars.samurai, name: 'سامورایی' },
+            { id: 'avatar5', num: '#۰۰۵', img: this.avatars.avatar5, name: 'آواتار ۵' },
+            { id: 'avatar6', num: '#۰۰۶', img: this.avatars.avatar6, name: 'آواتار ۶' },
+            { id: 'avatar7', num: '#۰۰۷', img: this.avatars.avatar7, name: 'آواتار ۷' },
+            { id: 'avatar8', num: '#۰۰۸', img: this.avatars.avatar8, name: 'آواتار ۸' },
+            { id: 'avatar13', num: '#۰۱۳', img: this.avatars.avatar13, name: 'آواتار ۱۳' },
+            { id: 'avatar14', num: '#۰۱۴', img: this.avatars.avatar14, name: 'آواتار ۱۴' },
+            { id: 'avatar15', num: '#۰۱۵', img: this.avatars.avatar15, name: 'آواتار ۱۵' },
+            { id: 'avatar16', num: '#۰۱۶', img: this.avatars.avatar16, name: 'آواتار ۱۶' }
         ];
 
         avatarsList.forEach(avatar => {
@@ -4068,12 +4385,16 @@ const App = {
         if (!shopGrid) return;
 
         const shopAvatars = [
-            { id: 'ninja', num: '#۰۰۳', img: this.avatars.ninja, price: 200, currency: 'gems' },
-            { id: 'samurai', num: '#۰۰۴', img: this.avatars.samurai, price: 200, currency: 'gems' },
-            { id: 'avatar5', num: '#۰۰۵', img: this.avatars.avatar5, price: 180, currency: 'gems' },
-            { id: 'avatar6', num: '#۰۰۶', img: this.avatars.avatar6, price: 100, currency: 'gems' },
-            { id: 'avatar7', num: '#۰۰۷', img: this.avatars.avatar7, price: 2000, currency: 'coins' },
-            { id: 'avatar8', num: '#۰۰۸', img: this.avatars.avatar8, price: 1200, currency: 'coins' }
+            { id: 'ninja', num: '#۰۰۳', img: this.avatars.ninja, price: 200, currency: 'gems', name: 'نینجا' },
+            { id: 'samurai', num: '#۰۰۴', img: this.avatars.samurai, price: 200, currency: 'gems', name: 'سامورایی' },
+            { id: 'avatar5', num: '#۰۰۵', img: this.avatars.avatar5, price: 180, currency: 'gems', name: 'آواتار ۵' },
+            { id: 'avatar6', num: '#۰۰۶', img: this.avatars.avatar6, price: 100, currency: 'gems', name: 'آواتار ۶' },
+            { id: 'avatar7', num: '#۰۰۷', img: this.avatars.avatar7, price: 2000, currency: 'coins', name: 'آواتار ۷' },
+            { id: 'avatar8', num: '#۰۰۸', img: this.avatars.avatar8, price: 1200, currency: 'coins', name: 'آواتار ۸' },
+            { id: 'avatar13', num: '#۰۱۳', img: this.avatars.avatar13, price: 300, currency: 'gems', name: 'آواتار ۱۳' },
+            { id: 'avatar14', num: '#۰۱۴', img: this.avatars.avatar14, price: 300, currency: 'gems', name: 'آواتار ۱۴' },
+            { id: 'avatar15', num: '#۰۱۵', img: this.avatars.avatar15, price: 300, currency: 'gems', name: 'آواتار ۱۵' },
+            { id: 'avatar16', num: '#۰۱۶', img: this.avatars.avatar16, price: 50, currency: 'gems', name: 'آواتار ۱۶' }
         ];
 
         let html = '';
@@ -4102,6 +4423,7 @@ const App = {
                 this.saveUserData();
                 this.updateMyAvatars();
                 this.updateShopAvatars();
+                this.showNotification(`✅ آواتار ${avatarNumber} اضافه شد`);
             }
             return;
         }
@@ -4139,6 +4461,8 @@ const App = {
     
     copyUserId() {
         const userIdElement = document.getElementById('userIdDisplay');
+        if (!userIdElement) return;
+        
         const userIdText = userIdElement.textContent;
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(userIdText);
@@ -4179,7 +4503,7 @@ const App = {
         const profileName = document.getElementById('mainProfileName');
         if (profileName) {
             if (this.isGameCreator) {
-                profileName.innerHTML = `👑 ${this.userName}`;
+                profileName.innerHTML = `<span class="blue-tick"></span> ${this.userName}`;
             } else {
                 profileName.innerHTML = this.userName;
             }
@@ -4200,6 +4524,8 @@ const App = {
         const modalTitle = document.getElementById('modalTitle');
         const nameInput = document.getElementById('editNameInput');
         
+        if (!modal || !coinMessage || !modalTitle || !nameInput) return;
+        
         nameInput.value = this.userName;
         
         if (this.editCount === 0) {
@@ -4214,7 +4540,8 @@ const App = {
     },
     
     closeEditModal() {
-        document.getElementById('editModal').style.display = 'none';
+        const editModal = document.getElementById('editModal');
+        if (editModal) editModal.style.display = 'none';
     },
     
     saveUserName() {
@@ -4224,6 +4551,8 @@ const App = {
         }
         
         const nameInput = document.getElementById('editNameInput');
+        if (!nameInput) return;
+        
         let newName = nameInput.value.trim();
         
         if (!newName || newName.length < 2 || newName.length > 12) {
@@ -4259,14 +4588,16 @@ const App = {
         const readyToggle = document.getElementById('readyToggle');
         const readyText = document.getElementById('readyText');
         
-        if (this.playersReady[this.userId]) {
-            readyToggle.classList.add('ready');
-            readyToggle.classList.remove('not-ready');
-            readyText.textContent = 'آماده هستم';
-        } else {
-            readyToggle.classList.add('not-ready');
-            readyToggle.classList.remove('ready');
-            readyText.textContent = 'آماده نیستم';
+        if (readyToggle && readyText) {
+            if (this.playersReady[this.userId]) {
+                readyToggle.classList.add('ready');
+                readyToggle.classList.remove('not-ready');
+                readyText.textContent = 'آماده هستم';
+            } else {
+                readyToggle.classList.add('not-ready');
+                readyToggle.classList.remove('ready');
+                readyText.textContent = 'آماده نیستم';
+            }
         }
         
         this.updatePlayerReadyStatus(this.userId, this.playersReady[this.userId]);
@@ -4329,6 +4660,7 @@ const App = {
     }
 };
 
+// ========== Event Listeners ==========
 document.addEventListener('click', function(e) {
     if (!e.target.closest('.user-profile-menu') && !e.target.closest('.chair-avatar')) {
         App.closeUserProfileMenu();
@@ -4337,10 +4669,12 @@ document.addEventListener('click', function(e) {
         App.closeAdminPanel();
     }
     if (!e.target.closest('.game-creator-panel') && !e.target.closest('.menu-item')) {
-        document.getElementById('gameCreatorPanel')?.classList.remove('visible');
+        const gameCreatorPanel = document.getElementById('gameCreatorPanel');
+        if (gameCreatorPanel) gameCreatorPanel.classList.remove('visible');
     }
     if (!e.target.closest('.menu-button') && !e.target.closest('.main-menu')) {
-        document.getElementById('mainMenu')?.classList.remove('visible');
+        const mainMenu = document.getElementById('mainMenu');
+        if (mainMenu) mainMenu.classList.remove('visible');
     }
 });
 
