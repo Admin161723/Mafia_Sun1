@@ -3228,13 +3228,13 @@ const App = {
         return this.avatars.avatar1;
     },
 
-    showNotification(message, isBan = false) {
+    showNotification(message, isBan = false, duration = 3000) {
         const notification = document.getElementById('copyNotification');
         if (!notification) return;
         notification.textContent = message;
         notification.classList.toggle('ban-notification', isBan);
         notification.style.display = 'block';
-        setTimeout(() => notification.style.display = 'none', 2000);
+        setTimeout(() => notification.style.display = 'none', duration);
     },
 
     getSpecialUserByPhone(phone) {
@@ -3294,6 +3294,8 @@ const App = {
             
             localStorage.setItem('mafiaSun_backup_lobbies', JSON.stringify(data.lobbies));
             localStorage.setItem('mafiaSun_backup_blacklist', JSON.stringify(data.blacklist));
+            localStorage.setItem('mafiaSun_backup_reports', JSON.stringify(data.reports));
+            localStorage.setItem('mafiaSun_backup_tempBans', JSON.stringify(data.tempBannedUsers));
             return false;
         }
     },
@@ -3309,6 +3311,10 @@ const App = {
         };
         
         localStorage.setItem('mafiaSun_lobbies', JSON.stringify(data));
+        localStorage.setItem('mafiaSun_blacklist', JSON.stringify(this.blacklist));
+        localStorage.setItem('mafiaSun_tempBans', JSON.stringify(this.tempBannedUsers));
+        localStorage.setItem('mafiaSun_reports', JSON.stringify(this.reports));
+        
         return await this.saveToServer(data);
     },
 
@@ -3325,20 +3331,41 @@ const App = {
             console.log('✅ اطلاعات از سرور بارگذاری شد');
             return true;
         } else {
-            const backup = localStorage.getItem('mafiaSun_lobbies');
-            if (backup) {
+            // بارگذاری از localStorage
+            const backups = {
+                lobbies: localStorage.getItem('mafiaSun_lobbies'),
+                blacklist: localStorage.getItem('mafiaSun_blacklist'),
+                tempBans: localStorage.getItem('mafiaSun_tempBans'),
+                reports: localStorage.getItem('mafiaSun_reports')
+            };
+            
+            if (backups.lobbies) {
                 try {
-                    const data = JSON.parse(backup);
+                    const data = JSON.parse(backups.lobbies);
                     this.lobbies = data.lobbies || [];
                     this.nextLobbyId = data.nextLobbyId || 1;
-                    this.blacklist = data.blacklist || [];
-                    this.tempBannedUsers = data.tempBannedUsers || [];
-                    this.reports = data.reports || [];
-                    console.log('✅ اطلاعات از حافظه محلی بارگذاری شد');
-                } catch (e) {
-                    console.error('خطا در بارگذاری از حافظه محلی:', e);
-                }
+                } catch (e) {}
             }
+            
+            if (backups.blacklist) {
+                try {
+                    this.blacklist = JSON.parse(backups.blacklist) || [];
+                } catch (e) {}
+            }
+            
+            if (backups.tempBans) {
+                try {
+                    this.tempBannedUsers = JSON.parse(backups.tempBans) || [];
+                } catch (e) {}
+            }
+            
+            if (backups.reports) {
+                try {
+                    this.reports = JSON.parse(backups.reports) || [];
+                } catch (e) {}
+            }
+            
+            console.log('✅ اطلاعات از حافظه محلی بارگذاری شد');
             return false;
         }
     },
@@ -3454,8 +3481,7 @@ const App = {
                     }
                 });
 
-                this.loadTempBans();
-                this.loadReports();
+                this.loadFromLocalStorage();
                 this.updateAllDisplays();
             } else {
                 console.log('داده‌ای یافت نشد');
@@ -3467,34 +3493,30 @@ const App = {
         }
     },
 
-    loadTempBans() {
+    loadFromLocalStorage() {
         try {
-            const savedTempBans = localStorage.getItem('mafiaTempBans');
-            this.tempBannedUsers = savedTempBans ? JSON.parse(savedTempBans) : [];
-
-            const now = Date.now();
-            this.tempBannedUsers = this.tempBannedUsers.filter(ban => ban.expiry > now);
-            this.saveTempBans();
+            // بارگذاری لیست سیاه
+            const savedBlacklist = localStorage.getItem('mafiaSun_blacklist');
+            if (savedBlacklist) {
+                this.blacklist = JSON.parse(savedBlacklist);
+            }
+            
+            // بارگذاری بن‌های موقت
+            const savedTempBans = localStorage.getItem('mafiaSun_tempBans');
+            if (savedTempBans) {
+                this.tempBannedUsers = JSON.parse(savedTempBans);
+                const now = Date.now();
+                this.tempBannedUsers = this.tempBannedUsers.filter(ban => ban.expiry > now);
+            }
+            
+            // بارگذاری گزارش‌ها
+            const savedReports = localStorage.getItem('mafiaSun_reports');
+            if (savedReports) {
+                this.reports = JSON.parse(savedReports);
+            }
         } catch (e) {
-            this.tempBannedUsers = [];
+            console.error('خطا در بارگذاری از localStorage:', e);
         }
-    },
-
-    saveTempBans() {
-        localStorage.setItem('mafiaTempBans', JSON.stringify(this.tempBannedUsers));
-    },
-
-    loadReports() {
-        try {
-            const savedReports = localStorage.getItem('mafiaReports');
-            this.reports = savedReports ? JSON.parse(savedReports) : [];
-        } catch (e) {
-            this.reports = [];
-        }
-    },
-
-    saveReports() {
-        localStorage.setItem('mafiaReports', JSON.stringify(this.reports));
     },
 
     isUserTempBanned(userId) {
@@ -3504,11 +3526,15 @@ const App = {
                 return ban;
             } else {
                 this.tempBannedUsers = this.tempBannedUsers.filter(b => b.userId !== userId);
-                this.saveTempBans();
+                this.saveLobbiesToServer();
                 return null;
             }
         }
         return null;
+    },
+
+    isUserPermanentlyBanned(userId) {
+        return this.blacklist.includes(userId);
     },
 
     async initializeGame() {
@@ -3518,11 +3544,37 @@ const App = {
 
         this.loadUserData();
         await this.loadFromServer();
+        
+        // بررسی بن بودن کاربر فعلی
+        this.checkUserBanStatus();
+        
         this.startAutoSync();
 
         setInterval(() => {
             this.saveCompleteUserData();
         }, 30000);
+    },
+
+    checkUserBanStatus() {
+        const tempBan = this.isUserTempBanned(this.userId);
+        if (tempBan && !this.isGameCreator && this.userRole !== 'support') {
+            const expiryDate = new Date(tempBan.expiry).toLocaleString('fa-IR');
+            this.showNotification(`🚫 شما موقتاً بن شده‌اید: ${tempBan.reason} تا ${expiryDate}`, true, 5000);
+            setTimeout(() => {
+                window.location.href = AUTH_PAGE_URL;
+            }, 3000);
+            return true;
+        }
+
+        if (this.isUserPermanentlyBanned(this.userId) && !this.isGameCreator && this.userRole !== 'support') {
+            this.showNotification('🚫 شما بن دائمی شده‌اید', true, 5000);
+            setTimeout(() => {
+                window.location.href = AUTH_PAGE_URL;
+            }, 3000);
+            return true;
+        }
+        
+        return false;
     },
 
     startAutoSync() {
@@ -3563,20 +3615,8 @@ const App = {
             }
         }
 
-        const tempBan = this.isUserTempBanned(this.userId);
-        if (tempBan && !this.isGameCreator && this.userRole !== 'support') {
-            this.showNotification(`🚫 شما موقتاً بن شده‌اید: ${tempBan.reason}`, true);
-            setTimeout(() => {
-                window.location.href = AUTH_PAGE_URL;
-            }, 3000);
-        }
-
-        if (this.blacklist.includes(this.userId) && !this.isGameCreator && this.userRole !== 'support') {
-            this.showNotification('🚫 شما بن دائمی شده‌اید', true);
-            setTimeout(() => {
-                window.location.href = AUTH_PAGE_URL;
-            }, 3000);
-        }
+        // بررسی مجدد بن برای کاربر فعلی
+        this.checkUserBanStatus();
     },
 
     syncPlayersWithServer(lobby) {
@@ -3697,7 +3737,7 @@ const App = {
             return;
         }
 
-        if (this.blacklist.includes(this.userId) && !this.isGameCreator && this.userRole !== 'support') {
+        if (this.isUserPermanentlyBanned(this.userId) && !this.isGameCreator && this.userRole !== 'support') {
             this.showNotification('🚫 شما بن دائمی شده‌اید', true);
             return;
         }
@@ -3756,7 +3796,7 @@ const App = {
             return;
         }
 
-        if (this.blacklist.includes(this.userId) && !this.isGameCreator && this.userRole !== 'support') {
+        if (this.isUserPermanentlyBanned(this.userId) && !this.isGameCreator && this.userRole !== 'support') {
             this.showNotification('🚫 شما بن دائمی شده‌اید', true);
             return;
         }
@@ -3821,7 +3861,7 @@ const App = {
             return;
         }
 
-        if (this.blacklist.includes(this.userId) && !this.isGameCreator && this.userRole !== 'support') {
+        if (this.isUserPermanentlyBanned(this.userId) && !this.isGameCreator && this.userRole !== 'support') {
             this.showNotification('🚫 شما بن دائمی شده‌اید', true);
             return;
         }
@@ -4172,12 +4212,14 @@ const App = {
             userId: this.selectedPlayerId,
             reason: 'بن توسط ناظر',
             expiry: expiry,
-            bannedAt: Date.now()
+            bannedAt: Date.now(),
+            bannedBy: this.userId,
+            bannedByName: this.userName
         };
 
         this.tempBannedUsers = this.tempBannedUsers.filter(b => b.userId !== this.selectedPlayerId);
         this.tempBannedUsers.push(tempBan);
-        this.saveTempBans();
+        this.saveLobbiesToServer();
 
         if (this.currentLobby) {
             if (!this.currentLobby.bannedUsers) this.currentLobby.bannedUsers = [];
@@ -4191,12 +4233,15 @@ const App = {
         this.saveLobbiesToServer();
 
         this.closeAdminPanel();
-        this.showNotification(`⛔ ${playerName} به مدت ۱ روز بن شد`, true);
 
+        // اگر کاربر بن شده خودش باشه، به صفحه ثبت‌نام بره
         if (this.selectedPlayerId === this.userId) {
+            this.showNotification(`🚫 شما توسط ${this.userName} به مدت ۱ روز بن شدید`, true, 5000);
             setTimeout(() => {
                 window.location.href = AUTH_PAGE_URL;
-            }, 2000);
+            }, 3000);
+        } else {
+            this.showNotification(`⛔ ${playerName} به مدت ۱ روز بن شد`, true);
         }
     },
 
@@ -4259,7 +4304,7 @@ const App = {
             });
             this.tempBannedUsers.forEach((ban, index) => {
                 const expiryDate = new Date(ban.expiry).toLocaleString('fa-IR');
-                message += `${this.blacklist.length + index + 1}. کاربر ${ban.userId} - ${ban.reason} (تا ${expiryDate})\n`;
+                message += `${this.blacklist.length + index + 1}. کاربر ${ban.userId} - ${ban.reason} (تا ${expiryDate}) - بن شده توسط: ${ban.bannedByName || 'مدیریت'}\n`;
             });
             alert(message);
         }
@@ -4357,16 +4402,16 @@ const App = {
         if (name) name.innerHTML = player.name;
         if (id) id.innerHTML = player.id;
 
-        const isBanned = this.blacklist.includes(playerId);
-        const isTempBanned = this.isUserTempBanned(playerId);
+        const isPermanentlyBanned = this.isUserPermanentlyBanned(playerId);
+        const tempBan = this.isUserTempBanned(playerId);
 
         if (warning) {
-            if (isBanned) {
+            if (isPermanentlyBanned) {
                 warning.style.display = 'block';
                 warning.innerHTML = '⚠️ این کاربر در لیست سیاه دائمی است';
-            } else if (isTempBanned) {
+            } else if (tempBan) {
                 warning.style.display = 'block';
-                warning.innerHTML = `⚠️ این کاربر موقتاً بن شده: ${isTempBanned.reason}`;
+                warning.innerHTML = `⚠️ این کاربر موقتاً بن شده: ${tempBan.reason} تا ${new Date(tempBan.expiry).toLocaleString('fa-IR')}`;
             } else {
                 warning.style.display = 'none';
             }
@@ -4432,16 +4477,16 @@ const App = {
         if (name) name.innerHTML = player.name;
         if (id) id.innerHTML = player.id;
 
-        const isBanned = this.blacklist.includes(playerId);
-        const isTempBanned = this.isUserTempBanned(playerId);
+        const isPermanentlyBanned = this.isUserPermanentlyBanned(playerId);
+        const tempBan = this.isUserTempBanned(playerId);
 
         if (warning) {
-            if (isBanned) {
+            if (isPermanentlyBanned) {
                 warning.style.display = 'block';
                 warning.innerHTML = '⚠️ این کاربر در لیست سیاه دائمی است';
-            } else if (isTempBanned) {
+            } else if (tempBan) {
                 warning.style.display = 'block';
-                warning.innerHTML = `⚠️ این کاربر موقتاً بن شده: ${isTempBanned.reason}`;
+                warning.innerHTML = `⚠️ این کاربر موقتاً بن شده: ${tempBan.reason} تا ${new Date(tempBan.expiry).toLocaleString('fa-IR')}`;
             } else {
                 warning.style.display = 'none';
             }
@@ -4469,9 +4514,9 @@ const App = {
                 actionsHTML += `<div class="admin-action-btn transfer" onclick="app.transferOwnership()">👑 انتقال مالکیت</div>`;
                 actionsHTML += `<div class="admin-action-btn kick" onclick="app.kickPlayer()">👢 اخراج از لابی</div>`;
 
-                if (isBanned) {
+                if (isPermanentlyBanned) {
                     actionsHTML += `<div class="admin-action-btn transfer" onclick="app.unbanPlayer()">✅ رفع بن دائمی</div>`;
-                } else if (isTempBanned) {
+                } else if (tempBan) {
                     actionsHTML += `<div class="admin-action-btn transfer" onclick="app.unbanTempPlayer()">✅ رفع بن موقت</div>`;
                 } else {
                     actionsHTML += `<div class="admin-action-btn ban" onclick="app.openBanModal()">🚫 بن دائمی</div>`;
@@ -4487,7 +4532,6 @@ const App = {
     closeAdminPanel() {
         const panel = document.getElementById('adminPanel');
         if (panel) panel.classList.remove('visible');
-        // کاربر انتخاب شده رو پاک نمی‌کنیم چون ممکنه بعداً نیاز بشه
     },
 
     async toggleObserver(type) {
@@ -4711,23 +4755,41 @@ const App = {
         const duration = parseInt(document.getElementById('banDuration').value);
 
         if (duration === 0) {
+            // بن دائمی
             if (!this.blacklist.includes(this.selectedPlayerId)) {
                 this.blacklist.push(this.selectedPlayerId);
             }
+            
+            // ثبت در گزارش
+            const banRecord = {
+                userId: this.selectedPlayerId,
+                userName: this.selectedPlayerData.name,
+                reason: banMessage,
+                duration: 'دائمی',
+                bannedAt: Date.now(),
+                bannedBy: this.userId,
+                bannedByName: this.userName
+            };
+            
+            // می‌تونید اینجا گزارش بن رو هم ذخیره کنید
         } else {
+            // بن موقت
             const expiry = Date.now() + (duration * 1000);
             const tempBan = {
                 userId: this.selectedPlayerId,
+                userName: this.selectedPlayerData.name,
                 reason: banMessage,
                 expiry: expiry,
-                bannedAt: Date.now()
+                bannedAt: Date.now(),
+                bannedBy: this.userId,
+                bannedByName: this.userName
             };
 
             this.tempBannedUsers = this.tempBannedUsers.filter(b => b.userId !== this.selectedPlayerId);
             this.tempBannedUsers.push(tempBan);
-            this.saveTempBans();
         }
 
+        // حذف از لابی فعلی
         if (this.currentLobby) {
             if (!this.currentLobby.bannedUsers) this.currentLobby.bannedUsers = [];
             if (!this.currentLobby.bannedUsers.includes(this.selectedPlayerId)) {
@@ -4743,12 +4805,15 @@ const App = {
         this.closeAdminPanel();
 
         const durationText = duration === 0 ? 'دائمی' : (duration/3600) + ' ساعت';
-        this.showNotification(`🚫 کاربر ${this.selectedPlayerData.name} بن شد: ${banMessage} (${durationText})`, true);
-
+        
+        // اگر کاربر بن شده خودش باشه
         if (this.selectedPlayerId === this.userId) {
+            this.showNotification(`🚫 شما توسط ${this.userName} بن شدید: ${banMessage} (${durationText})`, true, 5000);
             setTimeout(() => {
                 window.location.href = AUTH_PAGE_URL;
-            }, 2000);
+            }, 3000);
+        } else {
+            this.showNotification(`🚫 کاربر ${this.selectedPlayerData.name} بن شد: ${banMessage} (${durationText}) توسط ${this.userName}`, true);
         }
         
         // پاک کردن کاربر انتخاب شده بعد از بن
@@ -4764,10 +4829,12 @@ const App = {
         
         if (!this.isGameCreator && this.userRole !== 'support') return;
 
+        const userName = this.selectedPlayerData?.name || `کاربر ${this.selectedPlayerId}`;
+        
         this.blacklist = this.blacklist.filter(id => id !== this.selectedPlayerId);
         await this.saveLobbiesToServer();
         this.closeAdminPanel();
-        this.showNotification(`✅ بن دائمی کاربر لغو شد`);
+        this.showNotification(`✅ بن دائمی کاربر ${userName} لغو شد`);
         
         this.selectedPlayerId = null;
         this.selectedPlayerData = null;
@@ -4781,11 +4848,12 @@ const App = {
         
         if (!this.isGameCreator && this.userRole !== 'support') return;
 
+        const userName = this.selectedPlayerData?.name || `کاربر ${this.selectedPlayerId}`;
+        
         this.tempBannedUsers = this.tempBannedUsers.filter(b => b.userId !== this.selectedPlayerId);
-        this.saveTempBans();
         await this.saveLobbiesToServer();
         this.closeAdminPanel();
-        this.showNotification(`✅ بن موقت کاربر لغو شد`);
+        this.showNotification(`✅ بن موقت کاربر ${userName} لغو شد`);
         
         this.selectedPlayerId = null;
         this.selectedPlayerData = null;
@@ -4857,17 +4925,26 @@ const App = {
 
         let html = '';
         this.reports.slice().reverse().forEach((report, index) => {
+            const reportDate = new Date(report.timestamp).toLocaleString('fa-IR');
             html += `
                 <div class="report-item">
                     <div class="report-header">
-                        <span>گزارش دهنده: ${report.reporterName}</span>
-                        <span>${new Date(report.timestamp).toLocaleString('fa-IR')}</span>
+                        <span><i class="fas fa-user"></i> گزارش دهنده: ${report.reporterName}</span>
+                        <span><i class="fas fa-clock"></i> ${reportDate}</span>
                     </div>
-                    <div class="report-reason">🔴 ${report.reason}</div>
-                    <div class="report-description">${report.description}</div>
+                    <div class="report-header" style="margin-top: 5px;">
+                        <span><i class="fas fa-user-slash"></i> کاربر گزارش شده: ${report.reportedName}</span>
+                        <span>🆔 ${report.reportedId}</span>
+                    </div>
+                    <div class="report-reason">🔴 دلیل: ${report.reason}</div>
+                    <div class="report-description">📝 توضیحات: ${report.description}</div>
                     <div class="report-actions">
-                        <button class="report-action-btn ban" onclick="app.banFromReport(${index})">🚫 بن</button>
-                        <button class="report-action-btn dismiss" onclick="app.dismissReport(${index})">✅ رد کردن</button>
+                        <button class="report-action-btn ban" onclick="app.banFromReport(${index})">
+                            <i class="fas fa-ban"></i> بن کاربر
+                        </button>
+                        <button class="report-action-btn dismiss" onclick="app.dismissReport(${index})">
+                            <i class="fas fa-check"></i> رد کردن گزارش
+                        </button>
                     </div>
                 </div>
             `;
@@ -4880,16 +4957,27 @@ const App = {
         const report = this.reports[index];
         if (!report) return;
 
+        // پیدا کردن کاربر در لابی
+        let reportedUser = null;
+        if (this.currentLobby && this.currentLobby.players) {
+            reportedUser = this.currentLobby.players.find(p => p.id === report.reportedId);
+        }
+        
+        if (!reportedUser) {
+            reportedUser = {
+                id: report.reportedId,
+                name: report.reportedName,
+                avatar: 'avatar1'
+            };
+        }
+
         this.selectedPlayerId = report.reportedId;
-        this.selectedPlayerData = {
-            id: report.reportedId,
-            name: report.reportedName,
-            avatar: 'avatar1'
-        };
+        this.selectedPlayerData = reportedUser;
 
         this.closeGameCreatorPanel();
         this.openBanModal();
 
+        // حذف گزارش بعد از 1 ثانیه
         setTimeout(() => {
             this.dismissReport(index);
         }, 1000);
@@ -4898,12 +4986,13 @@ const App = {
     dismissReport(index) {
         this.reports.splice(index, 1);
         this.saveReports();
+        this.saveLobbiesToServer();
         this.updateReportsList();
         this.showNotification('✅ گزارش رد شد');
     },
 
     refreshReports() {
-        this.loadReports();
+        this.loadFromServer();
         this.updateReportsList();
         this.showNotification('🔄 گزارش‌ها بروزرسانی شدند');
     },
@@ -4921,7 +5010,9 @@ const App = {
                 html += `
                     <div class="banned-user-item">
                         <span>کاربر ${id}</span>
-                        <button class="unban-small-btn" onclick="app.unbanUserFromList(${id})">رفع بن</button>
+                        <button class="unban-small-btn" onclick="app.unbanUserFromList(${id})">
+                            <i class="fas fa-check"></i> رفع بن
+                        </button>
                     </div>
                 `;
             });
@@ -4937,11 +5028,14 @@ const App = {
                 html += `
                     <div class="banned-user-item">
                         <div style="flex: 1;">
-                            <div>کاربر ${ban.userId}</div>
-                            <div style="font-size: 10px; color: #ff9999;">${ban.reason}</div>
-                            <div style="font-size: 10px; color: #ffaa00;">تا ${expiryDate}</div>
+                            <div><i class="fas fa-user"></i> ${ban.userName || 'کاربر ' + ban.userId}</div>
+                            <div style="font-size: 10px; color: #ff9999;"><i class="fas fa-comment"></i> ${ban.reason}</div>
+                            <div style="font-size: 10px; color: #ffaa00;"><i class="fas fa-clock"></i> تا ${expiryDate}</div>
+                            <div style="font-size: 10px; color: #3b9eff;"><i class="fas fa-gavel"></i> توسط: ${ban.bannedByName || 'مدیریت'}</div>
                         </div>
-                        <button class="unban-small-btn" onclick="app.unbanTempUserFromList(${ban.userId})">رفع بن</button>
+                        <button class="unban-small-btn" onclick="app.unbanTempUserFromList(${ban.userId})">
+                            <i class="fas fa-check"></i> رفع بن
+                        </button>
                     </div>
                 `;
             });
@@ -4952,19 +5046,38 @@ const App = {
 
     async unbanUserFromList(userId) {
         if (!this.isGameCreator && this.userRole !== 'support') return;
+        
+        const userName = this.findUserNameById(userId);
+        
         this.blacklist = this.blacklist.filter(id => id !== userId);
         await this.saveLobbiesToServer();
         this.updateBlacklistList();
-        this.showNotification(`✅ بن کاربر ${userId} لغو شد`);
+        this.showNotification(`✅ بن دائمی کاربر ${userName} لغو شد`);
     },
 
     async unbanTempUserFromList(userId) {
         if (!this.isGameCreator && this.userRole !== 'support') return;
+        
+        const userName = this.findUserNameById(userId);
+        
         this.tempBannedUsers = this.tempBannedUsers.filter(b => b.userId !== userId);
-        this.saveTempBans();
         await this.saveLobbiesToServer();
         this.updateBlacklistList();
-        this.showNotification(`✅ بن موقت کاربر ${userId} لغو شد`);
+        this.showNotification(`✅ بن موقت کاربر ${userName} لغو شد`);
+    },
+    
+    findUserNameById(userId) {
+        // جستجو در لابی فعلی
+        if (this.currentLobby && this.currentLobby.players) {
+            const player = this.currentLobby.players.find(p => p.id === userId);
+            if (player) return player.name;
+        }
+        
+        // جستجو در لیست بن‌های موقت
+        const tempBan = this.tempBannedUsers.find(b => b.userId === userId);
+        if (tempBan && tempBan.userName) return tempBan.userName;
+        
+        return `کاربر ${userId}`;
     },
 
     openUserProfileMenu(playerId, playerName) {
@@ -4979,7 +5092,6 @@ const App = {
     closeUserProfileMenu() {
         const menu = document.getElementById('userProfileMenu');
         if (menu) menu.classList.remove('visible');
-        // کاربر انتخاب شده رو پاک نمی‌کنیم
     },
 
     viewOtherProfile() {
@@ -5028,6 +5140,34 @@ const App = {
         if (observer) observer.innerHTML = stats.observerCount || 0;
         if (rank) rank.innerHTML = stats.rank || 'تازه‌وارد';
         if (rankTag) rankTag.innerHTML = stats.rankTag || 'برنزی';
+
+        // بررسی وضعیت بن
+        const isPermanentlyBanned = this.isUserPermanentlyBanned(player.id);
+        const tempBan = this.isUserTempBanned(player.id);
+        
+        let banStatus = '';
+        if (isPermanentlyBanned) {
+            banStatus = '🚫 بن دائمی';
+        } else if (tempBan) {
+            const expiryDate = new Date(tempBan.expiry).toLocaleString('fa-IR');
+            banStatus = `⏳ بن موقت تا ${expiryDate}`;
+        }
+        
+        if (banStatus) {
+            const statusEl = document.createElement('div');
+            statusEl.className = 'other-stat-cell';
+            statusEl.style.marginTop = '10px';
+            statusEl.style.background = 'rgba(255, 85, 85, 0.2)';
+            statusEl.style.borderColor = '#ff5555';
+            statusEl.innerHTML = `
+                <span class="other-stat-icon">🚫</span>
+                <div class="other-stat-detail">
+                    <span class="other-stat-label">وضعیت</span>
+                    <span class="other-stat-figure" style="color: #ff5555;">${banStatus}</span>
+                </div>
+            `;
+            document.querySelector('.other-stats-section').appendChild(statusEl);
+        }
 
         const lobbyPage = document.getElementById('lobby-page');
         const otherPage = document.getElementById('other-profile-page');
@@ -5081,24 +5221,26 @@ const App = {
         }
 
         const reason = document.querySelector('input[name="reportReason"]:checked')?.value || 'بی احترامی';
-        const description = document.getElementById('reportDescription')?.value.trim() || '';
+        const description = document.getElementById('reportDescription')?.value.trim() || 'بدون توضیحات';
 
         const reportData = {
+            id: Date.now(),
             reporterId: this.userId,
             reporterName: this.userName,
             reportedId: this.selectedPlayerData.id,
             reportedName: this.selectedPlayerData.name,
             reason: reason,
-            description: description || 'بدون توضیحات',
+            description: description,
             timestamp: new Date().toISOString(),
-            lobbyId: this.currentLobby?.id
+            lobbyId: this.currentLobby?.id,
+            lobbyName: this.currentLobby?.name
         };
 
         this.reports.push(reportData);
         this.saveReports();
         this.saveLobbiesToServer();
 
-        this.showNotification('✅ گزارش شما با موفقیت ارسال شد');
+        this.showNotification('✅ گزارش شما با موفقیت به مدیریت ارسال شد');
         this.closeReportModal();
     },
 
@@ -5709,6 +5851,7 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 window.app = App;
-</script>
+  </script>
 </body>
-</html>
+</html>             
+    
