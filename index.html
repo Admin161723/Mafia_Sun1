@@ -264,6 +264,12 @@ body {
     display: inline-block;
 }
 
+.green-tick {
+    color: #00ff00;
+    font-size: 14px;
+    display: inline-block;
+}
+
 .profile-level {
     color: #8f9aa7;
     font-size: 11px;
@@ -818,6 +824,12 @@ body {
 
 .orange-tick-icon {
     color: #ffaa00;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.green-tick-icon {
+    color: #00ff00;
     font-size: 12px;
     display: inline-block;
 }
@@ -1612,6 +1624,7 @@ body {
     border-radius: 20px;
     padding: 20px;
     z-index: 20000;
+    display: none;
     box-shadow: 0 30px 60px rgba(0,0,0,0.8);
 }
 
@@ -3083,7 +3096,7 @@ body {
     </div>
 
     <script src="game.js"></script>
-<script> 
+<script>
 // ========== تنظیمات سرور ==========
 const JSONBIN_ID = '6984ae3a43b1c97be967c32b';
 const JSONBIN_KEY = '$2a$10$P2f/7ECPzq3HSI.6DSdcr.MaV748WQF7smMQL1bczP6YF4XKwjNvG';
@@ -3217,6 +3230,7 @@ const App = {
 
     showNotification(message, isBan = false) {
         const notification = document.getElementById('copyNotification');
+        if (!notification) return;
         notification.textContent = message;
         notification.classList.toggle('ban-notification', isBan);
         notification.style.display = 'block';
@@ -3278,7 +3292,6 @@ const App = {
             console.error('❌ خطا در ذخیره در سرور:', error);
             this.showNotification('⚠️ خطا در ذخیره در سرور، اطلاعات در حافظه محلی ذخیره شد');
             
-            // ذخیره در localStorage به عنوان پشتیبان
             localStorage.setItem('mafiaSun_backup_lobbies', JSON.stringify(data.lobbies));
             localStorage.setItem('mafiaSun_backup_blacklist', JSON.stringify(data.blacklist));
             return false;
@@ -3295,10 +3308,7 @@ const App = {
             lastUpdate: new Date().toISOString()
         };
         
-        // ذخیره در localStorage به عنوان پشتیبان
         localStorage.setItem('mafiaSun_lobbies', JSON.stringify(data));
-        
-        // ذخیره در سرور
         return await this.saveToServer(data);
     },
 
@@ -3315,7 +3325,6 @@ const App = {
             console.log('✅ اطلاعات از سرور بارگذاری شد');
             return true;
         } else {
-            // تلاش برای بارگذاری از localStorage
             const backup = localStorage.getItem('mafiaSun_lobbies');
             if (backup) {
                 try {
@@ -3334,7 +3343,6 @@ const App = {
         }
     },
 
-    // ========== ذخیره‌سازی اطلاعات کاربر ==========
     saveCompleteUserData() {
         const userData = {
             userId: this.userId,
@@ -3392,7 +3400,6 @@ const App = {
                 return;
             }
 
-            // بررسی کاربر سازنده
             if (userPhone === CREATOR_PHONE) {
                 this.userId = 1;
                 this.userPhone = CREATOR_PHONE;
@@ -3419,10 +3426,8 @@ const App = {
                 this.userId = userData.userId || Date.now();
                 this.userPhone = userData.userPhone || '';
                 this.userName = userData.userName || 'بازیکن';
-
                 this.isGameCreator = false;
-                if (userData.isCreator === true) this.isGameCreator = true;
-
+                
                 if (this.isGameCreator) {
                     this.userGems = Infinity;
                     this.userCoins = Infinity;
@@ -3494,7 +3499,6 @@ const App = {
         return null;
     },
 
-    // ========== راه‌اندازی بازی ==========
     async initializeGame() {
         if (this.initialized) return;
         this.initialized = true;
@@ -3506,19 +3510,6 @@ const App = {
         setInterval(() => {
             this.saveCompleteUserData();
         }, 30000);
-        
-        // اطمینان از کار کردن دکمه‌ها
-        this.setupEventListeners();
-    },
-    
-    setupEventListeners() {
-        // اطمینان از اینکه همه دکمه‌ها کار می‌کنند
-        document.querySelectorAll('[onclick]').forEach(el => {
-            const onclickAttr = el.getAttribute('onclick');
-            if (onclickAttr && onclickAttr.includes('app.')) {
-                // already set
-            }
-        });
     },
 
     startAutoSync() {
@@ -3533,7 +3524,7 @@ const App = {
 
         await this.loadFromServer();
 
-        if (document.getElementById('friendly-hall-page').style.display === 'block') {
+        if (document.getElementById('friendly-hall-page') && document.getElementById('friendly-hall-page').style.display === 'block') {
             this.renderLobbies();
         }
 
@@ -3579,7 +3570,6 @@ const App = {
             lobby.players.forEach(player => {
                 if (!this.playersData[player.id]) {
                     this.addPlayerToLobby(player, player.chair);
-                    this.showNotification(`👤 ${player.name} وارد لابی شد`);
                 }
             });
 
@@ -3587,7 +3577,6 @@ const App = {
                 if (!lobby.players.some(p => p.id == id)) {
                     const playerName = this.playersData[id].name;
                     this.removePlayerFromLobby(parseInt(id));
-                    this.showNotification(`🚪 ${playerName} از لابی خارج شد`);
                 }
             }
         }
@@ -3627,11 +3616,11 @@ const App = {
 
             let creatorBadge = '';
             if (lobby.creatorId === 1) {
-                creatorBadge = '<i class="fas fa-check-circle verified-badge" style="color: #00ff00;"></i>';
+                creatorBadge = '<i class="fas fa-check-circle" style="color: #00ff00;"></i>';
             } else if (this.getSpecialUserById(lobby.creatorId)?.hasBlueTick) {
-                creatorBadge = '<i class="fas fa-check-circle verified-badge" style="color: #3b9eff;"></i>';
+                creatorBadge = '<i class="fas fa-check-circle" style="color: #3b9eff;"></i>';
             } else if (this.getSpecialUserById(lobby.creatorId)?.hasOrangeTick) {
-                creatorBadge = '<i class="fas fa-check-circle" style="color: #ffaa00; font-size: 12px;"></i>';
+                creatorBadge = '<i class="fas fa-check-circle" style="color: #ffaa00;"></i>';
             }
 
             html += `
@@ -4044,11 +4033,11 @@ const App = {
 
         let nameHTML = `<span>${player.name}</span>`;
         if (player.id === 1) {
-            nameHTML = `<i class="fas fa-check-circle verified-icon" style="color: #00ff00;"></i> ${player.name}`;
+            nameHTML = `<i class="fas fa-check-circle" style="color: #00ff00;"></i> ${player.name}`;
         } else if (player.hasBlueTick) {
-            nameHTML = `<i class="fas fa-check-circle verified-icon" style="color: #3b9eff;"></i> ${player.name}`;
+            nameHTML = `<i class="fas fa-check-circle" style="color: #3b9eff;"></i> ${player.name}`;
         } else if (player.hasOrangeTick) {
-            nameHTML = `<i class="fas fa-check-circle orange-tick-icon" style="color: #ffaa00;"></i> ${player.name}`;
+            nameHTML = `<i class="fas fa-check-circle" style="color: #ffaa00;"></i> ${player.name}`;
         } else if (player.isCreator) {
             nameHTML = `<span class="crown-icon">👑</span> ${player.name}`;
         }
@@ -4094,6 +4083,9 @@ const App = {
         this.selectedPlayerId = playerId;
         this.selectedPlayerData = player;
 
+        const panel = document.getElementById('adminPanel');
+        if (!panel) return;
+        
         document.getElementById('adminPanelTitle').textContent = 'پنل ناظر';
         document.getElementById('adminPlayerAvatar').innerHTML = `<img src="${this.getAvatarImage(player.avatar)}">`;
         document.getElementById('adminPlayerName').innerHTML = player.name;
@@ -4113,7 +4105,7 @@ const App = {
         }
 
         actionsContainer.innerHTML = actionsHTML;
-        document.getElementById('adminPanel').classList.add('visible');
+        panel.classList.add('visible');
     },
 
     tempBanPlayerObserver() {
@@ -4294,6 +4286,9 @@ const App = {
         this.selectedPlayerId = playerId;
         this.selectedPlayerData = player;
 
+        const panel = document.getElementById('adminPanel');
+        if (!panel) return;
+        
         document.getElementById('adminPanelTitle').textContent = 'پنل مدیریت لابی';
         document.getElementById('adminPlayerAvatar').innerHTML = `<img src="${this.getAvatarImage(player.avatar)}">`;
         document.getElementById('adminPlayerName').innerHTML = player.name;
@@ -4340,7 +4335,7 @@ const App = {
         }
 
         actionsContainer.innerHTML = actionsHTML;
-        document.getElementById('adminPanel').classList.add('visible');
+        panel.classList.add('visible');
     },
 
     openGameCreatorAdminPanel(playerId) {
@@ -4352,6 +4347,9 @@ const App = {
         this.selectedPlayerId = playerId;
         this.selectedPlayerData = player;
 
+        const panel = document.getElementById('adminPanel');
+        if (!panel) return;
+        
         document.getElementById('adminPanelTitle').textContent = 'پنل مدیریت بازی';
         document.getElementById('adminPlayerAvatar').innerHTML = `<img src="${this.getAvatarImage(player.avatar)}">`;
         document.getElementById('adminPlayerName').innerHTML = player.name;
@@ -4403,7 +4401,7 @@ const App = {
         }
 
         actionsContainer.innerHTML = actionsHTML;
-        document.getElementById('adminPanel').classList.add('visible');
+        panel.classList.add('visible');
     },
 
     closeAdminPanel() {
@@ -5337,11 +5335,11 @@ const App = {
                     const nameElement = chair.querySelector('.chair-name');
                     if (nameElement) {
                         if (this.userId === 1) {
-                            nameElement.innerHTML = `<i class="fas fa-check-circle verified-icon" style="color: #00ff00;"></i> ${newName}`;
+                            nameElement.innerHTML = `<i class="fas fa-check-circle" style="color: #00ff00;"></i> ${newName}`;
                         } else if (this.hasBlueTick) {
-                            nameElement.innerHTML = `<i class="fas fa-check-circle verified-icon" style="color: #3b9eff;"></i> ${newName}`;
+                            nameElement.innerHTML = `<i class="fas fa-check-circle" style="color: #3b9eff;"></i> ${newName}`;
                         } else if (this.hasOrangeTick) {
-                            nameElement.innerHTML = `<i class="fas fa-check-circle orange-tick-icon" style="color: #ffaa00;"></i> ${newName}`;
+                            nameElement.innerHTML = `<i class="fas fa-check-circle" style="color: #ffaa00;"></i> ${newName}`;
                         } else if (this.isLobbyCreator) {
                             nameElement.innerHTML = `<span class="crown-icon">👑</span> ${newName}`;
                         } else {
@@ -5436,6 +5434,138 @@ const App = {
                 this.saveLobbiesToServer();
             }
         }
+    },
+
+    async toggleMicrophone() {
+        if (!this.currentLobby) {
+            this.showNotification('شما در لابی نیستید');
+            return;
+        }
+
+        const micButton = document.getElementById('micButton');
+        const micStatus = document.getElementById('micStatus');
+
+        if (!this.micActive) {
+            try {
+                this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                await this.audioContext.resume();
+
+                micButton.classList.add('active');
+                micStatus.textContent = 'میکروفون فعال';
+                this.micActive = true;
+
+                this.startBroadcasting();
+                this.broadcastSpeakingStatus(true);
+
+                this.showNotification('میکروفون فعال شد');
+            } catch (error) {
+                console.error('خطا در دسترسی به میکروفون:', error);
+                this.showNotification('❌ دسترسی به میکروفون ممکن نیست');
+            }
+        } else {
+            if (this.mediaStream) {
+                this.mediaStream.getTracks().forEach(track => track.stop());
+                this.mediaStream = null;
+            }
+            if (this.audioContext) {
+                await this.audioContext.close();
+                this.audioContext = null;
+            }
+
+            micButton.classList.remove('active');
+            micStatus.textContent = 'میکروفون خاموش';
+            this.micActive = false;
+
+            this.closeAllConnections();
+            this.broadcastSpeakingStatus(false);
+
+            this.showNotification('میکروفون خاموش شد');
+        }
+    },
+
+    startBroadcasting() {
+        console.log('شروع پخش صدا...');
+        if (this.currentLobby) {
+            this.currentLobby.players.forEach(player => {
+                if (player.id !== this.userId) {
+                    this.playAudioForUser(player.id);
+                }
+            });
+        }
+    },
+
+    playAudioForUser(userId) {
+        console.log(`پخش صدا برای کاربر ${userId}`);
+        const speakingBadge = document.getElementById(`speaking-${userId}`);
+        if (speakingBadge) {
+            speakingBadge.style.display = 'flex';
+        }
+        if (userId === this.observer1) {
+            document.getElementById('observer-speaking-1').style.display = 'flex';
+        }
+        if (userId === this.observer2) {
+            document.getElementById('observer-speaking-2').style.display = 'flex';
+        }
+    },
+
+    stopAudioForUser(userId) {
+        const speakingBadge = document.getElementById(`speaking-${userId}`);
+        if (speakingBadge) {
+            speakingBadge.style.display = 'none';
+        }
+        if (userId === this.observer1) {
+            document.getElementById('observer-speaking-1').style.display = 'none';
+        }
+        if (userId === this.observer2) {
+            document.getElementById('observer-speaking-2').style.display = 'none';
+        }
+    },
+
+    broadcastSpeakingStatus(isSpeaking) {
+        if (this.currentLobby) {
+            const speakingIndicator = document.getElementById('speakingIndicator');
+            const speakingName = document.getElementById('speakingName');
+
+            if (isSpeaking) {
+                speakingName.textContent = this.userName;
+                speakingIndicator.style.display = 'block';
+
+                const myChair = document.querySelector(`[data-player-id="${this.userId}"]`);
+                if (myChair) {
+                    const badge = myChair.querySelector('.speaking-badge');
+                    if (badge) badge.style.display = 'flex';
+                }
+
+                if (this.currentLobby.players) {
+                    this.currentLobby.players.forEach(player => {
+                        if (player.id !== this.userId) {
+                            this.playAudioForUser(player.id);
+                        }
+                    });
+                }
+            } else {
+                speakingIndicator.style.display = 'none';
+
+                const myChair = document.querySelector(`[data-player-id="${this.userId}"]`);
+                if (myChair) {
+                    const badge = myChair.querySelector('.speaking-badge');
+                    if (badge) badge.style.display = 'none';
+                }
+
+                if (this.currentLobby.players) {
+                    this.currentLobby.players.forEach(player => {
+                        if (player.id !== this.userId) {
+                            this.stopAudioForUser(player.id);
+                        }
+                    });
+                }
+            }
+        }
+    },
+
+    closeAllConnections() {
+        this.peerConnections = {};
     }
 };
 
