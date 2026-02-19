@@ -3455,6 +3455,7 @@ const App = {
                 });
 
                 this.loadTempBans();
+                this.loadReports();
                 this.updateAllDisplays();
             } else {
                 console.log('داده‌ای یافت نشد');
@@ -3481,6 +3482,19 @@ const App = {
 
     saveTempBans() {
         localStorage.setItem('mafiaTempBans', JSON.stringify(this.tempBannedUsers));
+    },
+
+    loadReports() {
+        try {
+            const savedReports = localStorage.getItem('mafiaReports');
+            this.reports = savedReports ? JSON.parse(savedReports) : [];
+        } catch (e) {
+            this.reports = [];
+        }
+    },
+
+    saveReports() {
+        localStorage.setItem('mafiaReports', JSON.stringify(this.reports));
     },
 
     isUserTempBanned(userId) {
@@ -4090,6 +4104,12 @@ const App = {
             return;
         }
 
+        // ذخیره کاربر انتخاب شده
+        this.selectedPlayerId = playerId;
+        this.selectedPlayerData = this.playersData[playerId];
+        
+        console.log('کاربر انتخاب شد:', this.selectedPlayerData);
+
         if (this.isGameCreator || this.userRole === 'support') {
             this.openGameCreatorAdminPanel(playerId);
         } else if (this.isLobbyCreator) {
@@ -4388,7 +4408,11 @@ const App = {
         if (!this.isGameCreator && this.userRole !== 'support') return;
 
         const player = this.playersData[playerId];
-        if (!player) return;
+        if (!player) {
+            console.error('کاربر یافت نشد:', playerId);
+            this.showNotification('❌ کاربر یافت نشد');
+            return;
+        }
 
         this.selectedPlayerId = playerId;
         this.selectedPlayerData = player;
@@ -4463,8 +4487,7 @@ const App = {
     closeAdminPanel() {
         const panel = document.getElementById('adminPanel');
         if (panel) panel.classList.remove('visible');
-        this.selectedPlayerId = null;
-        this.selectedPlayerData = null;
+        // کاربر انتخاب شده رو پاک نمی‌کنیم چون ممکنه بعداً نیاز بشه
     },
 
     async toggleObserver(type) {
@@ -4646,10 +4669,16 @@ const App = {
     },
 
     openBanModal() {
+        if (!this.selectedPlayerId) {
+            this.showNotification('❌ ابتدا یک کاربر را انتخاب کنید');
+            return;
+        }
+        
         if (!this.isGameCreator && this.userRole !== 'support') {
             this.showNotification('❌ فقط سازنده بازی می‌تواند بن کند');
             return;
         }
+        
         const modal = document.getElementById('banModal');
         if (modal) modal.style.display = 'block';
     },
@@ -4660,14 +4689,14 @@ const App = {
     },
 
     async confirmBan() {
-        if (!this.isGameCreator && this.userRole !== 'support') {
-            this.showNotification('❌ فقط سازنده بازی می‌تواند بن کند');
+        if (!this.selectedPlayerId) {
+            this.showNotification('❌ کاربری انتخاب نشده است');
             this.closeBanModal();
             return;
         }
 
-        if (!this.selectedPlayerId) {
-            this.showNotification('❌ کاربری انتخاب نشده است');
+        if (!this.isGameCreator && this.userRole !== 'support') {
+            this.showNotification('❌ فقط سازنده بازی می‌تواند بن کند');
             this.closeBanModal();
             return;
         }
@@ -4721,25 +4750,45 @@ const App = {
                 window.location.href = AUTH_PAGE_URL;
             }, 2000);
         }
+        
+        // پاک کردن کاربر انتخاب شده بعد از بن
+        this.selectedPlayerId = null;
+        this.selectedPlayerData = null;
     },
 
     async unbanPlayer() {
-        if (!this.isGameCreator && this.userRole !== 'support' || !this.selectedPlayerId) return;
+        if (!this.selectedPlayerId) {
+            this.showNotification('❌ کاربری انتخاب نشده است');
+            return;
+        }
+        
+        if (!this.isGameCreator && this.userRole !== 'support') return;
 
         this.blacklist = this.blacklist.filter(id => id !== this.selectedPlayerId);
         await this.saveLobbiesToServer();
         this.closeAdminPanel();
         this.showNotification(`✅ بن دائمی کاربر لغو شد`);
+        
+        this.selectedPlayerId = null;
+        this.selectedPlayerData = null;
     },
 
     async unbanTempPlayer() {
-        if (!this.isGameCreator && this.userRole !== 'support' || !this.selectedPlayerId) return;
+        if (!this.selectedPlayerId) {
+            this.showNotification('❌ کاربری انتخاب نشده است');
+            return;
+        }
+        
+        if (!this.isGameCreator && this.userRole !== 'support') return;
 
         this.tempBannedUsers = this.tempBannedUsers.filter(b => b.userId !== this.selectedPlayerId);
         this.saveTempBans();
         await this.saveLobbiesToServer();
         this.closeAdminPanel();
         this.showNotification(`✅ بن موقت کاربر لغو شد`);
+        
+        this.selectedPlayerId = null;
+        this.selectedPlayerData = null;
     },
 
     openGameCreatorPanel() {
@@ -4777,8 +4826,8 @@ const App = {
         const tabs = document.querySelectorAll('.creator-tab');
         const contents = document.querySelectorAll('.creator-tab-content');
 
-        tabs.forEach(t => t.classList.remove('active'));
-        contents.forEach(c => c.classList.remove('active'));
+        tabs.forEach(t => t?.classList.remove('active'));
+        contents.forEach(c => c?.classList.remove('active'));
 
         if (tab === 'stats') {
             if (tabs[0]) tabs[0].classList.add('active');
@@ -4859,19 +4908,6 @@ const App = {
         this.showNotification('🔄 گزارش‌ها بروزرسانی شدند');
     },
 
-    loadReports() {
-        try {
-            const savedReports = localStorage.getItem('mafiaReports');
-            this.reports = savedReports ? JSON.parse(savedReports) : [];
-        } catch (e) {
-            this.reports = [];
-        }
-    },
-
-    saveReports() {
-        localStorage.setItem('mafiaReports', JSON.stringify(this.reports));
-    },
-
     updateBlacklistList() {
         const container = document.getElementById('blacklistContainer');
         if (!container) return;
@@ -4943,8 +4979,7 @@ const App = {
     closeUserProfileMenu() {
         const menu = document.getElementById('userProfileMenu');
         if (menu) menu.classList.remove('visible');
-        this.selectedPlayerId = null;
-        this.selectedPlayerData = null;
+        // کاربر انتخاب شده رو پاک نمی‌کنیم
     },
 
     viewOtherProfile() {
@@ -5011,7 +5046,7 @@ const App = {
 
     openReportModal() {
         if (!this.selectedPlayerData) {
-            this.showNotification('❌ کاربری انتخاب نشده است');
+            this.showNotification('❌ ابتدا روی یک کاربر کلیک کنید');
             return;
         }
         const modal = document.getElementById('report-modal');
@@ -5039,14 +5074,14 @@ const App = {
     },
 
     sendReport() {
-        const reason = document.querySelector('input[name="reportReason"]:checked')?.value || 'بی احترامی';
-        const description = document.getElementById('reportDescription')?.value.trim() || '';
-
         if (!this.selectedPlayerData) {
-            this.showNotification('❌ کاربری انتخاب نشده است');
+            this.showNotification('❌ ابتدا یک کاربر را انتخاب کنید');
             this.closeReportModal();
             return;
         }
+
+        const reason = document.querySelector('input[name="reportReason"]:checked')?.value || 'بی احترامی';
+        const description = document.getElementById('reportDescription')?.value.trim() || '';
 
         const reportData = {
             reporterId: this.userId,
@@ -5648,10 +5683,12 @@ const App = {
 // ========== Event Listeners ==========
 document.addEventListener('click', function(e) {
     if (!e.target.closest('.user-profile-menu') && !e.target.closest('.chair-avatar')) {
-        if (App.closeUserProfileMenu) App.closeUserProfileMenu();
+        const menu = document.getElementById('userProfileMenu');
+        if (menu) menu.classList.remove('visible');
     }
     if (!e.target.closest('.admin-panel') && !e.target.closest('.chair-avatar')) {
-        if (App.closeAdminPanel) App.closeAdminPanel();
+        const panel = document.getElementById('adminPanel');
+        if (panel) panel.classList.remove('visible');
     }
     if (!e.target.closest('.game-creator-panel') && !e.target.closest('.menu-item') && !e.target.closest('.creator-tab')) {
         const panel = document.getElementById('gameCreatorPanel');
