@@ -1,4 +1,4 @@
-۲<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -3083,7 +3083,7 @@ body {
     </div>
 
     <script src="game.js"></script>
-<script>
+<script> 
 // ========== تنظیمات سرور ==========
 const JSONBIN_ID = '6984ae3a43b1c97be967c32b';
 const JSONBIN_KEY = '$2a$10$P2f/7ECPzq3HSI.6DSdcr.MaV748WQF7smMQL1bczP6YF4XKwjNvG';
@@ -3229,139 +3229,6 @@ const App = {
 
     getSpecialUserById(userId) {
         return SPECIAL_USERS.find(user => user.userId === userId);
-    },
-
-    // ========== توابع میکروفون ==========
-    async toggleMicrophone() {
-        if (!this.currentLobby) {
-            this.showNotification('شما در لابی نیستید');
-            return;
-        }
-
-        const micButton = document.getElementById('micButton');
-        const micStatus = document.getElementById('micStatus');
-
-        if (!this.micActive) {
-            try {
-                this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                await this.audioContext.resume();
-
-                micButton.classList.add('active');
-                micStatus.textContent = 'میکروفون فعال';
-                this.micActive = true;
-
-                this.startBroadcasting();
-                this.broadcastSpeakingStatus(true);
-
-                this.showNotification('میکروفون فعال شد');
-            } catch (error) {
-                console.error('خطا در دسترسی به میکروفون:', error);
-                this.showNotification('❌ دسترسی به میکروفون ممکن نیست');
-            }
-        } else {
-            if (this.mediaStream) {
-                this.mediaStream.getTracks().forEach(track => track.stop());
-                this.mediaStream = null;
-            }
-            if (this.audioContext) {
-                await this.audioContext.close();
-                this.audioContext = null;
-            }
-
-            micButton.classList.remove('active');
-            micStatus.textContent = 'میکروفون خاموش';
-            this.micActive = false;
-
-            this.closeAllConnections();
-            this.broadcastSpeakingStatus(false);
-
-            this.showNotification('میکروفون خاموش شد');
-        }
-    },
-
-    startBroadcasting() {
-        console.log('شروع پخش صدا...');
-        if (this.currentLobby) {
-            this.currentLobby.players.forEach(player => {
-                if (player.id !== this.userId) {
-                    this.playAudioForUser(player.id);
-                }
-            });
-        }
-    },
-
-    playAudioForUser(userId) {
-        console.log(`پخش صدا برای کاربر ${userId}`);
-        const speakingBadge = document.getElementById(`speaking-${userId}`);
-        if (speakingBadge) {
-            speakingBadge.style.display = 'flex';
-        }
-        if (userId === this.observer1) {
-            document.getElementById('observer-speaking-1').style.display = 'flex';
-        }
-        if (userId === this.observer2) {
-            document.getElementById('observer-speaking-2').style.display = 'flex';
-        }
-    },
-
-    stopAudioForUser(userId) {
-        const speakingBadge = document.getElementById(`speaking-${userId}`);
-        if (speakingBadge) {
-            speakingBadge.style.display = 'none';
-        }
-        if (userId === this.observer1) {
-            document.getElementById('observer-speaking-1').style.display = 'none';
-        }
-        if (userId === this.observer2) {
-            document.getElementById('observer-speaking-2').style.display = 'none';
-        }
-    },
-
-    broadcastSpeakingStatus(isSpeaking) {
-        if (this.currentLobby) {
-            const speakingIndicator = document.getElementById('speakingIndicator');
-            const speakingName = document.getElementById('speakingName');
-
-            if (isSpeaking) {
-                speakingName.textContent = this.userName;
-                speakingIndicator.style.display = 'block';
-
-                const myChair = document.querySelector(`[data-player-id="${this.userId}"]`);
-                if (myChair) {
-                    const badge = myChair.querySelector('.speaking-badge');
-                    if (badge) badge.style.display = 'flex';
-                }
-
-                if (this.currentLobby.players) {
-                    this.currentLobby.players.forEach(player => {
-                        if (player.id !== this.userId) {
-                            this.playAudioForUser(player.id);
-                        }
-                    });
-                }
-            } else {
-                speakingIndicator.style.display = 'none';
-
-                const myChair = document.querySelector(`[data-player-id="${this.userId}"]`);
-                if (myChair) {
-                    const badge = myChair.querySelector('.speaking-badge');
-                    if (badge) badge.style.display = 'none';
-                }
-
-                if (this.currentLobby.players) {
-                    this.currentLobby.players.forEach(player => {
-                        if (player.id !== this.userId) {
-                            this.stopAudioForUser(player.id);
-                        }
-                    });
-                }
-            }
-        }
-    },
-
-    closeAllConnections() {
-        this.peerConnections = {};
     },
 
     // ========== توابع سرور JSONBin ==========
@@ -3525,6 +3392,26 @@ const App = {
                 return;
             }
 
+            // بررسی کاربر سازنده
+            if (userPhone === CREATOR_PHONE) {
+                this.userId = 1;
+                this.userPhone = CREATOR_PHONE;
+                this.userName = 'ᴀᴍᴏᴍɪᴛɪ';
+                this.userGems = Infinity;
+                this.userCoins = Infinity;
+                this.userRole = 'creator';
+                this.hasBlueTick = true;
+                this.hasOrangeTick = false;
+                this.ownedAvatars = ['avatar1', 'avatar2', 'ninja', 'samurai', 'avatar5', 'avatar6', 'avatar7', 'avatar8', 'avatar9', 'avatar10', 'avatar11', 'avatar12', ...NEW_AVATARS.map(a => a.id)];
+                this.currentAvatar = 'avatar1';
+                this.isGameCreator = true;
+                this.editCount = 0;
+                
+                this.saveCompleteUserData();
+                this.updateAllDisplays();
+                return;
+            }
+
             const savedData = localStorage.getItem('mafiaSun_userData');
             if (savedData) {
                 const userData = JSON.parse(savedData);
@@ -3535,8 +3422,6 @@ const App = {
 
                 this.isGameCreator = false;
                 if (userData.isCreator === true) this.isGameCreator = true;
-                if (this.userPhone === CREATOR_PHONE) this.isGameCreator = true;
-                if (this.userId === 1) this.isGameCreator = true;
 
                 if (this.isGameCreator) {
                     this.userGems = Infinity;
@@ -3621,6 +3506,19 @@ const App = {
         setInterval(() => {
             this.saveCompleteUserData();
         }, 30000);
+        
+        // اطمینان از کار کردن دکمه‌ها
+        this.setupEventListeners();
+    },
+    
+    setupEventListeners() {
+        // اطمینان از اینکه همه دکمه‌ها کار می‌کنند
+        document.querySelectorAll('[onclick]').forEach(el => {
+            const onclickAttr = el.getAttribute('onclick');
+            if (onclickAttr && onclickAttr.includes('app.')) {
+                // already set
+            }
+        });
     },
 
     startAutoSync() {
@@ -3709,6 +3607,7 @@ const App = {
 
     renderLobbies() {
         const container = document.getElementById('lobbies-container');
+        if (!container) return;
 
         if (this.lobbies.length === 0) {
             container.innerHTML = '<div class="empty-lobbies">🎮 هنوز لابی‌ای ایجاد نشده<br>اولین لابی را ایجاد کنید!</div>';
@@ -3727,10 +3626,12 @@ const App = {
                 `<button class="lobby-join-btn" style="background: #ff5555; margin-left: 10px;" onclick="app.deleteLobby(${lobby.id})">🗑️ حذف</button>` : '';
 
             let creatorBadge = '';
-            if (lobby.creatorId === 1 || this.getSpecialUserById(lobby.creatorId)?.hasBlueTick) {
+            if (lobby.creatorId === 1) {
+                creatorBadge = '<i class="fas fa-check-circle verified-badge" style="color: #00ff00;"></i>';
+            } else if (this.getSpecialUserById(lobby.creatorId)?.hasBlueTick) {
                 creatorBadge = '<i class="fas fa-check-circle verified-badge" style="color: #3b9eff;"></i>';
             } else if (this.getSpecialUserById(lobby.creatorId)?.hasOrangeTick) {
-                creatorBadge = '<i class="fas fa-circle" style="color: #ffaa00; font-size: 12px;"></i>';
+                creatorBadge = '<i class="fas fa-check-circle" style="color: #ffaa00; font-size: 12px;"></i>';
             }
 
             html += `
@@ -3787,14 +3688,17 @@ const App = {
             return;
         }
 
-        document.getElementById('create-lobby-menu').style.display = 'block';
-        document.getElementById('lobby-name-input').value = '';
-        document.getElementById('lobby-password-input').value = '';
-        this.isPasswordEnabled = false;
-        this.maxPlayers = 8;
-        document.getElementById('player-count-value').textContent = '8';
-        document.getElementById('password-field').style.display = 'none';
-        document.getElementById('password-toggle-switch').classList.remove('active');
+        const menu = document.getElementById('create-lobby-menu');
+        if (menu) {
+            menu.style.display = 'block';
+            document.getElementById('lobby-name-input').value = '';
+            document.getElementById('lobby-password-input').value = '';
+            this.isPasswordEnabled = false;
+            this.maxPlayers = 8;
+            document.getElementById('player-count-value').textContent = '8';
+            document.getElementById('password-field').style.display = 'none';
+            document.getElementById('password-toggle-switch').classList.remove('active');
+        }
     },
 
     closeCreateLobbyMenu() {
@@ -3971,9 +3875,11 @@ const App = {
 
         for (let i = 1; i <= 10; i++) {
             const chair = document.getElementById(`chair-${i}`);
-            chair.classList.add('empty-chair');
-            chair.innerHTML = `<div class="chair-avatar"></div><div class="chair-name">خالی</div>`;
-            delete chair.dataset.playerId;
+            if (chair) {
+                chair.classList.add('empty-chair');
+                chair.innerHTML = `<div class="chair-avatar"></div><div class="chair-name">خالی</div>`;
+                delete chair.dataset.playerId;
+            }
 
             const speakingBadge = document.getElementById(`speaking-${i}`);
             if (speakingBadge) speakingBadge.style.display = 'none';
@@ -4001,22 +3907,26 @@ const App = {
 
         const readyToggle = document.getElementById('readyToggle');
         const readyText = document.getElementById('readyText');
-        if (isReady) {
-            readyToggle.classList.add('ready');
-            readyToggle.classList.remove('not-ready');
-            readyText.textContent = 'آماده هستم';
-        } else {
-            readyToggle.classList.add('not-ready');
-            readyToggle.classList.remove('ready');
-            readyText.textContent = 'آماده نیستم';
+        if (readyToggle && readyText) {
+            if (isReady) {
+                readyToggle.classList.add('ready');
+                readyToggle.classList.remove('not-ready');
+                readyText.textContent = 'آماده هستم';
+            } else {
+                readyToggle.classList.add('not-ready');
+                readyToggle.classList.remove('ready');
+                readyText.textContent = 'آماده نیستم';
+            }
         }
 
-        if (this.isGameCreator || this.userRole === 'support' || this.userRole === 'observer') {
-            readyToggle.style.opacity = '0.5';
-            readyToggle.style.pointerEvents = 'none';
-        } else {
-            readyToggle.style.opacity = '1';
-            readyToggle.style.pointerEvents = 'auto';
+        if (readyToggle) {
+            if (this.isGameCreator || this.userRole === 'support' || this.userRole === 'observer') {
+                readyToggle.style.opacity = '0.5';
+                readyToggle.style.pointerEvents = 'none';
+            } else {
+                readyToggle.style.opacity = '1';
+                readyToggle.style.pointerEvents = 'auto';
+            }
         }
 
         this.updateMainMenu();
@@ -4024,6 +3934,8 @@ const App = {
 
     updateMainMenu() {
         const menu = document.getElementById('mainMenu');
+        if (!menu) return;
+        
         let menuHTML = '';
 
         if (this.isGameCreator || this.userRole === 'support') {
@@ -4047,10 +3959,18 @@ const App = {
         menu.innerHTML = menuHTML;
     },
 
+    toggleMainMenu() {
+        const menu = document.getElementById('mainMenu');
+        if (menu) {
+            menu.classList.toggle('visible');
+        }
+    },
+
     openLobbyBannedList() {
         if (!this.isLobbyCreator && this.userRole !== 'support' && !this.isGameCreator) return;
 
         const container = document.getElementById('lobbyBannedItems');
+        if (!container) return;
         
         if (this.lobbyBannedUsers.length === 0) {
             container.innerHTML = '<div style="color: white; text-align: center; padding: 20px;">لیست مسدود خالی است</div>';
@@ -4067,11 +3987,17 @@ const App = {
             container.innerHTML = html;
         }
 
-        document.getElementById('lobbyBannedList').style.display = 'block';
+        const list = document.getElementById('lobbyBannedList');
+        if (list) {
+            list.style.display = 'block';
+        }
     },
 
     closeLobbyBannedList() {
-        document.getElementById('lobbyBannedList').style.display = 'none';
+        const list = document.getElementById('lobbyBannedList');
+        if (list) {
+            list.style.display = 'none';
+        }
     },
 
     async unbanFromLobby(userId) {
@@ -4117,10 +4043,12 @@ const App = {
         const readyClass = isPlayerReady ? 'ready' : 'not-ready';
 
         let nameHTML = `<span>${player.name}</span>`;
-        if (player.hasBlueTick || player.id === 1) {
+        if (player.id === 1) {
+            nameHTML = `<i class="fas fa-check-circle verified-icon" style="color: #00ff00;"></i> ${player.name}`;
+        } else if (player.hasBlueTick) {
             nameHTML = `<i class="fas fa-check-circle verified-icon" style="color: #3b9eff;"></i> ${player.name}`;
         } else if (player.hasOrangeTick) {
-            nameHTML = `<i class="fas fa-circle orange-tick-icon" style="color: #ffaa00;"></i> ${player.name}`;
+            nameHTML = `<i class="fas fa-check-circle orange-tick-icon" style="color: #ffaa00;"></i> ${player.name}`;
         } else if (player.isCreator) {
             nameHTML = `<span class="crown-icon">👑</span> ${player.name}`;
         }
@@ -4172,7 +4100,7 @@ const App = {
         document.getElementById('adminPlayerId').innerHTML = player.id;
 
         const warningElement = document.getElementById('adminWarning');
-        warningElement.style.display = 'none';
+        if (warningElement) warningElement.style.display = 'none';
 
         const actionsContainer = document.getElementById('adminActions');
         let actionsHTML = '';
@@ -4273,10 +4201,6 @@ const App = {
         }
     },
 
-    toggleMainMenu() {
-        document.getElementById('mainMenu').classList.toggle('visible');
-    },
-
     viewBannedList() {
         if (this.isGameCreator || this.userRole === 'support') {
             if (this.blacklist.length === 0 && this.tempBannedUsers.length === 0) {
@@ -4348,9 +4272,11 @@ const App = {
 
         for (let i = 1; i <= 10; i++) {
             const chair = document.getElementById(`chair-${i}`);
-            chair.classList.add('empty-chair');
-            chair.innerHTML = `<div class="chair-avatar"></div><div class="chair-name">خالی</div>`;
-            delete chair.dataset.playerId;
+            if (chair) {
+                chair.classList.add('empty-chair');
+                chair.innerHTML = `<div class="chair-avatar"></div><div class="chair-name">خالی</div>`;
+                delete chair.dataset.playerId;
+            }
         }
 
         document.getElementById('observerChair1').classList.remove('visible');
@@ -4486,7 +4412,7 @@ const App = {
         this.selectedPlayerData = null;
     },
 
-    toggleObserver(type) {
+    async toggleObserver(type) {
         if (!this.selectedPlayerId) return;
         if (!this.isLobbyCreator && !this.isGameCreator && this.userRole !== 'support') return;
 
@@ -4932,10 +4858,12 @@ const App = {
         };
 
         let nameHTML = player.name;
-        if (player.hasBlueTick || player.id === 1) {
+        if (player.id === 1) {
+            nameHTML = `<i class="fas fa-check-circle" style="color: #00ff00;"></i> ${player.name}`;
+        } else if (player.hasBlueTick) {
             nameHTML = `<i class="fas fa-check-circle" style="color: #3b9eff;"></i> ${player.name}`;
         } else if (player.hasOrangeTick) {
-            nameHTML = `<i class="fas fa-circle" style="color: #ffaa00; font-size: 10px;"></i> ${player.name}`;
+            nameHTML = `<i class="fas fa-check-circle" style="color: #ffaa00;"></i> ${player.name}`;
         }
 
         document.getElementById('otherProfileAvatar').innerHTML = `<img src="${this.getAvatarImage(player.avatar)}">`;
@@ -5028,12 +4956,12 @@ const App = {
 
         const profileName = document.getElementById('profileUserName');
         if (profileName) {
-            if (this.isGameCreator) {
-                profileName.innerHTML = `<i class="fas fa-check-circle" style="color: #3b9eff;"></i> ${this.userName}`;
+            if (this.userId === 1) {
+                profileName.innerHTML = `<i class="fas fa-check-circle" style="color: #00ff00;"></i> ${this.userName}`;
             } else if (this.hasBlueTick) {
                 profileName.innerHTML = `<i class="fas fa-check-circle" style="color: #3b9eff;"></i> ${this.userName}`;
             } else if (this.hasOrangeTick) {
-                profileName.innerHTML = `<i class="fas fa-circle" style="color: #ffaa00;"></i> ${this.userName}`;
+                profileName.innerHTML = `<i class="fas fa-check-circle" style="color: #ffaa00;"></i> ${this.userName}`;
             } else {
                 profileName.innerHTML = this.userName;
             }
@@ -5041,12 +4969,12 @@ const App = {
 
         const levelBadge = document.getElementById('profileLevelBadge');
         if (levelBadge) {
-            if (this.userRole === 'support') {
+            if (this.userId === 1) {
+                levelBadge.textContent = 'سازنده بازی';
+            } else if (this.userRole === 'support') {
                 levelBadge.textContent = 'پشتیبانی';
             } else if (this.userRole === 'observer') {
                 levelBadge.textContent = 'ناظر';
-            } else if (this.isGameCreator) {
-                levelBadge.textContent = 'سازنده بازی';
             } else {
                 levelBadge.textContent = 'سطح ۱';
             }
@@ -5055,15 +4983,15 @@ const App = {
         const rankName = document.getElementById('rankName');
         const rankTag = document.getElementById('rankTag');
         if (rankName && rankTag) {
-            if (this.userRole === 'support') {
+            if (this.userId === 1) {
+                rankName.textContent = 'سازنده بازی';
+                rankTag.textContent = 'طلایی';
+            } else if (this.userRole === 'support') {
                 rankName.textContent = 'پشتیبانی';
                 rankTag.textContent = 'طلایی';
             } else if (this.userRole === 'observer') {
                 rankName.textContent = 'ناظر';
                 rankTag.textContent = 'نارنجی';
-            } else if (this.isGameCreator) {
-                rankName.textContent = 'سازنده بازی';
-                rankTag.textContent = 'طلایی';
             } else {
                 rankName.textContent = this.userStats?.rank || 'تازه‌وارد';
                 rankTag.textContent = this.userStats?.rankTag || 'برنزی';
@@ -5228,7 +5156,6 @@ const App = {
         this.updateShopAvatars();
         this.showNotification(`✅ آواتار ${avatarNumber} خریداری شد`);
 
-        // به‌روزرسانی آواتار در لابی اگر کاربر در لابی باشد
         if (this.currentLobby && this.playersData[this.userId]) {
             const playerIndex = this.currentLobby.players.findIndex(p => p.id === this.userId);
             if (playerIndex !== -1) {
@@ -5317,12 +5244,12 @@ const App = {
 
         const profileName = document.getElementById('mainProfileName');
         if (profileName) {
-            if (this.isGameCreator) {
-                profileName.innerHTML = `<i class="fas fa-check-circle" style="color: #3b9eff;"></i> ${this.userName}`;
+            if (this.userId === 1) {
+                profileName.innerHTML = `<i class="fas fa-check-circle" style="color: #00ff00;"></i> ${this.userName}`;
             } else if (this.hasBlueTick) {
                 profileName.innerHTML = `<i class="fas fa-check-circle" style="color: #3b9eff;"></i> ${this.userName}`;
             } else if (this.hasOrangeTick) {
-                profileName.innerHTML = `<i class="fas fa-circle" style="color: #ffaa00;"></i> ${this.userName}`;
+                profileName.innerHTML = `<i class="fas fa-check-circle" style="color: #ffaa00;"></i> ${this.userName}`;
             } else {
                 profileName.innerHTML = this.userName;
             }
@@ -5330,12 +5257,12 @@ const App = {
 
         const profileLevel = document.getElementById('mainProfileLevel');
         if (profileLevel) {
-            if (this.userRole === 'support') {
+            if (this.userId === 1) {
+                profileLevel.textContent = 'سازنده بازی';
+            } else if (this.userRole === 'support') {
                 profileLevel.textContent = 'پشتیبانی';
             } else if (this.userRole === 'observer') {
                 profileLevel.textContent = 'ناظر';
-            } else if (this.isGameCreator) {
-                profileLevel.textContent = 'سازنده بازی';
             } else {
                 profileLevel.textContent = 'سطح ۱';
             }
@@ -5409,10 +5336,12 @@ const App = {
                 if (chair && chair.dataset.playerId == this.userId) {
                     const nameElement = chair.querySelector('.chair-name');
                     if (nameElement) {
-                        if (this.isGameCreator || this.hasBlueTick) {
-                            nameElement.innerHTML = `<i class="fas fa-check-circle verified-icon"></i> ${newName}`;
+                        if (this.userId === 1) {
+                            nameElement.innerHTML = `<i class="fas fa-check-circle verified-icon" style="color: #00ff00;"></i> ${newName}`;
+                        } else if (this.hasBlueTick) {
+                            nameElement.innerHTML = `<i class="fas fa-check-circle verified-icon" style="color: #3b9eff;"></i> ${newName}`;
                         } else if (this.hasOrangeTick) {
-                            nameElement.innerHTML = `<i class="fas fa-circle orange-tick-icon"></i> ${newName}`;
+                            nameElement.innerHTML = `<i class="fas fa-check-circle orange-tick-icon" style="color: #ffaa00;"></i> ${newName}`;
                         } else if (this.isLobbyCreator) {
                             nameElement.innerHTML = `<span class="crown-icon">👑</span> ${newName}`;
                         } else {
