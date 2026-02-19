@@ -21,7 +21,6 @@ body {
     background: #0a0c10;
 }
 
-/* ========== میکروفون ========== */
 .mic-container {
     position: fixed;
     bottom: 30px;
@@ -116,8 +115,7 @@ body {
     right: 0;
 }
 
-/* ========== صفحات اصلی ========== */
-#main-game-page, #friendly-hall-page, #profile-page, #avatar-page, #lobby-page, #other-profile-page, #report-modal, #reports-panel {
+#main-game-page, #friendly-hall-page, #profile-page, #avatar-page, #lobby-page, #other-profile-page, #report-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -140,18 +138,7 @@ body {
     background-size: cover;
 }
 
-#profile-page {
-    background: url('https://s8.uupload.ir/files/img_20260212_001408_558_g4g9.jpg') no-repeat center center;
-    background-size: cover;
-}
-
-#other-profile-page {
-    background: url('https://s8.uupload.ir/files/img_20260212_001408_558_g4g9.jpg') no-repeat center center;
-    background-size: cover;
-    z-index: 10000;
-}
-
-#avatar-page {
+#profile-page, #other-profile-page, #avatar-page {
     background: url('https://s8.uupload.ir/files/img_20260212_001408_558_g4g9.jpg') no-repeat center center;
     background-size: cover;
 }
@@ -168,7 +155,6 @@ body {
     display: none;
 }
 
-/* ========== هدر ========== */
 .game-header {
     position: fixed;
     top: 20px;
@@ -215,7 +201,6 @@ body {
     font-weight: 600;
 }
 
-/* ========== پروفایل ========== */
 .profile-container {
     position: fixed;
     top: 20px;
@@ -284,7 +269,6 @@ body {
     font-size: 11px;
 }
 
-/* ========== دکمه شروع ========== */
 .start-button {
     position: fixed;
     bottom: 80px;
@@ -308,7 +292,6 @@ body {
     object-fit: contain;
 }
 
-/* ========== نوار پایین ========== */
 .bottom-bar {
     position: fixed;
     bottom: 0;
@@ -342,7 +325,6 @@ body {
     object-fit: contain;
 }
 
-/* ========== دکمه‌های لابی ========== */
 .hall-back-btn {
     position: fixed;
     top: 20px;
@@ -402,7 +384,6 @@ body {
     border-color: #f9d77e;
 }
 
-/* ========== کارت‌های لابی ========== */
 .lobbies-container {
     max-width: 500px;
     margin: 80px auto 20px;
@@ -529,7 +510,6 @@ body {
     margin-top: 30px;
 }
 
-/* ========== منوی ایجاد لابی ========== */
 #create-lobby-menu {
     position: fixed;
     top: 50%;
@@ -724,7 +704,6 @@ body {
     box-shadow: 0 10px 20px rgba(110, 172, 218, 0.3);
 }
 
-/* ========== میز و صندلی‌ها ========== */
 .table-container {
     position: absolute;
     top: 50%;
@@ -864,7 +843,6 @@ body {
     transform: translate(-50%, -50%);
 }
 
-/* ========== ناظران ========== */
 .observers-area {
     position: fixed;
     top: 10px;
@@ -949,7 +927,6 @@ body {
     border: 1px solid #3a4050;
 }
 
-/* ========== دکمه آماده ========== */
 .ready-container {
     position: fixed;
     bottom: 30px;
@@ -997,7 +974,6 @@ body {
     box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
 
-/* ========== منوی اصلی ========== */
 .menu-button {
     position: fixed;
     top: 20px;
@@ -1077,7 +1053,6 @@ body {
     background: rgba(255, 107, 107, 0.2);
 }
 
-/* ========== پنل ادمین ========== */
 .admin-panel {
     position: fixed;
     top: 50%;
@@ -1296,7 +1271,6 @@ body {
     text-align: center;
 }
 
-/* ========== پنل سازنده بازی ========== */
 .game-creator-panel {
     position: fixed;
     top: 50%;
@@ -1448,7 +1422,6 @@ body {
     color: #ff5555;
 }
 
-/* ========== گزارش‌ها ========== */
 .reports-list {
     max-height: 300px;
     overflow-y: auto;
@@ -1515,7 +1488,6 @@ body {
     transform: scale(1.05);
 }
 
-/* ========== لیست سیاه ========== */
 .blacklist-container {
     max-height: 300px;
     overflow-y: auto;
@@ -1564,7 +1536,6 @@ body {
     transform: scale(1.05);
 }
 
-/* ========== منوی پروفایل کاربر ========== */
 .user-profile-menu {
     position: fixed;
     top: 50%;
@@ -1630,7 +1601,57 @@ body {
     border-color: #3a4050;
 }
 
-/* ========== پروفایل دیگران ========== */
+.lobby-banned-list {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background: linear-gradient(145deg, #1a1f2a, #0f1219);
+    border: 3px solid #ffaa00;
+    border-radius: 20px;
+    padding: 20px;
+    z-index: 20000;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+}
+
+.lobby-banned-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ffaa00;
+}
+
+.lobby-banned-header h4 {
+    color: #ffaa00;
+    font-size: 16px;
+}
+
+.close-banned-btn {
+    width: 30px;
+    height: 30px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+    border: 1px solid #ffaa00;
+}
+
+.close-banned-btn:hover {
+    background: #ff5555;
+}
+
+.lobby-banned-items {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
 .other-profile-content {
     max-width: 600px;
     margin: 80px auto 0;
@@ -1857,7 +1878,6 @@ body {
     transform: rotate(180deg);
 }
 
-/* ========== مودال گزارش ========== */
 .report-modal-content {
     position: fixed;
     top: 50%;
@@ -1967,7 +1987,6 @@ body {
     border-color: white;
 }
 
-/* ========== مودال بن ========== */
 .ban-modal {
     position: fixed;
     top: 50%;
@@ -2058,7 +2077,6 @@ body {
     border-color: #ff5555;
 }
 
-/* ========== پروفایل خود کاربر ========== */
 .profile-content {
     max-width: 600px;
     margin: 80px auto 0;
@@ -2300,7 +2318,6 @@ body {
     font-size: 12px;
 }
 
-/* ========== صفحه آواتار ========== */
 .avatar-container {
     max-width: 800px;
     margin: 80px auto 0;
@@ -2458,7 +2475,6 @@ body {
     gap: 5px;
 }
 
-/* ========== نوتیفیکیشن‌ها ========== */
 .copy-notification {
     position: fixed;
     bottom: 30px;
@@ -2486,7 +2502,6 @@ body {
     100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
 }
 
-/* ========== مودال ویرایش نام ========== */
 .edit-modal {
     position: fixed;
     top: 50%;
@@ -2607,7 +2622,6 @@ body {
     transform: rotate(180deg);
 }
 
-/* ========== موقعیت صندلی‌ها ========== */
 #chair-1 { top: 18%; left: 16%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101652511_taae.png'); }
 #chair-2 { top: 36%; left: 16%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101652511_taae.png'); }
 #chair-3 { top: 54%; left: 16%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101652511_taae.png'); }
@@ -2619,7 +2633,6 @@ body {
 #chair-9 { top: 18%; left: 84%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_101625661_1tgd.png'); }
 #chair-10 { top: 12%; left: 50%; background-image: url('https://s8.uupload.ir/files/inshot_20260213_024911666_6b.png'); }
 
-/* ========== ریسپانسیو ========== */
 @media (max-width: 600px) {
     .chair { width: 100px; height: 100px; }
     .chair-avatar { width: 60px; height: 60px; }
@@ -2843,6 +2856,14 @@ body {
             <div class="profile-menu-item report" onclick="window.app.openReportModal()">🚨 گزارش</div>
             <div class="profile-menu-item close" onclick="window.app.closeUserProfileMenu()">✕ بستن</div>
         </div>
+
+        <div class="lobby-banned-list" id="lobbyBannedList" style="display: none;">
+            <div class="lobby-banned-header">
+                <h4>🚫 لیست مسدود لابی</h4>
+                <div class="close-banned-btn" onclick="window.app.closeLobbyBannedList()">✕</div>
+            </div>
+            <div class="lobby-banned-items" id="lobbyBannedItems"></div>
+        </div>
     </div>
 
     <div id="other-profile-page">
@@ -3063,11 +3084,8 @@ body {
 
     <script src="game.js"></script>
 <script>
-// ========== تنظیمات سرور و کلیدها ==========
-const JSONBIN_ID = '6984ae3a43b1c97be967c32b';
-const JSONBIN_KEY = '$2a$10$P2f/7ECPzq3HSI.6DSdcr.MaV748WQF7smMQL1bczP6YF4XKwjNvG';
+// ========== تنظیمات ==========
 const AUTH_PAGE_URL = 'https://admin161723.github.io/-Sun-Mafia/';
-const GAME_PAGE_URL = 'https://admin161723.github.io/Mafia_Sun1/';
 const CREATOR_PHONE = '09904844031';
 
 // ========== کاربران ویژه ==========
@@ -3075,7 +3093,7 @@ const SPECIAL_USERS = [
     {
         phone: '09940940720',
         userId: 3,
-        name: 'LÚÇÌFÈR',
+        name: '♛✯ Èr£åñ_ʂɧ ✯♛',
         gems: 1000,
         coins: 1000,
         password: 'Erfan.sh85',
@@ -3086,7 +3104,7 @@ const SPECIAL_USERS = [
     {
         phone: '09212327833',
         userId: 2,
-        name: 'امیروینستون',
+        name: '<#0ff>Programmer',
         gems: 1000,
         coins: 1000,
         password: '010101010',
@@ -3098,8 +3116,8 @@ const SPECIAL_USERS = [
         phone: '09053065179',
         userId: 100,
         name: '•°Ami®=dar©°•',
-        gems: 350,
-        coins: 800,
+        gems: 2000,
+        coins: 5000,
         password: 'amirhosein1386',
         role: 'observer',
         hasBlueTick: false,
@@ -3185,7 +3203,9 @@ const App = {
     },
 
     getAvatarImage(avatar) {
-        return this.avatars[avatar] || this.avatars.avatar1;
+        if (this.avatars[avatar]) return this.avatars[avatar];
+        const newAvatar = NEW_AVATARS.find(a => a.id === avatar);
+        return newAvatar ? newAvatar.url : this.avatars.avatar1;
     },
 
     showNotification(message, isBan = false) {
@@ -3501,11 +3521,13 @@ const App = {
 
         this.loadUserData();
 
-        const serverData = await this.fetchFromServer();
-        if (serverData) {
-            if (serverData.lobbies) this.lobbies = serverData.lobbies;
-            if (serverData.blacklist) this.blacklist = serverData.blacklist;
-            this.nextLobbyId = serverData.nextLobbyId || 1;
+        const savedLobbies = localStorage.getItem('mafiaSun_lobbies');
+        if (savedLobbies) {
+            try {
+                const data = JSON.parse(savedLobbies);
+                this.lobbies = data.lobbies || [];
+                this.nextLobbyId = data.nextLobbyId || 1;
+            } catch (e) {}
         }
 
         this.startAutoSync();
@@ -3515,38 +3537,12 @@ const App = {
         }, 30000);
     },
 
-    async fetchFromServer() {
-        try {
-            const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_ID}`, {
-                headers: { 'X-Master-Key': JSONBIN_KEY }
-            });
-            const data = await response.json();
-            return data.record;
-        } catch (error) {
-            return null;
-        }
-    },
-
-    async saveToServer(data) {
-        try {
-            await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_ID}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Master-Key': JSONBIN_KEY
-                },
-                body: JSON.stringify(data)
-            });
-        } catch (error) {}
-    },
-
-    async saveLobbiesToServer() {
+    saveLobbiesToServer() {
         const data = {
             lobbies: this.lobbies,
-            nextLobbyId: this.nextLobbyId,
-            blacklist: this.blacklist
+            nextLobbyId: this.nextLobbyId
         };
-        await this.saveToServer(data);
+        localStorage.setItem('mafiaSun_lobbies', JSON.stringify(data));
     },
 
     startAutoSync() {
@@ -3554,17 +3550,19 @@ const App = {
         this.syncInterval = setInterval(() => this.syncLobbies(), 3000);
     },
 
-    async syncLobbies() {
+    syncLobbies() {
         const now = Date.now();
         if (now - this.lastSync < 3000) return;
         this.lastSync = now;
 
-        const serverData = await this.fetchFromServer();
-        if (!serverData) return;
-
-        if (serverData.lobbies) this.lobbies = serverData.lobbies;
-        if (serverData.blacklist) this.blacklist = serverData.blacklist;
-        this.nextLobbyId = serverData.nextLobbyId || 1;
+        const savedLobbies = localStorage.getItem('mafiaSun_lobbies');
+        if (savedLobbies) {
+            try {
+                const data = JSON.parse(savedLobbies);
+                this.lobbies = data.lobbies || [];
+                this.nextLobbyId = data.nextLobbyId || 1;
+            } catch (e) {}
+        }
 
         if (document.getElementById('friendly-hall-page').style.display === 'block') {
             this.renderLobbies();
@@ -3600,7 +3598,7 @@ const App = {
         }
 
         if (this.blacklist.includes(this.userId) && !this.isGameCreator && this.userRole !== 'support') {
-            this.showNotification('🚫 شما توسط سازنده بازی بن دائمی شده‌اید', true);
+            this.showNotification('🚫 شما بن دائمی شده‌اید', true);
             setTimeout(() => {
                 window.location.href = AUTH_PAGE_URL;
             }, 3000);
@@ -3697,6 +3695,7 @@ const App = {
         document.getElementById('lobby-page').style.display = 'none';
         document.getElementById('avatar-page').style.display = 'none';
         document.getElementById('create-lobby-menu').style.display = 'none';
+        document.getElementById('lobbyBannedList').style.display = 'none';
         this.renderLobbies();
     },
 
@@ -3813,7 +3812,7 @@ const App = {
         newLobby.readyStatus[this.userId] = true;
 
         this.lobbies.push(newLobby);
-        await this.saveLobbiesToServer();
+        this.saveLobbiesToServer();
         this.closeCreateLobbyMenu();
         this.enterLobby(newLobby);
     },
@@ -3877,7 +3876,7 @@ const App = {
             if (!lobby.readyStatus) lobby.readyStatus = {};
             lobby.readyStatus[this.userId] = true;
 
-            await this.saveLobbiesToServer();
+            this.saveLobbiesToServer();
         }
 
         this.enterLobby(lobby);
@@ -3964,7 +3963,7 @@ const App = {
             `;
         } else if (this.isLobbyCreator) {
             menuHTML = `
-                <div class="menu-item" onclick="app.viewLobbyBannedList()">📋 لیست مسدود لابی</div>
+                <div class="menu-item" onclick="app.openLobbyBannedList()">📋 لیست مسدود لابی</div>
                 <div class="menu-item" onclick="app.startGame()">🎮 شروع بازی</div>
                 <div class="menu-item danger" onclick="app.leaveLobby()">🚪 خروج از لابی</div>
             `;
@@ -3977,19 +3976,45 @@ const App = {
         menu.innerHTML = menuHTML;
     },
 
-    viewLobbyBannedList() {
+    openLobbyBannedList() {
         if (!this.isLobbyCreator && this.userRole !== 'support' && !this.isGameCreator) return;
 
+        const container = document.getElementById('lobbyBannedItems');
+        
         if (this.lobbyBannedUsers.length === 0) {
-            this.showNotification('📋 لیست مسدود لابی خالی است');
-            return;
+            container.innerHTML = '<div style="color: white; text-align: center; padding: 20px;">لیست مسدود خالی است</div>';
+        } else {
+            let html = '';
+            this.lobbyBannedUsers.forEach((id, index) => {
+                html += `
+                    <div class="banned-user-item">
+                        <span>کاربر ${id}</span>
+                        <button class="unban-small-btn" onclick="app.unbanFromLobby(${id})">رفع مسدود</button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
         }
 
-        let message = '⛔ لیست مسدود این لابی:\n\n';
-        this.lobbyBannedUsers.forEach((id, index) => {
-            message += `${index + 1}. کاربر ${id}\n`;
-        });
-        alert(message);
+        document.getElementById('lobbyBannedList').style.display = 'block';
+    },
+
+    closeLobbyBannedList() {
+        document.getElementById('lobbyBannedList').style.display = 'none';
+    },
+
+    unbanFromLobby(userId) {
+        if (!this.isLobbyCreator && this.userRole !== 'support' && !this.isGameCreator) return;
+
+        this.lobbyBannedUsers = this.lobbyBannedUsers.filter(id => id !== userId);
+        
+        if (this.currentLobby) {
+            this.currentLobby.bannedUsers = this.lobbyBannedUsers;
+            this.saveLobbiesToServer();
+        }
+
+        this.openLobbyBannedList();
+        this.showNotification(`✅ کاربر ${userId} از لیست مسدود حذف شد`);
     },
 
     addPlayerToLobby(player, chairNumber = null) {
@@ -4161,7 +4186,7 @@ const App = {
     async deleteLobby(lobbyId) {
         if (!this.isGameCreator && this.userRole !== 'support') return;
         this.lobbies = this.lobbies.filter(l => l.id !== lobbyId);
-        await this.saveLobbiesToServer();
+        this.saveLobbiesToServer();
         this.renderLobbies();
         this.showNotification('✅ لابی حذف شد');
     },
@@ -4170,7 +4195,7 @@ const App = {
         if (!this.isGameCreator && this.userRole !== 'support') return;
         if (confirm('آیا از حذف همه لابی‌ها اطمینان دارید؟')) {
             this.lobbies = [];
-            await this.saveLobbiesToServer();
+            this.saveLobbiesToServer();
             this.renderLobbies();
             this.showNotification('✅ همه لابی‌ها حذف شدند');
             this.closeGameCreatorPanel();
@@ -4189,7 +4214,6 @@ const App = {
             }
             let message = '🚫 لیست سیاه:\n\n';
             this.blacklist.forEach((id, index) => {
-                const user = Object.values(this.playersData).find(p => p.id === id);
                 message += `${index + 1}. کاربر ${id} (دائمی)\n`;
             });
             this.tempBannedUsers.forEach((ban, index) => {
@@ -4235,10 +4259,11 @@ const App = {
             }
         }
 
-        await this.saveLobbiesToServer();
+        this.saveLobbiesToServer();
 
         document.getElementById('lobby-page').style.display = 'none';
         document.getElementById('friendly-hall-page').style.display = 'block';
+        document.getElementById('lobbyBannedList').style.display = 'none';
 
         this.currentLobby = null;
         this.currentCreator = null;
@@ -4544,7 +4569,6 @@ const App = {
         this.saveLobbiesToServer();
         this.closeAdminPanel();
         this.showNotification(`👢 ${playerName} از لابی اخراج شد`);
-        this.openFriendlyHall();
     },
 
     openBanModal() {
@@ -4584,7 +4608,7 @@ const App = {
         if (duration === 0) {
             if (!this.blacklist.includes(this.selectedPlayerId)) {
                 this.blacklist.push(this.selectedPlayerId);
-                await this.saveLobbiesToServer();
+                localStorage.setItem('mafiaSun_blacklist', JSON.stringify(this.blacklist));
             }
         } else {
             const expiry = Date.now() + (duration * 1000);
@@ -4609,7 +4633,7 @@ const App = {
         }
 
         this.removePlayerFromLobby(this.selectedPlayerId);
-        await this.saveLobbiesToServer();
+        this.saveLobbiesToServer();
 
         this.closeBanModal();
         this.closeAdminPanel();
@@ -4628,7 +4652,7 @@ const App = {
         if (!this.isGameCreator && this.userRole !== 'support' || !this.selectedPlayerId) return;
 
         this.blacklist = this.blacklist.filter(id => id !== this.selectedPlayerId);
-        await this.saveLobbiesToServer();
+        localStorage.setItem('mafiaSun_blacklist', JSON.stringify(this.blacklist));
         this.closeAdminPanel();
         this.showNotification(`✅ بن دائمی کاربر لغو شد`);
     },
@@ -4791,7 +4815,7 @@ const App = {
     async unbanUserFromList(userId) {
         if (!this.isGameCreator && this.userRole !== 'support') return;
         this.blacklist = this.blacklist.filter(id => id !== userId);
-        await this.saveLobbiesToServer();
+        localStorage.setItem('mafiaSun_blacklist', JSON.stringify(this.blacklist));
         this.updateBlacklistList();
         this.showNotification(`✅ بن کاربر ${userId} لغو شد`);
     },
@@ -5227,19 +5251,6 @@ const App = {
     },
 
     openEditModal() {
-        if (this.isGameCreator || this.userRole === 'support' || this.userRole === 'observer') {
-            const modal = document.getElementById('editModal');
-            const coinMessage = document.getElementById('coinRequiredMessage');
-            const modalTitle = document.getElementById('modalTitle');
-            const nameInput = document.getElementById('editNameInput');
-
-            nameInput.value = this.userName;
-            modalTitle.innerHTML = 'تغییر نام (رایگان)';
-            coinMessage.style.display = 'none';
-            modal.style.display = 'block';
-            return;
-        }
-
         const modal = document.getElementById('editModal');
         const coinMessage = document.getElementById('coinRequiredMessage');
         const modalTitle = document.getElementById('modalTitle');
@@ -5247,12 +5258,17 @@ const App = {
 
         nameInput.value = this.userName;
 
-        if (this.editCount === 0) {
+        if (this.isGameCreator || this.userRole === 'support' || this.userRole === 'observer') {
             modalTitle.innerHTML = 'تغییر نام (رایگان)';
             coinMessage.style.display = 'none';
         } else {
-            modalTitle.innerHTML = 'تغییر نام (۵ سکه)';
-            coinMessage.style.display = 'flex';
+            if (this.editCount === 0) {
+                modalTitle.innerHTML = 'تغییر نام (رایگان)';
+                coinMessage.style.display = 'none';
+            } else {
+                modalTitle.innerHTML = 'تغییر نام (۵ سکه)';
+                coinMessage.style.display = 'flex';
+            }
         }
 
         modal.style.display = 'block';
@@ -5271,54 +5287,13 @@ const App = {
             return;
         }
 
-        if (this.isGameCreator || this.userRole === 'support' || this.userRole === 'observer') {
-            this.userName = newName;
-            this.saveCompleteUserData();
-            this.updateMainProfile();
-            this.updateProfilePage();
-            this.updateCurrencyDisplay();
-
-            if (this.currentLobby && this.playersData[this.userId]) {
-                const playerIndex = this.currentLobby.players.findIndex(p => p.id === this.userId);
-                if (playerIndex !== -1) {
-                    this.currentLobby.players[playerIndex].name = newName;
-                    if (this.currentCreator === this.userId) {
-                        this.currentLobby.creatorName = newName;
-                    }
-                    this.saveLobbiesToServer();
-                }
-
-                for (let i = 1; i <= 10; i++) {
-                    const chair = document.getElementById(`chair-${i}`);
-                    if (chair && chair.dataset.playerId == this.userId) {
-                        const nameElement = chair.querySelector('.chair-name');
-                        if (nameElement) {
-                            if (this.isGameCreator || this.hasBlueTick) {
-                                nameElement.innerHTML = `<i class="fas fa-check-circle verified-icon"></i> ${newName}`;
-                            } else if (this.hasOrangeTick) {
-                                nameElement.innerHTML = `<i class="fas fa-circle orange-tick-icon"></i> ${newName}`;
-                            } else if (this.isLobbyCreator) {
-                                nameElement.innerHTML = `<span class="crown-icon">👑</span> ${newName}`;
-                            } else {
-                                nameElement.innerHTML = newName;
-                            }
-                        }
-                        break;
-                    }
-                }
+        if (!this.isGameCreator && this.userRole !== 'support' && this.userRole !== 'observer') {
+            if (this.editCount > 0 && this.userCoins < 5) {
+                alert('سکه کافی ندارید');
+                return;
             }
-
-            this.closeEditModal();
-            this.showNotification('✅ نام با موفقیت تغییر کرد');
-            return;
+            if (this.editCount > 0) this.userCoins -= 5;
         }
-
-        if (this.editCount > 0 && this.userCoins < 5) {
-            alert('سکه کافی ندارید');
-            return;
-        }
-
-        if (this.editCount > 0) this.userCoins -= 5;
 
         this.userName = newName;
         this.editCount++;
@@ -5455,6 +5430,9 @@ document.addEventListener('click', function(e) {
     }
     if (!e.target.closest('.menu-button') && !e.target.closest('.main-menu')) {
         document.getElementById('mainMenu')?.classList.remove('visible');
+    }
+    if (!e.target.closest('.lobby-banned-list') && !e.target.closest('.menu-item')) {
+        document.getElementById('lobbyBannedList')?.classList.remove('visible');
     }
 });
 
