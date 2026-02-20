@@ -3883,38 +3883,34 @@ const App = {
 
     openFriendlyHall() {
         this.playClickSound();
-        const friendlyHall = document.getElementById('friendly-hall-page');
-        const mainPage = document.getElementById('main-game-page');
-        const profilePage = document.getElementById('profile-page');
-        const lobbyPage = document.getElementById('lobby-page');
-        const avatarPage = document.getElementById('avatar-page');
-        const createMenu = document.getElementById('create-lobby-menu');
-        const bannedList = document.getElementById('lobbyBannedList');
-        
-        if (mainPage) mainPage.style.display = 'none';
-        if (friendlyHall) friendlyHall.style.display = 'block';
-        if (profilePage) profilePage.style.display = 'none';
-        if (lobbyPage) lobbyPage.style.display = 'none';
-        if (avatarPage) avatarPage.style.display = 'none';
-        if (createMenu) createMenu.style.display = 'none';
-        if (bannedList) bannedList.style.display = 'none';
-        
+        document.getElementById('main-game-page').style.display = 'none';
+        document.getElementById('friendly-hall-page').style.display = 'block';
+        document.getElementById('profile-page').style.display = 'none';
+        document.getElementById('lobby-page').style.display = 'none';
+        document.getElementById('avatar-page').style.display = 'none';
+        document.getElementById('create-lobby-menu').style.display = 'none';
+        document.getElementById('lobbyBannedList').style.display = 'none';
         this.renderLobbies();
     },
 
     goBackToGame() {
         this.playClickSound();
-        const friendlyHall = document.getElementById('friendly-hall-page');
-        const mainPage = document.getElementById('main-game-page');
-        
-        if (friendlyHall) friendlyHall.style.display = 'none';
-        if (mainPage) mainPage.style.display = 'block';
+        document.getElementById('friendly-hall-page').style.display = 'none';
+        document.getElementById('main-game-page').style.display = 'block';
     },
 
     openCreateLobbyMenu() {
         this.playClickSound();
-        if (!this.currentLobby) {
-            document.getElementById('create-lobby-menu').style.display = 'block';
+        const menu = document.getElementById('create-lobby-menu');
+        if (menu) {
+            menu.style.display = 'block';
+            document.getElementById('lobby-name-input').value = '';
+            document.getElementById('lobby-password-input').value = '';
+            this.isPasswordEnabled = false;
+            this.maxPlayers = 8;
+            document.getElementById('player-count-value').textContent = '8';
+            document.getElementById('password-field').style.display = 'none';
+            document.getElementById('password-toggle-switch').classList.remove('active');
         }
     },
 
@@ -4011,6 +4007,11 @@ const App = {
             return;
         }
 
+        if (lobby.bannedUsers && lobby.bannedUsers.includes(this.userId) && !this.isGameCreator && this.userRole !== 'support' && this.userRole !== 'admin') {
+            this.showNotification('🚫 شما از این لابی مسدود شده‌اید');
+            return;
+        }
+
         if (lobby.hasPassword) {
             const enteredPassword = prompt('🔒 لطفا رمزعبور لابی را وارد کنید:');
             if (enteredPassword !== lobby.password) {
@@ -4055,11 +4056,8 @@ const App = {
     },
 
     enterLobby(lobby) {
-        const friendlyHall = document.getElementById('friendly-hall-page');
-        const lobbyPage = document.getElementById('lobby-page');
-        
-        if (friendlyHall) friendlyHall.style.display = 'none';
-        if (lobbyPage) lobbyPage.style.display = 'block';
+        document.getElementById('friendly-hall-page').style.display = 'none';
+        document.getElementById('lobby-page').style.display = 'block';
 
         this.currentLobby = lobby;
         this.currentCreator = lobby.creatorId;
@@ -4125,17 +4123,19 @@ const App = {
 
         if (this.isGameCreator || this.userRole === 'support') {
             menuHTML = `
-                <div class="menu-item" onclick="window.location.href='panel.html'">⚡ پنل سازنده بازی</div>
+                <div class="menu-item" onclick="app.openGameCreatorPanel()">⚡ پنل سازنده بازی</div>
+                <div class="menu-item" onclick="app.viewBannedList()">📋 لیست سیاه</div>
                 <div class="menu-item danger" onclick="app.leaveLobby()">🚪 خروج از لابی</div>
             `;
         } else if (this.userRole === 'admin') {
             menuHTML = `
-                <div class="menu-item" onclick="window.location.href='panel.html'">🟫 پنل ادمین</div>
+                <div class="menu-item" onclick="app.openAdminPanel()">🟫 پنل ادمین</div>
+                <div class="menu-item" onclick="app.viewAdminBanList()">📋 لیست بن‌های ادمین</div>
                 <div class="menu-item danger" onclick="app.leaveLobby()">🚪 خروج از لابی</div>
             `;
         } else if (this.userRole === 'observer') {
             menuHTML = `
-                <div class="menu-item" onclick="window.location.href='panel.html'">🟠 پنل ناظر</div>
+                <div class="menu-item" onclick="app.openObserverPanel()">🟠 پنل ناظر</div>
                 <div class="menu-item danger" onclick="app.leaveLobby()">🚪 خروج از لابی</div>
             `;
         } else if (this.isLobbyCreator) {
@@ -4155,6 +4155,51 @@ const App = {
     toggleMainMenu() {
         this.playClickSound();
         document.getElementById('mainMenu').classList.toggle('visible');
+    },
+
+    openLobbyBannedList() {
+        this.playClickSound();
+        if (!this.isLobbyCreator && this.userRole !== 'support' && !this.isGameCreator && this.userRole !== 'admin') return;
+
+        const container = document.getElementById('lobbyBannedItems');
+        if (!container) return;
+        
+        if (this.lobbyBannedUsers.length === 0) {
+            container.innerHTML = '<div style="color: white; text-align: center; padding: 20px;">لیست مسدود خالی است</div>';
+        } else {
+            let html = '';
+            this.lobbyBannedUsers.forEach((id, index) => {
+                html += `
+                    <div class="banned-user-item">
+                        <span>کاربر ${id}</span>
+                        <button class="unban-small-btn" onclick="app.unbanFromLobby(${id})">رفع مسدود</button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        document.getElementById('lobbyBannedList').style.display = 'block';
+    },
+
+    closeLobbyBannedList() {
+        this.playClickSound();
+        document.getElementById('lobbyBannedList').style.display = 'none';
+    },
+
+    async unbanFromLobby(userId) {
+        this.playClickSound();
+        if (!this.isLobbyCreator && this.userRole !== 'support' && !this.isGameCreator && this.userRole !== 'admin') return;
+
+        this.lobbyBannedUsers = this.lobbyBannedUsers.filter(id => id !== userId);
+        
+        if (this.currentLobby) {
+            this.currentLobby.bannedUsers = this.lobbyBannedUsers;
+            await this.saveLobbiesToServer();
+        }
+
+        this.openLobbyBannedList();
+        this.showNotification(`✅ کاربر ${userId} از لیست مسدود حذف شد`);
     },
 
     addPlayerToLobby(player, chairNumber = null) {
@@ -4220,9 +4265,10 @@ const App = {
         this.selectedPlayerId = playerId;
         this.selectedPlayerData = this.playersData[playerId];
         
+        console.log('کاربر انتخاب شد:', playerId, 'نقش کاربر فعلی:', this.userRole);
+
         // باز کردن پنل بر اساس نقش کاربر فعلی
         if (this.userRole === 'admin') {
-            // ادمین می‌تونه پنل باز کنه
             if (window.panelFunctions && window.panelFunctions.openAdminPanel) {
                 window.panelFunctions.openAdminPanel(this, playerId);
             } else {
@@ -4240,9 +4286,271 @@ const App = {
             } else {
                 this.openUserProfileMenu(playerId);
             }
+        } else if (this.isLobbyCreator) {
+            this.openAdminPanel(playerId);
         } else {
             this.openUserProfileMenu(playerId);
         }
+    },
+
+    openAdminPanel(playerId) {
+        this.playClickSound();
+        const player = this.playersData[playerId];
+        if (!player) return;
+
+        this.selectedPlayerId = playerId;
+        this.selectedPlayerData = player;
+
+        const panel = document.getElementById('adminPanel');
+        if (!panel) return;
+        
+        document.getElementById('adminPanelTitle').textContent = 'پنل مدیریت لابی';
+        document.getElementById('adminPlayerAvatar').innerHTML = `<img src="${this.getAvatarImage(player.avatar)}">`;
+        document.getElementById('adminPlayerName').innerHTML = player.name;
+        document.getElementById('adminPlayerId').innerHTML = player.id;
+        document.getElementById('adminWarning').style.display = 'none';
+
+        const actions = document.getElementById('adminActions');
+        let actionsHTML = '';
+
+        actionsHTML += `<div class="admin-action-btn profile" onclick="app.viewOtherProfileFromAdmin()">👤 پروفایل</div>`;
+        actionsHTML += `<div class="admin-action-btn report" onclick="app.openReportModalFromAdmin()">🚨 گزارش</div>`;
+
+        if (playerId !== this.userId) {
+            actionsHTML += `<div class="admin-action-btn kick" onclick="app.kickPlayer()">👢 اخراج از لابی</div>`;
+        }
+
+        actions.innerHTML = actionsHTML;
+        panel.classList.add('visible');
+    },
+
+    kickPlayer() {
+        this.playClickSound();
+        if (!this.selectedPlayerId) return;
+        if (!this.isLobbyCreator && !this.isGameCreator && this.userRole !== 'support' && this.userRole !== 'admin') return;
+
+        if (this.selectedPlayerId === this.userId) {
+            this.showNotification('❌ نمی‌توانید خودتان را اخراج کنید');
+            return;
+        }
+
+        const playerName = this.selectedPlayerData.name;
+        this.removePlayerFromLobby(this.selectedPlayerId);
+
+        if (this.currentLobby && this.currentLobby.players) {
+            this.currentLobby.players = this.currentLobby.players.filter(p => p.id !== this.selectedPlayerId);
+        }
+
+        this.saveLobbiesToServer();
+        this.closeAdminPanel();
+        this.showNotification(`👢 ${playerName} از لابی اخراج شد`);
+    },
+
+    removePlayerFromLobby(playerId) {
+        for (let i = 1; i <= 10; i++) {
+            const chair = document.getElementById(`chair-${i}`);
+            if (chair && chair.dataset.playerId == playerId) {
+                chair.classList.add('empty-chair');
+                chair.innerHTML = `<div class="chair-avatar"></div><div class="chair-name">خالی</div>`;
+                delete chair.dataset.playerId;
+                delete this.playersData[playerId];
+                break;
+            }
+        }
+
+        if (this.observer1 == playerId) {
+            this.observer1 = null;
+            document.getElementById('observerChair1').classList.remove('visible');
+        }
+        if (this.observer2 == playerId) {
+            this.observer2 = null;
+            document.getElementById('observerChair2').classList.remove('visible');
+        }
+    },
+
+    async deleteLobby(lobbyId) {
+        this.playClickSound();
+        if (!this.isGameCreator && this.userRole !== 'support') return;
+        this.lobbies = this.lobbies.filter(l => l.id !== lobbyId);
+        await this.saveLobbiesToServer();
+        this.renderLobbies();
+        this.showNotification('✅ لابی حذف شد');
+    },
+
+    async deleteAllLobbies() {
+        this.playClickSound();
+        if (!this.isGameCreator && this.userRole !== 'support') return;
+        if (confirm('آیا از حذف همه لابی‌ها اطمینان دارید؟')) {
+            this.lobbies = [];
+            await this.saveLobbiesToServer();
+            this.renderLobbies();
+            this.showNotification('✅ همه لابی‌ها حذف شدند');
+            this.closeGameCreatorPanel();
+        }
+    },
+
+    viewBannedList() {
+        if (this.isGameCreator || this.userRole === 'support') {
+            if (this.blacklist.length === 0 && this.tempBannedUsers.length === 0 && this.adminBannedUsers.length === 0) {
+                this.showNotification('📋 لیست سیاه خالی است');
+                return;
+            }
+            let message = '🚫 لیست سیاه:\n\n';
+            
+            if (this.blacklist.length > 0) {
+                message += '【 بن دائمی 】\n';
+                this.blacklist.forEach((id, index) => {
+                    message += `${index + 1}. کاربر ${id}\n`;
+                });
+                message += '\n';
+            }
+            
+            if (this.tempBannedUsers.length > 0) {
+                message += '【 بن موقت 】\n';
+                this.tempBannedUsers.forEach((ban, index) => {
+                    const expiryDate = new Date(ban.expiry).toLocaleString('fa-IR');
+                    message += `${index + 1}. کاربر ${ban.userName || ban.userId} - ${ban.reason}\n`;
+                    message += `   توسط: ${ban.bannedByName || 'مدیریت'} - تا ${expiryDate}\n`;
+                });
+                message += '\n';
+            }
+            
+            if (this.adminBannedUsers.length > 0) {
+                message += '【 بن ادمین (تیک قهوه‌ای) 】\n';
+                this.adminBannedUsers.forEach((ban, index) => {
+                    const expiryDate = new Date(ban.expiry).toLocaleString('fa-IR');
+                    const durationText = ban.duration === 600 ? '۱۰ دقیقه' : 
+                                       ban.duration === 3600 ? '۱ ساعت' :
+                                       ban.duration === 86400 ? '۱ روز' :
+                                       ban.duration === 259200 ? '۳ روز' : '۷ روز';
+                    message += `${index + 1}. کاربر ${ban.userName} - ${ban.reason}\n`;
+                    message += `   توسط: ${ban.bannedByName} - ${durationText} - تا ${expiryDate}\n`;
+                });
+            }
+            
+            alert(message);
+        }
+    },
+
+    startGame() {
+        this.playClickSound();
+        if (!this.isLobbyCreator) return;
+
+        let allReady = true;
+        for (let id in this.playersData) {
+            if (!this.playersReady[id]) {
+                allReady = false;
+                break;
+            }
+        }
+        if (this.observer1 && !this.playersReady[this.observer1]) allReady = false;
+        if (this.observer2 && !this.playersReady[this.observer2]) allReady = false;
+
+        if (allReady) {
+            this.showNotification('🎮 بازی شروع شد!');
+        } else {
+            this.showNotification('❌ همه بازیکنان آماده نیستند');
+        }
+    },
+
+    async leaveLobby() {
+        this.playClickSound();
+        if (this.currentCreator === this.userId && this.currentLobby && !this.isGameCreator && this.userRole !== 'support' && this.userRole !== 'admin') {
+            this.lobbies = this.lobbies.filter(l => l.id !== this.currentLobby.id);
+        } else {
+            const lobby = this.lobbies.find(l => l.id === this.currentLobby?.id);
+            if (lobby && lobby.players) {
+                lobby.players = lobby.players.filter(p => p.id !== this.userId);
+                if (lobby.readyStatus) delete lobby.readyStatus[this.userId];
+            }
+        }
+
+        await this.saveLobbiesToServer();
+
+        document.getElementById('lobby-page').style.display = 'none';
+        document.getElementById('friendly-hall-page').style.display = 'block';
+        document.getElementById('lobbyBannedList').style.display = 'none';
+
+        this.currentLobby = null;
+        this.currentCreator = null;
+        this.isLobbyCreator = false;
+        this.observer1 = null;
+        this.observer2 = null;
+        this.playersData = {};
+        this.bannedUsers = [];
+        this.lobbyBannedUsers = [];
+        this.playersReady = {};
+
+        for (let i = 1; i <= 10; i++) {
+            const chair = document.getElementById(`chair-${i}`);
+            if (chair) {
+                chair.classList.add('empty-chair');
+                chair.innerHTML = `<div class="chair-avatar"></div><div class="chair-name">خالی</div>`;
+                delete chair.dataset.playerId;
+            }
+        }
+
+        document.getElementById('observerChair1').classList.remove('visible');
+        document.getElementById('observerChair2').classList.remove('visible');
+
+        this.renderLobbies();
+    },
+
+    updateObserverDisplay(type, playerData) {
+        if (!playerData) return;
+        
+        const avatarImg = this.getAvatarImage(playerData.avatar);
+        const isPlayerReady = this.playersReady[playerData.id] !== undefined ? this.playersReady[playerData.id] : true;
+        const readyClass = isPlayerReady ? 'ready' : 'not-ready';
+
+        if (type === 1) {
+            document.getElementById('observerChair1').classList.add('visible');
+            document.getElementById('observerAvatar1').innerHTML = `<img src="${avatarImg}">`;
+            document.getElementById('observerName1').innerHTML = playerData.name;
+            document.getElementById('observerAvatar1').classList.add(readyClass);
+        } else {
+            document.getElementById('observerChair2').classList.add('visible');
+            document.getElementById('observerAvatar2').innerHTML = `<img src="${avatarImg}">`;
+            document.getElementById('observerName2').innerHTML = playerData.name;
+            document.getElementById('observerAvatar2').classList.add(readyClass);
+        }
+    },
+
+    // توابع پنل که در panels.js تعریف می‌شن
+    openAdminPanel() {
+        console.log('این تابع در panels.js تعریف میشه');
+        if (window.panelFunctions && window.panelFunctions.openAdminPanel) {
+            window.panelFunctions.openAdminPanel(this, this.selectedPlayerId);
+        }
+    },
+
+    viewAdminBanList() {
+        console.log('این تابع در panels.js تعریف میشه');
+        if (window.panelFunctions && window.panelFunctions.viewAdminBanList) {
+            window.panelFunctions.viewAdminBanList();
+        }
+    },
+
+    openObserverPanel() {
+        console.log('این تابع در panels.js تعریف میشه');
+        if (window.panelFunctions && window.panelFunctions.openObserverPanel) {
+            window.panelFunctions.openObserverPanel(this, this.selectedPlayerId);
+        }
+    },
+
+    openGameCreatorPanel() {
+        console.log('این تابع در panels.js تعریف میشه');
+        if (window.panelFunctions && window.panelFunctions.openGameCreatorPanel) {
+            window.panelFunctions.openGameCreatorPanel();
+        }
+    },
+
+    closeAdminPanel() {
+        document.getElementById('adminPanel').classList.remove('visible');
+    },
+
+    closeGameCreatorPanel() {
+        document.getElementById('gameCreatorPanel').classList.remove('visible');
     },
 
     openUserProfileMenu(playerId) {
@@ -4266,10 +4574,69 @@ const App = {
         this.closeUserProfileMenu();
     },
 
+    viewOtherProfileFromAdmin() {
+        this.playClickSound();
+        if (!this.selectedPlayerData) return;
+        this.showOtherProfile(this.selectedPlayerData);
+        this.closeAdminPanel();
+    },
+
     showOtherProfile(player) {
+        const stats = this.userStats || {
+            wins: 0, losses: 0, hours: 0, observerCount: 0,
+            rank: 'تازه‌وارد', rankTag: 'برنزی'
+        };
+
+        let nameHTML = player.name;
+        if (player.hasBlueTick || player.id === 1) {
+            nameHTML = `<i class="fas fa-check-circle" style="color: #3b9eff;"></i> ${player.name}`;
+        } else if (player.hasOrangeTick) {
+            nameHTML = `<i class="fas fa-check-circle" style="color: #ffaa00;"></i> ${player.name}`;
+        } else if (player.hasBrownTick) {
+            nameHTML = `<i class="fas fa-check-circle" style="color: #8B4513;"></i> ${player.name}`;
+        }
+
         document.getElementById('otherProfileAvatar').innerHTML = `<img src="${this.getAvatarImage(player.avatar)}">`;
-        document.getElementById('otherProfileUserName').innerHTML = player.name;
+        document.getElementById('otherProfileUserName').innerHTML = nameHTML;
+        document.getElementById('otherProfileLevelBadge').innerHTML = player.isCreator ? 'سازنده' : 'سطح ۱';
         document.getElementById('otherUserIdDisplay').innerHTML = player.id;
+        document.getElementById('otherWinCount').innerHTML = stats.wins || 0;
+        document.getElementById('otherLoseCount').innerHTML = stats.losses || 0;
+        document.getElementById('otherHoursPlayed').innerHTML = stats.hours || 0;
+        document.getElementById('otherObserverCount').innerHTML = stats.observerCount || 0;
+        document.getElementById('otherRankName').innerHTML = stats.rank || 'تازه‌وارد';
+        document.getElementById('otherRankTag').innerHTML = stats.rankTag || 'برنزی';
+
+        const isPermanentlyBanned = this.isUserPermanentlyBanned(player.id);
+        const tempBan = this.isUserTempBanned(player.id);
+        const adminBan = this.isUserAdminBanned(player.id);
+        
+        let banStatus = '';
+        if (isPermanentlyBanned) {
+            banStatus = '🚫 بن دائمی';
+        } else if (tempBan) {
+            const expiryDate = new Date(tempBan.expiry).toLocaleString('fa-IR');
+            banStatus = `⏳ بن موقت تا ${expiryDate}`;
+        } else if (adminBan) {
+            const expiryDate = new Date(adminBan.expiry).toLocaleString('fa-IR');
+            banStatus = `🟫 بن ادمین تا ${expiryDate}`;
+        }
+        
+        if (banStatus) {
+            const statusEl = document.createElement('div');
+            statusEl.className = 'other-stat-cell';
+            statusEl.style.marginTop = '10px';
+            statusEl.style.background = 'rgba(255, 85, 85, 0.2)';
+            statusEl.style.borderColor = '#ff5555';
+            statusEl.innerHTML = `
+                <span class="other-stat-icon">🚫</span>
+                <div class="other-stat-detail">
+                    <span class="other-stat-label">وضعیت</span>
+                    <span class="other-stat-figure" style="color: #ff5555;">${banStatus}</span>
+                </div>
+            `;
+            document.querySelector('.other-stats-section').appendChild(statusEl);
+        }
 
         document.getElementById('lobby-page').style.display = 'none';
         document.getElementById('other-profile-page').style.display = 'block';
@@ -4291,15 +4658,27 @@ const App = {
         this.closeUserProfileMenu();
     },
 
+    openReportModalFromAdmin() {
+        this.playClickSound();
+        if (!this.selectedPlayerData) {
+            this.showNotification('❌ کاربری انتخاب نشده است');
+            return;
+        }
+        document.getElementById('report-modal').style.display = 'block';
+        this.closeAdminPanel();
+    },
+
     closeReportModal() {
         this.playClickSound();
         document.getElementById('report-modal').style.display = 'none';
+        document.getElementById('reportDescription').value = '';
+        document.querySelectorAll('input[name="reportReason"]')[0].checked = true;
     },
 
     sendReport() {
         this.playClickSound();
         if (!this.selectedPlayerData) {
-            this.showNotification('❌ کاربری انتخاب نشده است');
+            this.showNotification('❌ ابتدا یک کاربر را انتخاب کنید');
             this.closeReportModal();
             return;
         }
@@ -4320,15 +4699,26 @@ const App = {
             reportedName: this.selectedPlayerData.name,
             reason: reason,
             description: description,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            lobbyId: this.currentLobby?.id,
+            lobbyName: this.currentLobby?.name
         };
 
         this.reports.push(reportData);
         this.saveReports();
         this.saveLobbiesToServer();
 
-        this.showNotification('✅ گزارش شما با موفقیت ارسال شد');
+        sessionStorage.setItem('reportInfo', JSON.stringify({
+            reportedName: this.selectedPlayerData.name,
+            reason: reason,
+            description: description
+        }));
+
+        this.showNotification('✅ گزارش شما با موفقیت به مدیریت ارسال شد');
         this.closeReportModal();
+        
+        this.selectedPlayerId = null;
+        this.selectedPlayerData = null;
     },
 
     openProfilePage() {
@@ -4361,28 +4751,578 @@ const App = {
             }
         }
 
-        document.getElementById('userIdDisplay').innerHTML = this.userId;
+        const levelBadge = document.getElementById('profileLevelBadge');
+        if (levelBadge) {
+            if (this.userId === 1) {
+                levelBadge.textContent = 'سازنده بازی';
+            } else if (this.userRole === 'support') {
+                levelBadge.textContent = 'پشتیبانی';
+            } else if (this.userRole === 'observer') {
+                levelBadge.textContent = 'ناظر';
+            } else if (this.userRole === 'admin') {
+                levelBadge.textContent = 'ادمین';
+            } else {
+                levelBadge.textContent = 'سطح ۱';
+            }
+        }
+
+        const rankName = document.getElementById('rankName');
+        const rankTag = document.getElementById('rankTag');
+        if (rankName && rankTag) {
+            if (this.userId === 1 || this.userRole === 'support') {
+                rankName.textContent = 'مدیریت';
+                rankTag.textContent = 'طلایی';
+            } else if (this.userRole === 'observer') {
+                rankName.textContent = 'ناظر';
+                rankTag.textContent = 'نارنجی';
+            } else if (this.userRole === 'admin') {
+                rankName.textContent = 'ادمین';
+                rankTag.textContent = 'قهوه‌ای';
+            } else {
+                rankName.textContent = this.userStats?.rank || 'تازه‌وارد';
+                rankTag.textContent = this.userStats?.rankTag || 'برنزی';
+            }
+        }
+
+        const winCount = document.getElementById('winCount');
+        const loseCount = document.getElementById('loseCount');
+        const hoursPlayed = document.getElementById('hoursPlayed');
+        const observerCount = document.getElementById('observerCount');
+
+        if (winCount) winCount.textContent = this.userStats?.wins || 0;
+        if (loseCount) loseCount.textContent = this.userStats?.losses || 0;
+        if (hoursPlayed) hoursPlayed.textContent = this.userStats?.totalHours || 0;
+        if (observerCount) observerCount.textContent = this.userStats?.observerCount || 0;
+
+        this.saveCompleteUserData();
     },
 
-    async leaveLobby() {
+    openAvatarPage() {
         this.playClickSound();
-        document.getElementById('lobby-page').style.display = 'none';
-        document.getElementById('friendly-hall-page').style.display = 'block';
-        this.currentLobby = null;
-        this.renderLobbies();
+        document.getElementById('avatar-page').style.display = 'block';
+        this.updateMyAvatars();
+        this.updateShopAvatars();
+    },
+
+    closeAvatarPage() {
+        this.playClickSound();
+        document.getElementById('avatar-page').style.display = 'none';
+        this.saveCompleteUserData();
+    },
+
+    switchAvatarTab(tab) {
+        this.playClickSound();
+        const tabs = document.querySelectorAll('.avatar-tab');
+        const panels = document.querySelectorAll('.tab-panel');
+
+        tabs.forEach(t => t?.classList.remove('active'));
+        panels.forEach(p => p?.classList.remove('active'));
+
+        if (tab === 'my') {
+            if (tabs[0]) tabs[0].classList.add('active');
+            document.getElementById('myAvatarsPanel').classList.add('active');
+        } else {
+            if (tabs[1]) tabs[1].classList.add('active');
+            document.getElementById('shopPanel').classList.add('active');
+            this.updateShopAvatars();
+        }
+    },
+
+    updateMyAvatars() {
+        const myAvatarsGrid = document.getElementById('myAvatarsGrid');
+        if (!myAvatarsGrid) return;
+
+        let html = '';
+        const avatarsList = [
+            { id: 'avatar1', num: '#۰۰۱', img: this.avatars.avatar1 },
+            { id: 'avatar2', num: '#۰۰۲', img: this.avatars.avatar2 },
+            { id: 'ninja', num: '#۰۰۳', img: this.avatars.ninja },
+            { id: 'samurai', num: '#۰۰۴', img: this.avatars.samurai },
+            { id: 'avatar5', num: '#۰۰۵', img: this.avatars.avatar5 },
+            { id: 'avatar6', num: '#۰۰۶', img: this.avatars.avatar6 },
+            { id: 'avatar7', num: '#۰۰۷', img: this.avatars.avatar7 },
+            { id: 'avatar8', num: '#۰۰۸', img: this.avatars.avatar8 },
+            { id: 'avatar9', num: '#۰۰۹', img: this.avatars.avatar9 },
+            { id: 'avatar10', num: '#۰۱۰', img: this.avatars.avatar10 },
+            { id: 'avatar11', num: '#۰۱۱', img: this.avatars.avatar11 },
+            { id: 'avatar12', num: '#۰۱۲', img: this.avatars.avatar12 }
+        ];
+
+        [...avatarsList, ...NEW_AVATARS].forEach(avatar => {
+            if (this.ownedAvatars.includes(avatar.id)) {
+                html += `
+                    <div class="avatar-card ${this.currentAvatar === avatar.id ? 'selected' : ''}" onclick="app.selectAvatar('${avatar.id}')">
+                        <div class="avatar-thumb"><img src="${avatar.url || avatar.img}"></div>
+                        <div class="avatar-number">${avatar.num}</div>
+                        <button class="select-button" onclick="app.selectAvatar('${avatar.id}'); event.stopPropagation();">انتخاب</button>
+                    </div>
+                `;
+            }
+        });
+
+        myAvatarsGrid.innerHTML = html || '<div style="color: white; text-align: center; padding: 40px;">شما آواتاری ندارید</div>';
+    },
+
+    updateShopAvatars() {
+        const shopGrid = document.getElementById('shopGrid');
+        if (!shopGrid) return;
+
+        const shopAvatars = [
+            { id: 'ninja', num: '#۰۰۳', img: this.avatars.ninja, price: 200, currency: 'gems' },
+            { id: 'samurai', num: '#۰۰۴', img: this.avatars.samurai, price: 200, currency: 'gems' },
+            { id: 'avatar5', num: '#۰۰۵', img: this.avatars.avatar5, price: 180, currency: 'gems' },
+            { id: 'avatar6', num: '#۰۰۶', img: this.avatars.avatar6, price: 100, currency: 'gems' },
+            { id: 'avatar7', num: '#۰۰۷', img: this.avatars.avatar7, price: 2000, currency: 'coins' },
+            { id: 'avatar8', num: '#۰۰۸', img: this.avatars.avatar8, price: 1200, currency: 'coins' },
+            { id: 'avatar9', num: '#۰۰۹', img: this.avatars.avatar9, price: 300, currency: 'gems' },
+            { id: 'avatar10', num: '#۰۱۰', img: this.avatars.avatar10, price: 300, currency: 'gems' },
+            { id: 'avatar11', num: '#۰۱۱', img: this.avatars.avatar11, price: 300, currency: 'gems' },
+            { id: 'avatar12', num: '#۰۱۲', img: this.avatars.avatar12, price: 50, currency: 'gems' }
+        ];
+
+        NEW_AVATARS.forEach(avatar => {
+            if (!shopAvatars.some(a => a.id === avatar.id)) {
+                shopAvatars.push({
+                    id: avatar.id,
+                    num: avatar.num,
+                    img: avatar.url,
+                    price: avatar.price,
+                    currency: avatar.currency
+                });
+            }
+        });
+
+        let html = '';
+        shopAvatars.forEach(avatar => {
+            if (!this.ownedAvatars.includes(avatar.id)) {
+                const priceIcon = avatar.currency === 'gems' ? '💎' : '🪙';
+                const priceText = avatar.price.toLocaleString('fa-IR');
+                html += `
+                    <div class="shop-card">
+                        <div class="shop-thumb"><img src="${avatar.img}"></div>
+                        <div class="shop-number">${avatar.num}</div>
+                        <div class="shop-price"><span>${priceIcon}</span> ${priceText}</div>
+                        <button class="buy-button" onclick="app.buyAvatar('${avatar.id}', '${avatar.num}', ${avatar.price}, '${avatar.currency}')">خرید</button>
+                    </div>
+                `;
+            }
+        });
+
+        shopGrid.innerHTML = html || '<div style="color: white; text-align: center; padding: 40px;">همه آواتارها را دارید</div>';
+    },
+
+    buyAvatar(avatarId, avatarNumber, price, currency) {
+        this.playClickSound();
+        if (this.isGameCreator || this.userRole === 'support') {
+            if (!this.ownedAvatars.includes(avatarId)) {
+                this.ownedAvatars.push(avatarId);
+                this.saveCompleteUserData();
+                this.updateMyAvatars();
+                this.updateShopAvatars();
+                this.showNotification(`✅ آواتار ${avatarNumber} به مجموعه شما اضافه شد`);
+            }
+            return;
+        }
+
+        if (currency === 'gems' && this.userGems < price) {
+            alert('جم کافی ندارید');
+            return;
+        }
+        if (currency === 'coins' && this.userCoins < price) {
+            alert('سکه کافی ندارید');
+            return;
+        }
+
+        if (currency === 'gems') {
+            this.userGems -= price;
+        } else {
+            this.userCoins -= price;
+        }
+
+        this.ownedAvatars.push(avatarId);
+        this.saveCompleteUserData();
+        this.updateCurrencyDisplay();
+        this.updateMyAvatars();
+        this.updateShopAvatars();
+        this.showNotification(`✅ آواتار ${avatarNumber} خریداری شد`);
+
+        if (this.currentLobby && this.playersData[this.userId]) {
+            const playerIndex = this.currentLobby.players.findIndex(p => p.id === this.userId);
+            if (playerIndex !== -1) {
+                this.currentLobby.players[playerIndex].avatar = this.currentAvatar;
+                this.saveLobbiesToServer();
+            }
+
+            for (let i = 1; i <= 10; i++) {
+                const chair = document.getElementById(`chair-${i}`);
+                if (chair && chair.dataset.playerId == this.userId) {
+                    const avatarImg = this.getAvatarImage(this.currentAvatar);
+                    const avatarElement = chair.querySelector('.chair-avatar img');
+                    if (avatarElement) avatarElement.src = avatarImg;
+                    break;
+                }
+            }
+        }
+    },
+
+    selectAvatar(avatarId) {
+        this.playClickSound();
+        this.currentAvatar = avatarId;
+        this.saveCompleteUserData();
+        this.updateMyAvatars();
+        this.updateMainProfile();
+        this.updateProfilePage();
+
+        if (this.currentLobby && this.playersData[this.userId]) {
+            const playerIndex = this.currentLobby.players.findIndex(p => p.id === this.userId);
+            if (playerIndex !== -1) {
+                this.currentLobby.players[playerIndex].avatar = avatarId;
+                this.saveLobbiesToServer();
+            }
+
+            for (let i = 1; i <= 10; i++) {
+                const chair = document.getElementById(`chair-${i}`);
+                if (chair && chair.dataset.playerId == this.userId) {
+                    const avatarImg = this.getAvatarImage(avatarId);
+                    const avatarElement = chair.querySelector('.chair-avatar img');
+                    if (avatarElement) avatarElement.src = avatarImg;
+                    break;
+                }
+            }
+        }
+
+        this.showNotification('✅ آواتار شما تغییر کرد');
+    },
+
+    copyUserId() {
+        this.playClickSound();
+        const userIdElement = document.getElementById('userIdDisplay');
+        const userIdText = userIdElement?.textContent;
+        if (userIdText && navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(userIdText);
+        }
+        this.showNotification('✅ کپی شد');
+    },
+
+    updateAllDisplays() {
+        this.updateMainProfile();
+        this.updateProfilePage();
+        this.updateMyAvatars();
+        this.updateShopAvatars();
+        this.updateCurrencyDisplay();
+
+        const userIdDisplay = document.getElementById('userIdDisplay');
+        if (userIdDisplay) {
+            userIdDisplay.textContent = this.userId.toLocaleString('fa-IR');
+        }
+    },
+
+    updateCurrencyDisplay() {
+        const gemDisplay = document.getElementById('gemDisplay');
+        const coinDisplay = document.getElementById('coinDisplay');
+
+        if (this.isGameCreator || this.userRole === 'support') {
+            if (gemDisplay) gemDisplay.textContent = '∞';
+            if (coinDisplay) coinDisplay.textContent = '∞';
+        } else {
+            if (gemDisplay) gemDisplay.textContent = this.userGems.toLocaleString('fa-IR');
+            if (coinDisplay) coinDisplay.textContent = this.userCoins.toLocaleString('fa-IR');
+        }
+    },
+
+    updateMainProfile() {
+        const profileAvatar = document.getElementById('mainProfileAvatar');
+        if (profileAvatar) profileAvatar.innerHTML = `<img src="${this.getAvatarImage(this.currentAvatar)}">`;
+
+        const profileName = document.getElementById('mainProfileName');
+        if (profileName) {
+            if (this.userId === 1 || this.hasBlueTick) {
+                profileName.innerHTML = `<i class="fas fa-check-circle" style="color: #3b9eff;"></i> ${this.userName}`;
+            } else if (this.hasOrangeTick) {
+                profileName.innerHTML = `<i class="fas fa-check-circle" style="color: #ffaa00;"></i> ${this.userName}`;
+            } else if (this.hasBrownTick) {
+                profileName.innerHTML = `<i class="fas fa-check-circle" style="color: #8B4513;"></i> ${this.userName}`;
+            } else {
+                profileName.innerHTML = this.userName;
+            }
+        }
+
+        const profileLevel = document.getElementById('mainProfileLevel');
+        if (profileLevel) {
+            if (this.userId === 1) {
+                profileLevel.textContent = 'سازنده بازی';
+            } else if (this.userRole === 'support') {
+                profileLevel.textContent = 'پشتیبانی';
+            } else if (this.userRole === 'observer') {
+                profileLevel.textContent = 'ناظر';
+            } else if (this.userRole === 'admin') {
+                profileLevel.textContent = 'ادمین';
+            } else {
+                profileLevel.textContent = 'سطح ۱';
+            }
+        }
+    },
+
+    openEditModal() {
+        this.playClickSound();
+        const modal = document.getElementById('editModal');
+        const coinMessage = document.getElementById('coinRequiredMessage');
+        const modalTitle = document.getElementById('modalTitle');
+        const nameInput = document.getElementById('editNameInput');
+
+        if (nameInput) nameInput.value = this.userName;
+
+        if (this.isGameCreator || this.userRole === 'support' || this.userRole === 'observer' || this.userRole === 'admin') {
+            if (modalTitle) modalTitle.innerHTML = 'تغییر نام (رایگان)';
+            if (coinMessage) coinMessage.style.display = 'none';
+        } else {
+            if (this.editCount === 0) {
+                if (modalTitle) modalTitle.innerHTML = 'تغییر نام (رایگان)';
+                if (coinMessage) coinMessage.style.display = 'none';
+            } else {
+                if (modalTitle) modalTitle.innerHTML = 'تغییر نام (۵ سکه)';
+                if (coinMessage) coinMessage.style.display = 'flex';
+            }
+        }
+
+        if (modal) modal.style.display = 'block';
+    },
+
+    closeEditModal() {
+        this.playClickSound();
+        document.getElementById('editModal').style.display = 'none';
+    },
+
+    saveUserName() {
+        this.playClickSound();
+        const nameInput = document.getElementById('editNameInput');
+        if (!nameInput) return;
+        
+        let newName = nameInput.value.trim();
+
+        if (!newName || newName.length < 2 || newName.length > 12) {
+            alert('نام باید بین ۲ تا ۱۲ حرف باشد');
+            return;
+        }
+
+        if (!this.isGameCreator && this.userRole !== 'support' && this.userRole !== 'observer' && this.userRole !== 'admin') {
+            if (this.editCount > 0 && this.userCoins < 5) {
+                alert('سکه کافی ندارید');
+                return;
+            }
+            if (this.editCount > 0) this.userCoins -= 5;
+        }
+
+        this.userName = newName;
+        this.editCount++;
+        this.saveCompleteUserData();
+        this.updateMainProfile();
+        this.updateProfilePage();
+        this.updateCurrencyDisplay();
+
+        if (this.currentLobby && this.playersData[this.userId]) {
+            const playerIndex = this.currentLobby.players.findIndex(p => p.id === this.userId);
+            if (playerIndex !== -1) {
+                this.currentLobby.players[playerIndex].name = newName;
+                if (this.currentCreator === this.userId) {
+                    this.currentLobby.creatorName = newName;
+                }
+                this.saveLobbiesToServer();
+            }
+
+            for (let i = 1; i <= 10; i++) {
+                const chair = document.getElementById(`chair-${i}`);
+                if (chair && chair.dataset.playerId == this.userId) {
+                    const nameElement = chair.querySelector('.chair-name');
+                    if (nameElement) {
+                        if (this.userId === 1 || this.hasBlueTick) {
+                            nameElement.innerHTML = `<i class="fas fa-check-circle" style="color: #3b9eff;"></i> ${newName}`;
+                        } else if (this.hasOrangeTick) {
+                            nameElement.innerHTML = `<i class="fas fa-check-circle" style="color: #ffaa00;"></i> ${newName}`;
+                        } else if (this.hasBrownTick) {
+                            nameElement.innerHTML = `<i class="fas fa-check-circle" style="color: #8B4513;"></i> ${newName}`;
+                        } else if (this.isLobbyCreator) {
+                            nameElement.innerHTML = `<span class="crown-icon">👑</span> ${newName}`;
+                        } else {
+                            nameElement.innerHTML = newName;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        this.closeEditModal();
+        this.showNotification('✅ نام با موفقیت تغییر کرد');
+    },
+
+    toggleReady() {
+        this.playClickSound();
+        if (this.isGameCreator || this.userRole === 'support' || this.userRole === 'observer' || this.userRole === 'admin') {
+            this.showNotification('⚡ شما مقام ویژه دارید');
+            return;
+        }
+
+        const isReady = this.playersReady[this.userId] || false;
+        this.playersReady[this.userId] = !isReady;
+
+        const readyToggle = document.getElementById('readyToggle');
+        const readyText = document.getElementById('readyText');
+
+        if (this.playersReady[this.userId]) {
+            readyToggle.classList.add('ready');
+            readyToggle.classList.remove('not-ready');
+            readyText.textContent = 'آماده هستم';
+        } else {
+            readyToggle.classList.add('not-ready');
+            readyToggle.classList.remove('ready');
+            readyText.textContent = 'آماده نیستم';
+        }
+
+        this.updatePlayerReadyStatus(this.userId, this.playersReady[this.userId]);
+        this.syncPlayerReadyStatus();
+    },
+
+    updatePlayerReadyStatus(playerId, readyStatus) {
+        for (let i = 1; i <= 10; i++) {
+            const chair = document.getElementById(`chair-${i}`);
+            if (chair && chair.dataset.playerId == playerId) {
+                const avatar = chair.querySelector('.chair-avatar');
+                if (avatar) {
+                    if (readyStatus) {
+                        avatar.classList.add('ready');
+                        avatar.classList.remove('not-ready');
+                    } else {
+                        avatar.classList.add('not-ready');
+                        avatar.classList.remove('ready');
+                    }
+                }
+                break;
+            }
+        }
+
+        if (this.observer1 === playerId) {
+            const observerAvatar = document.getElementById('observerAvatar1');
+            if (observerAvatar) {
+                if (readyStatus) {
+                    observerAvatar.classList.add('ready');
+                    observerAvatar.classList.remove('not-ready');
+                } else {
+                    observerAvatar.classList.add('not-ready');
+                    observerAvatar.classList.remove('ready');
+                }
+            }
+        }
+        if (this.observer2 === playerId) {
+            const observerAvatar = document.getElementById('observerAvatar2');
+            if (observerAvatar) {
+                if (readyStatus) {
+                    observerAvatar.classList.add('ready');
+                    observerAvatar.classList.remove('not-ready');
+                } else {
+                    observerAvatar.classList.add('not-ready');
+                    observerAvatar.classList.remove('ready');
+                }
+            }
+        }
+    },
+
+    syncPlayerReadyStatus() {
+        if (this.currentLobby) {
+            const lobby = this.lobbies.find(l => l.id === this.currentLobby.id);
+            if (lobby) {
+                if (!lobby.readyStatus) lobby.readyStatus = {};
+                lobby.readyStatus[this.userId] = this.playersReady[this.userId];
+                this.saveLobbiesToServer();
+            }
+        }
+    },
+
+    async toggleMicrophone() {
+        this.playClickSound();
+        if (!this.currentLobby) {
+            this.showNotification('شما در لابی نیستید');
+            return;
+        }
+
+        const micButton = document.getElementById('micButton');
+        const micStatus = document.getElementById('micStatus');
+
+        if (!this.micActive) {
+            try {
+                this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                await this.audioContext.resume();
+
+                micButton.classList.add('active');
+                micStatus.textContent = 'میکروفون فعال';
+                this.micActive = true;
+
+                this.broadcastSpeakingStatus(true);
+                this.showNotification('میکروفون فعال شد');
+            } catch (error) {
+                console.error('خطا در دسترسی به میکروفون:', error);
+                this.showNotification('❌ دسترسی به میکروفون ممکن نیست');
+            }
+        } else {
+            if (this.mediaStream) {
+                this.mediaStream.getTracks().forEach(track => track.stop());
+                this.mediaStream = null;
+            }
+            if (this.audioContext) {
+                await this.audioContext.close();
+                this.audioContext = null;
+            }
+
+            micButton.classList.remove('active');
+            micStatus.textContent = 'میکروفون خاموش';
+            this.micActive = false;
+
+            this.broadcastSpeakingStatus(false);
+            this.showNotification('میکروفون خاموش شد');
+        }
+    },
+
+    broadcastSpeakingStatus(isSpeaking) {
+        if (this.currentLobby) {
+            const speakingIndicator = document.getElementById('speakingIndicator');
+            const speakingName = document.getElementById('speakingName');
+
+            if (isSpeaking) {
+                if (speakingName) speakingName.textContent = this.userName;
+                if (speakingIndicator) speakingIndicator.style.display = 'block';
+
+                const myChair = document.querySelector(`[data-player-id="${this.userId}"]`);
+                if (myChair) {
+                    const badge = myChair.querySelector('.speaking-badge');
+                    if (badge) badge.style.display = 'flex';
+                }
+            } else {
+                if (speakingIndicator) speakingIndicator.style.display = 'none';
+
+                const myChair = document.querySelector(`[data-player-id="${this.userId}"]`);
+                if (myChair) {
+                    const badge = myChair.querySelector('.speaking-badge');
+                    if (badge) badge.style.display = 'none';
+                }
+            }
+        }
     },
 
     saveReports() {
         localStorage.setItem('mafiaSun_reports', JSON.stringify(this.reports));
     },
 
-    toggleReady() {
-        this.playClickSound();
-        if (this.userRole === 'admin' || this.userRole === 'support' || this.userRole === 'observer' || this.isGameCreator) {
-            this.showNotification('⚡ شما مقام ویژه دارید');
-            return;
+    findUserNameById(userId) {
+        if (this.currentLobby && this.currentLobby.players) {
+            const player = this.currentLobby.players.find(p => p.id === userId);
+            if (player) return player.name;
         }
-        this.showNotification('✅ وضعیت شما تغییر کرد');
+        const tempBan = this.tempBannedUsers.find(b => b.userId === userId);
+        if (tempBan && tempBan.userName) return tempBan.userName;
+        const adminBan = this.adminBannedUsers.find(b => b.userId === userId);
+        if (adminBan && adminBan.userName) return adminBan.userName;
+        return `کاربر ${userId}`;
     }
 };
 
@@ -4394,8 +5334,14 @@ document.addEventListener('click', function(e) {
     if (!e.target.closest('.admin-panel') && !e.target.closest('.chair-avatar')) {
         document.getElementById('adminPanel')?.classList.remove('visible');
     }
+    if (!e.target.closest('.game-creator-panel') && !e.target.closest('.menu-item') && !e.target.closest('.creator-tab')) {
+        document.getElementById('gameCreatorPanel')?.classList.remove('visible');
+    }
     if (!e.target.closest('.menu-button') && !e.target.closest('.main-menu')) {
         document.getElementById('mainMenu')?.classList.remove('visible');
+    }
+    if (!e.target.closest('.lobby-banned-list') && !e.target.closest('.menu-item')) {
+        document.getElementById('lobbyBannedList')?.style.display = 'none';
     }
 });
 
@@ -4403,7 +5349,8 @@ window.addEventListener('DOMContentLoaded', function() {
     App.initializeGame();
 });
 
-window.app = App; 
+// ========== اتصال به window ==========
+window.app = App;
 </script>
 </body>
 </html>
