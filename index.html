@@ -3123,14 +3123,14 @@
     </div>
 
     <script src="game.js"></script>
-<script> 
+<script>
 // ========== تنظیمات سرور ==========
 const JSONBIN_ID = '6984ae3a43b1c97be967c32b';
 const JSONBIN_KEY = '$2a$10$P2f/7ECPzq3HSI.6DSdcr.MaV748WQF7smMQL1bczP6YF4XKwjNvG';
 const AUTH_PAGE_URL = 'https://admin161723.github.io/-Sun-Mafia/';
 const CREATOR_PHONE = '09904844031';
 
-// ========== کاربران ویژه ==========
+// ========== کاربران ویژه (کامل) ==========
 const SPECIAL_USERS = [
     {
         phone: '09940940720',
@@ -3482,18 +3482,20 @@ const App = {
             const currentUser = localStorage.getItem('mafiaSun_currentUser');
             
             if (!currentUser) {
-                console.log('کاربر وارد نشده، هدایت به صفحه ثبت‌نام');
+                console.log('❌ کاربر وارد نشده، هدایت به صفحه ثبت‌نام');
                 window.location.href = AUTH_PAGE_URL;
                 return;
             }
 
             const userPhone = JSON.parse(currentUser).phone || '';
-            console.log('شماره کاربر:', userPhone);
+            console.log('📱 شماره کاربر:', userPhone);
             
+            // ===== بررسی کاربران ویژه =====
             const specialUser = this.getSpecialUserByPhone(userPhone);
             
             if (specialUser) {
-                console.log('کاربر ویژه یافت شد:', specialUser);
+                console.log('✅ کاربر ویژه یافت شد:', specialUser.name, '- نقش:', specialUser.role);
+                
                 this.userId = specialUser.userId;
                 this.userPhone = specialUser.phone;
                 this.userName = specialUser.name;
@@ -3504,6 +3506,7 @@ const App = {
                 this.hasOrangeTick = specialUser.hasOrangeTick || false;
                 this.hasBrownTick = specialUser.hasBrownTick || false;
                 
+                // تنظیم آواتارها بر اساس نقش
                 if (specialUser.role === 'support' || specialUser.role === 'creator') {
                     this.ownedAvatars = ['avatar1', 'avatar2', 'ninja', 'samurai', 'avatar5', 'avatar6', 'avatar7', 'avatar8', 'avatar9', 'avatar10', 'avatar11', 'avatar12', ...NEW_AVATARS.map(a => a.id)];
                 } else if (specialUser.role === 'admin') {
@@ -3519,18 +3522,23 @@ const App = {
                 this.saveCompleteUserData();
                 this.updateAllDisplays();
                 
-                // نمایش پیام خوش‌آمدگویی برای ادمین
-                if (specialUser.role === 'admin') {
-                    console.log('✅ ادمین وارد شد:', specialUser.name);
-                    setTimeout(() => {
+                // نمایش پیام خوش‌آمدگویی
+                setTimeout(() => {
+                    if (specialUser.role === 'admin') {
                         this.showNotification(`خوش آمدید ادمین ${specialUser.name} 🟫`, false, 3000);
-                    }, 1000);
-                }
+                    } else if (specialUser.role === 'support') {
+                        this.showNotification(`خوش آمدید ${specialUser.name} (پشتیبانی) 🔵`, false, 3000);
+                    } else if (specialUser.role === 'observer') {
+                        this.showNotification(`خوش آمدید ${specialUser.name} (ناظر) 🟠`, false, 3000);
+                    }
+                }, 1000);
+                
                 return;
             }
 
+            // ===== بررسی کاربر سازنده =====
             if (userPhone === CREATOR_PHONE) {
-                console.log('کاربر سازنده یافت شد');
+                console.log('✅ کاربر سازنده یافت شد');
                 this.userId = 1;
                 this.userPhone = CREATOR_PHONE;
                 this.userName = 'ᴀᴍᴏᴍɪᴛɪ';
@@ -3550,9 +3558,10 @@ const App = {
                 return;
             }
 
+            // ===== کاربر عادی =====
             const savedData = localStorage.getItem('mafiaSun_userData');
             if (savedData) {
-                console.log('بارگذاری از داده ذخیره شده');
+                console.log('📂 بارگذاری از داده ذخیره شده');
                 const userData = JSON.parse(savedData);
 
                 this.userId = userData.userId || Date.now();
@@ -3584,11 +3593,11 @@ const App = {
                 this.loadFromLocalStorage();
                 this.updateAllDisplays();
             } else {
-                console.log('داده‌ای یافت نشد');
+                console.log('❌ داده‌ای یافت نشد');
                 window.location.href = AUTH_PAGE_URL;
             }
         } catch (e) {
-            console.error('خطا در بارگذاری اطلاعات:', e);
+            console.error('❌ خطا در بارگذاری اطلاعات:', e);
             window.location.href = AUTH_PAGE_URL;
         }
     },
@@ -4326,36 +4335,13 @@ const App = {
         this.selectedPlayerId = playerId;
         this.selectedPlayerData = this.playersData[playerId];
         
-        console.log('کاربر انتخاب شد:', this.selectedPlayerData);
-        console.log('نقش کاربر فعلی:', this.userRole);
+        console.log('👤 کاربر انتخاب شد:', playerName, 'نقش کاربر فعلی:', this.userRole);
 
-        // بررسی نقش کاربر و باز کردن پنل مناسب
-        if (this.userRole === 'admin') {
-            console.log('باز کردن پنل ادمین');
-            if (window.panelFunctions && window.panelFunctions.openAdminPanel) {
-                window.panelFunctions.openAdminPanel(this, playerId);
-            } else {
-                console.error('تابع openAdminPanel یافت نشد');
-                this.openUserProfileMenu(playerId, playerName);
-            }
-        } else if (this.userRole === 'observer') {
-            console.log('باز کردن پنل ناظر');
-            if (window.panelFunctions && window.panelFunctions.openObserverPanel) {
-                window.panelFunctions.openObserverPanel(this, playerId);
-            } else {
-                console.error('تابع openObserverPanel یافت نشد');
-                this.openUserProfileMenu(playerId, playerName);
-            }
-        } else if (this.isGameCreator || this.userRole === 'support') {
-            console.log('باز کردن پنل سازنده');
-            if (window.panelFunctions && window.panelFunctions.openGameCreatorAdminPanel) {
-                window.panelFunctions.openGameCreatorAdminPanel(this, playerId);
-            } else {
-                console.error('تابع openGameCreatorAdminPanel یافت نشد');
-                this.openUserProfileMenu(playerId, playerName);
-            }
+        // استفاده از PanelManager برای باز کردن پنل مناسب
+        if (window.PanelManager) {
+            window.PanelManager.openPanel(this, playerId);
         } else {
-            console.log('باز کردن پروفایل عادی');
+            console.error('❌ PanelManager یافت نشد');
             this.openUserProfileMenu(playerId, playerName);
         }
     },
@@ -4534,15 +4520,15 @@ const App = {
 
     // توابع پنل که در panels.js تعریف می‌شن (placeholder)
     openAdminPanel() {
-        console.log('این تابع در panels.js تعریف میشه');
+        console.log('ℹ️ این تابع در panels.js تعریف میشه');
     },
 
     viewAdminBanList() {
-        console.log('این تابع در panels.js تعریف میشه');
+        console.log('ℹ️ این تابع در panels.js تعریف میشه');
     },
 
     openGameCreatorPanel() {
-        console.log('این تابع در panels.js تعریف میشه');
+        console.log('ℹ️ این تابع در panels.js تعریف میشه');
     },
 
     closeAdminPanel() {
