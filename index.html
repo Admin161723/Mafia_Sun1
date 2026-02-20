@@ -3490,10 +3490,12 @@ const App = {
             const userPhone = JSON.parse(currentUser).phone || '';
             console.log('شماره کاربر:', userPhone);
             
+            // ===== بررسی کاربران ویژه =====
             const specialUser = this.getSpecialUserByPhone(userPhone);
             
             if (specialUser) {
-                console.log('کاربر ویژه یافت شد:', specialUser);
+                console.log('کاربر ویژه یافت شد:', specialUser.name, '- نقش:', specialUser.role);
+                
                 this.userId = specialUser.userId;
                 this.userPhone = specialUser.phone;
                 this.userName = specialUser.name;
@@ -3504,6 +3506,7 @@ const App = {
                 this.hasOrangeTick = specialUser.hasOrangeTick || false;
                 this.hasBrownTick = specialUser.hasBrownTick || false;
                 
+                // تنظیم آواتارها بر اساس نقش
                 if (specialUser.role === 'support' || specialUser.role === 'creator') {
                     this.ownedAvatars = ['avatar1', 'avatar2', 'ninja', 'samurai', 'avatar5', 'avatar6', 'avatar7', 'avatar8', 'avatar9', 'avatar10', 'avatar11', 'avatar12', ...NEW_AVATARS.map(a => a.id)];
                 } else if (specialUser.role === 'admin') {
@@ -3533,6 +3536,7 @@ const App = {
                 return;
             }
 
+            // ===== بررسی کاربر سازنده =====
             if (userPhone === CREATOR_PHONE) {
                 console.log('کاربر سازنده یافت شد');
                 this.userId = 1;
@@ -3554,6 +3558,7 @@ const App = {
                 return;
             }
 
+            // ===== کاربر عادی =====
             const savedData = localStorage.getItem('mafiaSun_userData');
             if (savedData) {
                 console.log('بارگذاری از داده ذخیره شده');
@@ -3660,6 +3665,7 @@ const App = {
     },
 
     checkUserBanStatus() {
+        // بررسی بن دائمی
         if (this.blacklist.includes(this.userId)) {
             const banInfo = {
                 userId: this.userId,
@@ -3683,6 +3689,7 @@ const App = {
             return true;
         }
         
+        // بررسی بن موقت
         const tempBan = this.tempBannedUsers.find(b => b.userId === this.userId);
         if (tempBan) {
             if (tempBan.expiry > Date.now()) {
@@ -3708,6 +3715,7 @@ const App = {
             }
         }
         
+        // بررسی بن ادمین
         const adminBan = this.adminBannedUsers.find(b => b.userId === this.userId);
         if (adminBan) {
             if (adminBan.expiry > Date.now()) {
@@ -3744,7 +3752,9 @@ const App = {
         this.loadUserData();
         await this.loadFromServer();
         
-        if (this.checkUserBanStatus()) {
+        // فقط اگه بن باشه به صفحه ثبت‌نام می‌ره
+        const isBanned = this.checkUserBanStatus();
+        if (isBanned) {
             return;
         }
         
@@ -3792,8 +3802,6 @@ const App = {
                 this.leaveLobby();
             }
         }
-
-        this.checkUserBanStatus();
     },
 
     syncPlayersWithServer(lobby) {
