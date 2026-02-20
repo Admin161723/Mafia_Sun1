@@ -3094,8 +3094,6 @@ body {
             <button class="cancel-action" onclick="window.app.closeEditModal()">انصراف</button>
         </div>
     </div>
-
-    <script src="game.js"></script>
 <script>
 // ========== تنظیمات سرور ==========
 const JSONBIN_ID = '6984ae3a43b1c97be967c32b';
@@ -3550,7 +3548,6 @@ const App = {
             localStorage.removeItem('mafiaSun_loggedIn');
             localStorage.removeItem('mafiaSun_rememberMe');
             localStorage.removeItem('mafiaSun_currentUser');
-            localStorage.removeItem('mafiaSun_userData');
             
             this.showNotification('🚫 شما بن شده‌اید!', true, 2000);
             setTimeout(() => {
@@ -3572,7 +3569,6 @@ const App = {
                 localStorage.removeItem('mafiaSun_loggedIn');
                 localStorage.removeItem('mafiaSun_rememberMe');
                 localStorage.removeItem('mafiaSun_currentUser');
-                localStorage.removeItem('mafiaSun_userData');
                 
                 this.showNotification(`🚫 شما بن شده‌اید: ${tempBan.reason}`, true, 2000);
                 setTimeout(() => {
@@ -4759,7 +4755,7 @@ const App = {
         if (modal) modal.style.display = 'none';
     },
 
-    // ========== تابع بن کردن کاربر (اصلاح شده) ==========
+    // ========== تابع بن کردن کاربر ==========
     async confirmBan() {
         if (!this.selectedPlayerId) {
             this.showNotification('❌ کاربری انتخاب نشده است');
@@ -4840,7 +4836,6 @@ const App = {
         localStorage.removeItem('mafiaSun_loggedIn');
         localStorage.removeItem('mafiaSun_rememberMe');
         localStorage.removeItem('mafiaSun_currentUser');
-        localStorage.removeItem('mafiaSun_userData');
         
         if (this.selectedPlayerId === this.userId) {
             this.showNotification(`🚫 شما توسط ${this.userName} بن شدید: ${banMessage} (${durationText})`, true, 3000);
@@ -4990,8 +4985,12 @@ const App = {
     // ========== تابع بن از گزارش ==========
     banFromReport(index) {
         const report = this.reports[index];
-        if (!report) return;
+        if (!report) {
+            this.showNotification('❌ گزارش یافت نشد');
+            return;
+        }
 
+        // پیدا کردن کاربر در لابی
         let reportedUser = null;
         if (this.currentLobby && this.currentLobby.players) {
             reportedUser = this.currentLobby.players.find(p => p.id === report.reportedId);
@@ -5011,6 +5010,7 @@ const App = {
         this.closeGameCreatorPanel();
         this.openBanModal();
 
+        // حذف گزارش بعد از 1 ثانیه
         setTimeout(() => {
             this.dismissReport(index);
         }, 1000);
@@ -5243,7 +5243,7 @@ const App = {
         if (radios.length > 0) radios[0].checked = true;
     },
 
-    // ========== تابع ارسال گزارش (اصلاح شده) ==========
+    // ========== تابع ارسال گزارش (رفع شده) ==========
     sendReport() {
         if (!this.selectedPlayerData) {
             this.showNotification('❌ ابتدا یک کاربر را انتخاب کنید');
@@ -5251,7 +5251,12 @@ const App = {
             return;
         }
 
-        const reason = document.querySelector('input[name="reportReason"]:checked')?.value || 'بی احترامی';
+        const reason = document.querySelector('input[name="reportReason"]:checked')?.value;
+        if (!reason) {
+            this.showNotification('❌ لطفا یک دلیل را انتخاب کنید');
+            return;
+        }
+        
         const description = document.getElementById('reportDescription')?.value.trim() || 'بدون توضیحات';
 
         const reportData = {
@@ -5271,6 +5276,7 @@ const App = {
         this.saveReports();
         this.saveLobbiesToServer();
 
+        // ذخیره اطلاعات گزارش در sessionStorage برای نمایش در صفحه ثبت‌نام
         sessionStorage.setItem('reportInfo', JSON.stringify({
             reportedName: this.selectedPlayerData.name,
             reason: reason,
@@ -5279,6 +5285,10 @@ const App = {
 
         this.showNotification('✅ گزارش شما با موفقیت به مدیریت ارسال شد');
         this.closeReportModal();
+        
+        // پاک کردن کاربر انتخاب شده بعد از گزارش
+        this.selectedPlayerId = null;
+        this.selectedPlayerData = null;
     },
 
     openProfilePage() {
@@ -5888,6 +5898,6 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 window.app = App;
- </script>
+</script>
 </body>
 </html>
