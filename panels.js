@@ -14,16 +14,27 @@ function closeModal(modalId) {
 
 // ===== پنل ادمین (تیک قهوه‌ای) =====
 function openAdminPanel(app, playerId) {
-    if (app.userRole !== 'admin') return;
+    console.log('📌 باز کردن پنل ادمین برای کاربر:', playerId);
+    
+    if (app.userRole !== 'admin') {
+        console.log('❌ کاربر ادمین نیست');
+        return;
+    }
 
     const player = app.playersData[playerId];
-    if (!player) return;
+    if (!player) {
+        console.log('❌ کاربر یافت نشد');
+        return;
+    }
 
     app.selectedPlayerId = playerId;
     app.selectedPlayerData = player;
 
     const panel = document.getElementById('adminPanel');
-    if (!panel) return;
+    if (!panel) {
+        console.log('❌ پنل ادمین یافت نشد');
+        return;
+    }
     
     document.getElementById('adminPanelTitle').textContent = 'پنل ادمین (تیک قهوه‌ای)';
     document.getElementById('adminPlayerAvatar').innerHTML = `<img src="${app.getAvatarImage(player.avatar)}">`;
@@ -55,10 +66,16 @@ function openAdminPanel(app, playerId) {
 
     actions.innerHTML = actionsHTML;
     panel.classList.add('visible');
+    console.log('✅ پنل ادمین باز شد');
 }
 
 function openAdminBanModal() {
-    if (!window.app || window.app.userRole !== 'admin') return;
+    console.log('📌 باز کردن مودال بن ادمین');
+    
+    if (!window.app || window.app.userRole !== 'admin') {
+        console.log('❌ کاربر ادمین نیست');
+        return;
+    }
     
     if (!window.app.selectedPlayerId) {
         showNotification('❌ ابتدا یک کاربر را انتخاب کنید');
@@ -86,8 +103,13 @@ function openAdminBanModal() {
 }
 
 async function confirmAdminBan() {
+    console.log('📌 تایید بن ادمین');
+    
     const app = window.app;
-    if (!app || app.userRole !== 'admin') return;
+    if (!app || app.userRole !== 'admin') {
+        console.log('❌ کاربر ادمین نیست');
+        return;
+    }
 
     if (!app.selectedPlayerId) {
         showNotification('❌ کاربری انتخاب نشده است');
@@ -169,6 +191,8 @@ async function confirmAdminBan() {
 }
 
 async function unbanAdminPlayer() {
+    console.log('📌 رفع بن ادمین');
+    
     const app = window.app;
     if (!app || app.userRole !== 'admin') return;
     
@@ -194,6 +218,8 @@ async function unbanAdminPlayer() {
 }
 
 function viewAdminBanList() {
+    console.log('📌 مشاهده لیست بن‌های ادمین');
+    
     const app = window.app;
     if (!app || (app.userRole !== 'admin' && app.userRole !== 'creator' && app.userRole !== 'support')) return;
 
@@ -222,6 +248,8 @@ function viewAdminBanList() {
 }
 
 async function unbanAdminUserFromList(userId) {
+    console.log('📌 رفع بن ادمین از لیست');
+    
     const app = window.app;
     if (!app || (!app.isGameCreator && app.userRole !== 'support')) return;
     
@@ -235,6 +263,8 @@ async function unbanAdminUserFromList(userId) {
 }
 
 async function unbanAdminPlayerFromCreator() {
+    console.log('📌 رفع بن ادمین توسط سازنده');
+    
     const app = window.app;
     if (!app || (!app.isGameCreator && app.userRole !== 'support')) return;
     
@@ -255,6 +285,8 @@ async function unbanAdminPlayerFromCreator() {
 
 // ===== پنل ناظر (تیک نارنجی) =====
 function openObserverPanel(app, playerId) {
+    console.log('📌 باز کردن پنل ناظر برای کاربر:', playerId);
+    
     if (app.userRole !== 'observer') return;
 
     const player = app.playersData[playerId];
@@ -287,6 +319,8 @@ function openObserverPanel(app, playerId) {
 }
 
 function tempBanPlayerObserver() {
+    console.log('📌 بن توسط ناظر');
+    
     const app = window.app;
     if (!app || app.userRole !== 'observer') return;
 
@@ -331,6 +365,8 @@ function tempBanPlayerObserver() {
 
 // ===== پنل پشتیبانی و سازنده =====
 function openGameCreatorAdminPanel(app, playerId) {
+    console.log('📌 باز کردن پنل سازنده برای کاربر:', playerId);
+    
     if (!app.isGameCreator && app.userRole !== 'support') return;
 
     const player = app.playersData[playerId];
@@ -407,6 +443,8 @@ function openGameCreatorAdminPanel(app, playerId) {
 
 // ===== پنل سازنده بازی =====
 function openGameCreatorPanel() {
+    console.log('📌 باز کردن پنل سازنده');
+    
     const app = window.app;
     if (!app || (!app.isGameCreator && app.userRole !== 'support')) return;
 
@@ -427,6 +465,8 @@ function openGameCreatorPanel() {
 }
 
 function switchCreatorTab(tab) {
+    console.log('📌 تغییر تب پنل سازنده به:', tab);
+    
     const tabs = document.querySelectorAll('.creator-tab');
     const contents = document.querySelectorAll('.creator-tab-content');
 
@@ -448,6 +488,8 @@ function switchCreatorTab(tab) {
 }
 
 function updateReportsList() {
+    console.log('📌 به‌روزرسانی لیست گزارش‌ها');
+    
     const app = window.app;
     if (!app) return;
     
@@ -489,6 +531,8 @@ function updateReportsList() {
 }
 
 function banFromReport(index) {
+    console.log('📌 بن از گزارش شماره:', index);
+    
     const app = window.app;
     if (!app) return;
     
@@ -545,6 +589,8 @@ function banFromReport(index) {
 }
 
 function dismissReport(index) {
+    console.log('📌 رد گزارش شماره:', index);
+    
     const app = window.app;
     if (!app) return;
     
@@ -556,6 +602,8 @@ function dismissReport(index) {
 }
 
 function refreshReports() {
+    console.log('📌 بروزرسانی گزارش‌ها');
+    
     const app = window.app;
     if (!app) return;
     
@@ -565,6 +613,8 @@ function refreshReports() {
 }
 
 function updateBlacklistList() {
+    console.log('📌 به‌روزرسانی لیست سیاه');
+    
     const app = window.app;
     if (!app) return;
     
@@ -643,6 +693,8 @@ function updateBlacklistList() {
 }
 
 async function unbanUserFromList(userId) {
+    console.log('📌 رفع بن کاربر از لیست:', userId);
+    
     const app = window.app;
     if (!app || (!app.isGameCreator && app.userRole !== 'support')) return;
     
@@ -655,6 +707,8 @@ async function unbanUserFromList(userId) {
 }
 
 async function unbanTempUserFromList(userId) {
+    console.log('📌 رفع بن موقت کاربر از لیست:', userId);
+    
     const app = window.app;
     if (!app || (!app.isGameCreator && app.userRole !== 'support')) return;
     
@@ -669,19 +723,21 @@ async function unbanTempUserFromList(userId) {
 // ===== اتصال به app =====
 // این توابع به شیء app اضافه می‌شن
 window.panelFunctions = {
-    openAdminPanel,
-    openObserverPanel,
-    openGameCreatorAdminPanel,
-    openGameCreatorPanel,
-    switchCreatorTab,
-    updateReportsList,
-    banFromReport,
-    dismissReport,
-    refreshReports,
-    updateBlacklistList,
-    unbanUserFromList,
-    unbanTempUserFromList,
-    unbanAdminUserFromList,
-    unbanAdminPlayerFromCreator,
-    viewAdminBanList
+    openAdminPanel: openAdminPanel,
+    openObserverPanel: openObserverPanel,
+    openGameCreatorAdminPanel: openGameCreatorAdminPanel,
+    openGameCreatorPanel: openGameCreatorPanel,
+    switchCreatorTab: switchCreatorTab,
+    updateReportsList: updateReportsList,
+    banFromReport: banFromReport,
+    dismissReport: dismissReport,
+    refreshReports: refreshReports,
+    updateBlacklistList: updateBlacklistList,
+    unbanUserFromList: unbanUserFromList,
+    unbanTempUserFromList: unbanTempUserFromList,
+    unbanAdminUserFromList: unbanAdminUserFromList,
+    unbanAdminPlayerFromCreator: unbanAdminPlayerFromCreator,
+    viewAdminBanList: viewAdminBanList
 };
+
+console.log('✅ panelFunctions آماده شد:', Object.keys(window.panelFunctions));
