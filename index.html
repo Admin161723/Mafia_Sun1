@@ -3123,7 +3123,7 @@
     </div>
 
     <script src="game.js"></script>
-<script>
+<script> 
 // ========== تنظیمات سرور ==========
 const JSONBIN_ID = '6984ae3a43b1c97be967c32b';
 const JSONBIN_KEY = '$2a$10$P2f/7ECPzq3HSI.6DSdcr.MaV748WQF7smMQL1bczP6YF4XKwjNvG';
@@ -3506,6 +3506,8 @@ const App = {
                 
                 if (specialUser.role === 'support' || specialUser.role === 'creator') {
                     this.ownedAvatars = ['avatar1', 'avatar2', 'ninja', 'samurai', 'avatar5', 'avatar6', 'avatar7', 'avatar8', 'avatar9', 'avatar10', 'avatar11', 'avatar12', ...NEW_AVATARS.map(a => a.id)];
+                } else if (specialUser.role === 'admin') {
+                    this.ownedAvatars = ['avatar1', 'avatar2', 'ninja', 'samurai', 'avatar5', 'avatar6'];
                 } else {
                     this.ownedAvatars = ['avatar1', 'avatar2', 'ninja', 'samurai'];
                 }
@@ -3516,6 +3518,14 @@ const App = {
                 
                 this.saveCompleteUserData();
                 this.updateAllDisplays();
+                
+                // نمایش پیام خوش‌آمدگویی برای ادمین
+                if (specialUser.role === 'admin') {
+                    console.log('✅ ادمین وارد شد:', specialUser.name);
+                    setTimeout(() => {
+                        this.showNotification(`خوش آمدید ادمین ${specialUser.name} 🟫`, false, 3000);
+                    }, 1000);
+                }
                 return;
             }
 
@@ -3888,18 +3898,18 @@ const App = {
     openCreateLobbyMenu() {
         this.playClickSound();
         const tempBan = this.isUserTempBanned(this.userId);
-        if (tempBan && !this.isGameCreator && this.userRole !== 'support') {
+        if (tempBan && !this.isGameCreator && this.userRole !== 'support' && this.userRole !== 'admin') {
             this.showNotification(`🚫 شما موقتاً بن شده‌اید: ${tempBan.reason}`, true);
             return;
         }
 
-        if (this.isUserPermanentlyBanned(this.userId) && !this.isGameCreator && this.userRole !== 'support') {
+        if (this.isUserPermanentlyBanned(this.userId) && !this.isGameCreator && this.userRole !== 'support' && this.userRole !== 'admin') {
             this.showNotification('🚫 شما بن دائمی شده‌اید', true);
             return;
         }
 
         const adminBan = this.isUserAdminBanned(this.userId);
-        if (adminBan && !this.isGameCreator && this.userRole !== 'support') {
+        if (adminBan && !this.isGameCreator && this.userRole !== 'support' && this.userRole !== 'admin') {
             this.showNotification(`🚫 شما توسط ادمین بن شده‌اید: ${adminBan.reason}`, true);
             return;
         }
@@ -3949,18 +3959,18 @@ const App = {
     async createLobby() {
         this.playClickSound();
         const tempBan = this.isUserTempBanned(this.userId);
-        if (tempBan && !this.isGameCreator && this.userRole !== 'support') {
+        if (tempBan && !this.isGameCreator && this.userRole !== 'support' && this.userRole !== 'admin') {
             this.showNotification(`🚫 شما موقتاً بن شده‌اید: ${tempBan.reason}`, true);
             return;
         }
 
-        if (this.isUserPermanentlyBanned(this.userId) && !this.isGameCreator && this.userRole !== 'support') {
+        if (this.isUserPermanentlyBanned(this.userId) && !this.isGameCreator && this.userRole !== 'support' && this.userRole !== 'admin') {
             this.showNotification('🚫 شما بن دائمی شده‌اید', true);
             return;
         }
 
         const adminBan = this.isUserAdminBanned(this.userId);
-        if (adminBan && !this.isGameCreator && this.userRole !== 'support') {
+        if (adminBan && !this.isGameCreator && this.userRole !== 'support' && this.userRole !== 'admin') {
             this.showNotification(`🚫 شما توسط ادمین بن شده‌اید: ${adminBan.reason}`, true);
             return;
         }
@@ -4022,18 +4032,18 @@ const App = {
     async joinLobby(lobbyId) {
         this.playClickSound();
         const tempBan = this.isUserTempBanned(this.userId);
-        if (tempBan && !this.isGameCreator && this.userRole !== 'support') {
+        if (tempBan && !this.isGameCreator && this.userRole !== 'support' && this.userRole !== 'admin') {
             this.showNotification(`🚫 شما موقتاً بن شده‌اید: ${tempBan.reason}`, true);
             return;
         }
 
-        if (this.isUserPermanentlyBanned(this.userId) && !this.isGameCreator && this.userRole !== 'support') {
+        if (this.isUserPermanentlyBanned(this.userId) && !this.isGameCreator && this.userRole !== 'support' && this.userRole !== 'admin') {
             this.showNotification('🚫 شما بن دائمی شده‌اید', true);
             return;
         }
 
         const adminBan = this.isUserAdminBanned(this.userId);
-        if (adminBan && !this.isGameCreator && this.userRole !== 'support') {
+        if (adminBan && !this.isGameCreator && this.userRole !== 'support' && this.userRole !== 'admin') {
             this.showNotification(`🚫 شما توسط ادمین بن شده‌اید: ${adminBan.reason}`, true);
             return;
         }
@@ -4044,7 +4054,7 @@ const App = {
             return;
         }
 
-        if (lobby.bannedUsers && lobby.bannedUsers.includes(this.userId) && !this.isGameCreator && this.userRole !== 'support') {
+        if (lobby.bannedUsers && lobby.bannedUsers.includes(this.userId) && !this.isGameCreator && this.userRole !== 'support' && this.userRole !== 'admin') {
             this.showNotification('🚫 شما از این لابی مسدود شده‌اید');
             return;
         }
@@ -4207,7 +4217,7 @@ const App = {
 
     openLobbyBannedList() {
         this.playClickSound();
-        if (!this.isLobbyCreator && this.userRole !== 'support' && !this.isGameCreator) return;
+        if (!this.isLobbyCreator && this.userRole !== 'support' && !this.isGameCreator && this.userRole !== 'admin') return;
 
         const container = document.getElementById('lobbyBannedItems');
         if (!container) return;
@@ -4237,7 +4247,7 @@ const App = {
 
     async unbanFromLobby(userId) {
         this.playClickSound();
-        if (!this.isLobbyCreator && this.userRole !== 'support' && !this.isGameCreator) return;
+        if (!this.isLobbyCreator && this.userRole !== 'support' && !this.isGameCreator && this.userRole !== 'admin') return;
 
         this.lobbyBannedUsers = this.lobbyBannedUsers.filter(id => id !== userId);
         
@@ -4317,13 +4327,35 @@ const App = {
         this.selectedPlayerData = this.playersData[playerId];
         
         console.log('کاربر انتخاب شد:', this.selectedPlayerData);
+        console.log('نقش کاربر فعلی:', this.userRole);
 
-        // استفاده از PanelManager برای باز کردن پنل مناسب
-        if (window.PanelManager) {
-            window.PanelManager.openPanel(this, playerId);
+        // بررسی نقش کاربر و باز کردن پنل مناسب
+        if (this.userRole === 'admin') {
+            console.log('باز کردن پنل ادمین');
+            if (window.panelFunctions && window.panelFunctions.openAdminPanel) {
+                window.panelFunctions.openAdminPanel(this, playerId);
+            } else {
+                console.error('تابع openAdminPanel یافت نشد');
+                this.openUserProfileMenu(playerId, playerName);
+            }
+        } else if (this.userRole === 'observer') {
+            console.log('باز کردن پنل ناظر');
+            if (window.panelFunctions && window.panelFunctions.openObserverPanel) {
+                window.panelFunctions.openObserverPanel(this, playerId);
+            } else {
+                console.error('تابع openObserverPanel یافت نشد');
+                this.openUserProfileMenu(playerId, playerName);
+            }
+        } else if (this.isGameCreator || this.userRole === 'support') {
+            console.log('باز کردن پنل سازنده');
+            if (window.panelFunctions && window.panelFunctions.openGameCreatorAdminPanel) {
+                window.panelFunctions.openGameCreatorAdminPanel(this, playerId);
+            } else {
+                console.error('تابع openGameCreatorAdminPanel یافت نشد');
+                this.openUserProfileMenu(playerId, playerName);
+            }
         } else {
-            console.error('PanelManager یافت نشد');
-            // پنل پیش‌فرض برای کاربر عادی
+            console.log('باز کردن پروفایل عادی');
             this.openUserProfileMenu(playerId, playerName);
         }
     },
@@ -4439,7 +4471,7 @@ const App = {
 
     async leaveLobby() {
         this.playClickSound();
-        if (this.currentCreator === this.userId && this.currentLobby && !this.isGameCreator && this.userRole !== 'support') {
+        if (this.currentCreator === this.userId && this.currentLobby && !this.isGameCreator && this.userRole !== 'support' && this.userRole !== 'admin') {
             this.lobbies = this.lobbies.filter(l => l.id !== this.currentLobby.id);
         } else {
             const lobby = this.lobbies.find(l => l.id === this.currentLobby?.id);
@@ -5316,6 +5348,6 @@ window.addEventListener('DOMContentLoaded', function() {
 
 // ========== اتصال به window ==========
 window.app = App;
- </script>
+</script>
 </body>
 </html>
