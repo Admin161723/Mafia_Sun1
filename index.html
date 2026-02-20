@@ -233,6 +233,24 @@ body {
     gap: 4px;
 }
 
+.verified-badge {
+    color: #3b9eff;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.orange-tick {
+    color: #ffaa00;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.brown-tick {
+    color: #8B4513;
+    font-size: 14px;
+    display: inline-block;
+}
+
 .profile-level {
     color: #8f9aa7;
     font-size: 11px;
@@ -785,6 +803,24 @@ body {
     gap: 4px;
 }
 
+.verified-icon {
+    color: #3b9eff;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.orange-tick-icon {
+    color: #ffaa00;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.brown-tick-icon {
+    color: #8B4513;
+    font-size: 12px;
+    display: inline-block;
+}
+
 .empty-chair .chair-avatar {
     opacity: 0.8;
     border: 3px dashed #8f9aa7;
@@ -1159,6 +1195,74 @@ body {
     box-shadow: 0 10px 20px rgba(0,0,0,0.3);
 }
 
+.admin-action-btn.observer {
+    color: #6eacda;
+    border-color: #6eacda;
+}
+
+.admin-action-btn.observer:hover {
+    background: rgba(110, 172, 218, 0.2);
+}
+
+.admin-action-btn.transfer {
+    color: #f9d77e;
+    border-color: #f9d77e;
+}
+
+.admin-action-btn.transfer:hover {
+    background: rgba(249, 215, 126, 0.2);
+}
+
+.admin-action-btn.kick {
+    color: #ffaa00;
+    border-color: #ffaa00;
+}
+
+.admin-action-btn.kick:hover {
+    background: rgba(255, 170, 0, 0.2);
+}
+
+.admin-action-btn.ban {
+    color: #ff5555;
+    border-color: #ff5555;
+}
+
+.admin-action-btn.ban:hover {
+    background: rgba(255, 85, 85, 0.2);
+}
+
+.admin-action-btn.temp-ban {
+    color: #ffaa00;
+    border-color: #ffaa00;
+}
+
+.admin-action-btn.temp-ban:hover {
+    background: rgba(255, 170, 0, 0.2);
+}
+
+.admin-action-btn.report {
+    color: #ff6b6b;
+    border-color: #ff6b6b;
+}
+
+.admin-action-btn.report:hover {
+    background: rgba(255, 107, 107, 0.2);
+}
+
+.admin-action-btn.profile {
+    color: #6eacda;
+    border-color: #6eacda;
+}
+
+.admin-action-btn.profile:hover {
+    background: rgba(110, 172, 218, 0.2);
+}
+
+.admin-action-btn.remove-observer {
+    color: #ffaa00;
+    border-color: #ffaa00;
+}
+
 .admin-warning {
     margin-top: 15px;
     padding: 10px;
@@ -1168,6 +1272,393 @@ body {
     color: #ff9999;
     font-size: 12px;
     text-align: center;
+}
+
+/* ========== پنل سازنده بازی ========== */
+.game-creator-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: linear-gradient(145deg, #1a1f2a, #0f1219);
+    backdrop-filter: blur(20px);
+    border: 3px solid #ff5555;
+    border-radius: 30px;
+    padding: 25px;
+    z-index: 20000;
+    display: none;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 30px rgba(255, 85, 85, 0.3);
+}
+
+.game-creator-panel.visible {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.creator-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #ff5555;
+}
+
+.creator-header h3 {
+    color: #ff5555;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.creator-header h3::before {
+    content: "⚡";
+    font-size: 20px;
+}
+
+.creator-close-btn {
+    width: 35px;
+    height: 35px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid #5a6a7a;
+    color: #fff;
+    font-size: 18px;
+    transition: all 0.3s;
+}
+
+.creator-close-btn:hover {
+    background: #ff5555;
+    border-color: #ff5555;
+    transform: rotate(90deg);
+}
+
+.creator-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 15px;
+    padding: 5px;
+}
+
+.creator-tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #8f9aa7;
+    transition: all 0.3s;
+}
+
+.creator-tab.active {
+    background: #ff5555;
+    color: white;
+}
+
+.creator-tab-content {
+    display: none;
+}
+
+.creator-tab-content.active {
+    display: block;
+}
+
+.creator-stats {
+    background: rgba(0,0,0,0.3);
+    border-radius: 20px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ff5555;
+}
+
+.creator-stat-row {
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.creator-stat-label {
+    color: #ff9999;
+}
+
+.creator-stat-value {
+    color: #ff5555;
+    font-weight: 600;
+}
+
+.creator-action-btn {
+    padding: 14px;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+    background: rgba(0,0,0,0.3);
+    color: white;
+    border-color: #ff5555;
+    margin-bottom: 10px;
+}
+
+.creator-action-btn:hover {
+    background: rgba(255, 85, 85, 0.2);
+    transform: translateY(-2px);
+}
+
+.creator-action-btn.danger {
+    color: #ff5555;
+}
+
+/* ========== گزارش‌ها ========== */
+.reports-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 15px;
+}
+
+.report-item {
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ff5555;
+}
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: #ff9999;
+    font-size: 12px;
+}
+
+.report-reason {
+    color: white;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.report-description {
+    color: #8f9aa7;
+    font-size: 12px;
+    margin-bottom: 10px;
+    padding: 8px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+.report-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.report-action-btn {
+    flex: 1;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s;
+}
+
+.report-action-btn.ban {
+    background: #ff5555;
+    color: white;
+}
+
+.report-action-btn.dismiss {
+    background: #3a4050;
+    color: white;
+}
+
+.report-action-btn:hover {
+    transform: scale(1.05);
+}
+
+/* ========== لیست سیاه ========== */
+.blacklist-container {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 15px;
+}
+
+.banned-submenu {
+    margin-top: 10px;
+    border-top: 1px solid #3a4050;
+    padding-top: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.banned-title {
+    color: #ff6b6b;
+    font-size: 12px;
+    padding: 5px 10px;
+}
+
+.banned-user-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    margin: 5px 0;
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    font-size: 12px;
+    color: white;
+}
+
+.unban-small-btn {
+    background: #ff6b6b;
+    border: none;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: all 0.3s;
+}
+
+.unban-small-btn:hover {
+    background: #ff4444;
+    transform: scale(1.05);
+}
+
+/* ========== منوی پروفایل کاربر ========== */
+.user-profile-menu {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+    background: rgba(20, 25, 35, 0.98);
+    backdrop-filter: blur(20px);
+    border: 2px solid #6eacda;
+    border-radius: 20px;
+    padding: 20px;
+    z-index: 5000;
+    display: none;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+}
+
+.user-profile-menu.visible {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.user-profile-menu h4 {
+    color: #6eacda;
+    font-size: 16px;
+    margin-bottom: 15px;
+    text-align: center;
+    border-bottom: 1px solid #3a4050;
+    padding-bottom: 10px;
+}
+
+.profile-menu-item {
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    border: 1px solid transparent;
+    transition: all 0.3s;
+}
+
+.profile-menu-item:hover {
+    background: rgba(110, 172, 218, 0.2);
+    border-color: #6eacda;
+}
+
+.profile-menu-item.report {
+    color: #ff6b6b;
+    border-color: #ff6b6b;
+}
+
+.profile-menu-item.report:hover {
+    background: rgba(255, 107, 107, 0.2);
+}
+
+.profile-menu-item.profile {
+    color: #6eacda;
+    border-color: #6eacda;
+}
+
+.profile-menu-item.close {
+    border-color: #3a4050;
+}
+
+/* ========== لیست مسدود لابی ========== */
+.lobby-banned-list {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background: linear-gradient(145deg, #1a1f2a, #0f1219);
+    border: 3px solid #ffaa00;
+    border-radius: 20px;
+    padding: 20px;
+    z-index: 20000;
+    display: none;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+}
+
+.lobby-banned-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ffaa00;
+}
+
+.lobby-banned-header h4 {
+    color: #ffaa00;
+    font-size: 16px;
+}
+
+.close-banned-btn {
+    width: 30px;
+    height: 30px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+    border: 1px solid #ffaa00;
+}
+
+.close-banned-btn:hover {
+    background: #ff5555;
+}
+
+.lobby-banned-items {
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 /* ========== پروفایل دیگران ========== */
@@ -1277,6 +1768,95 @@ body {
     background: rgba(0,0,0,0.3);
     padding: 5px 15px;
     border-radius: 30px;
+}
+
+.other-stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.other-stat-cell {
+    background: rgba(0,0,0,0.3);
+    border-radius: 15px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #3a4050;
+}
+
+.other-stat-icon {
+    font-size: 24px;
+    min-width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+    color: #6eacda;
+}
+
+.other-stat-detail {
+    display: flex;
+    flex-direction: column;
+}
+
+.other-stat-label {
+    color: #8f9aa7;
+    font-size: 11px;
+}
+
+.other-stat-figure {
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.other-rank-section {
+    background: rgba(0,0,0,0.3);
+    border-radius: 15px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #3a4050;
+    margin-top: 15px;
+}
+
+.other-rank-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.other-rank-icon {
+    font-size: 24px;
+    background: rgba(0,0,0,0.3);
+    padding: 8px;
+    border-radius: 10px;
+    color: #f9d77e;
+}
+
+.other-rank-label {
+    color: #8f9aa7;
+    font-size: 11px;
+}
+
+.other-rank-name {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.other-rank-tag {
+    background: #6eacda;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 30px;
+    font-size: 12px;
 }
 
 .other-close-btn {
@@ -2080,6 +2660,7 @@ body {
     .ready-toggle { width: 100px; height: 45px; }
     .ready-toggle span { font-size: 12px; }
     .avatar-grid, .shop-grid { grid-template-columns: repeat(2, 1fr); }
+    .game-creator-panel { width: 95%; }
     .mic-button { width: 50px; height: 50px; font-size: 20px; }
     .mic-status { font-size: 10px; }
 }
@@ -2237,6 +2818,64 @@ body {
             <div class="admin-actions" id="adminActions"></div>
             <div class="admin-warning" id="adminWarning" style="display: none;"></div>
         </div>
+
+        <!-- پنل سازنده بازی -->
+        <div class="game-creator-panel" id="gameCreatorPanel">
+            <div class="creator-header">
+                <h3>⚡ پنل سازنده بازی</h3>
+                <div class="creator-close-btn" onclick="app.closeGameCreatorPanel()">✕</div>
+            </div>
+            <div class="creator-tabs">
+                <div class="creator-tab active" onclick="app.switchCreatorTab('stats')">آمار</div>
+                <div class="creator-tab" onclick="app.switchCreatorTab('reports')">گزارش‌ها</div>
+                <div class="creator-tab" onclick="app.switchCreatorTab('blacklist')">لیست سیاه</div>
+            </div>
+            <div id="creator-stats-tab" class="creator-tab-content active">
+                <div class="creator-stats">
+                    <div class="creator-stat-row">
+                        <span class="creator-stat-label">تعداد لابی‌ها:</span>
+                        <span class="creator-stat-value" id="totalLobbiesCount">۰</span>
+                    </div>
+                    <div class="creator-stat-row">
+                        <span class="creator-stat-label">کاربران آنلاین:</span>
+                        <span class="creator-stat-value" id="onlineUsersCount">۰</span>
+                    </div>
+                    <div class="creator-stat-row">
+                        <span class="creator-stat-label">گزارش‌های جدید:</span>
+                        <span class="creator-stat-value" id="newReportsCount">۰</span>
+                    </div>
+                    <div class="creator-stat-row">
+                        <span class="creator-stat-label">لیست سیاه:</span>
+                        <span class="creator-stat-value" id="blacklistCount">۰</span>
+                    </div>
+                </div>
+                <div class="creator-action-btn danger" onclick="app.deleteAllLobbies()">🗑️ حذف همه لابی‌ها</div>
+            </div>
+            <div id="creator-reports-tab" class="creator-tab-content">
+                <div class="reports-list" id="reportsList"></div>
+                <div class="creator-action-btn" onclick="app.refreshReports()">🔄 بروزرسانی گزارش‌ها</div>
+            </div>
+            <div id="creator-blacklist-tab" class="creator-tab-content">
+                <div class="blacklist-container" id="blacklistContainer"></div>
+            </div>
+        </div>
+
+        <!-- منوی پروفایل کاربر -->
+        <div class="user-profile-menu" id="userProfileMenu">
+            <h4 id="profileMenuUserName">پروفایل کاربر</h4>
+            <div class="profile-menu-item profile" onclick="app.viewOtherProfile()">👤 پروفایل</div>
+            <div class="profile-menu-item report" onclick="app.openReportModal()">🚨 گزارش</div>
+            <div class="profile-menu-item close" onclick="app.closeUserProfileMenu()">✕ بستن</div>
+        </div>
+
+        <!-- لیست مسدود لابی -->
+        <div class="lobby-banned-list" id="lobbyBannedList" style="display: none;">
+            <div class="lobby-banned-header">
+                <h4>🚫 لیست مسدود لابی</h4>
+                <div class="close-banned-btn" onclick="app.closeLobbyBannedList()">✕</div>
+            </div>
+            <div class="lobby-banned-items" id="lobbyBannedItems"></div>
+        </div>
     </div>
 
     <!-- صفحه پروفایل دیگران -->
@@ -2256,6 +2895,48 @@ body {
                 <div class="other-user-id-block">
                     <span class="other-user-id-label"><span>🆔</span> کد کاربری</span>
                     <span class="other-user-id-value" id="otherUserIdDisplay">۱۲۳۴۵۶</span>
+                </div>
+                <div class="other-stats-row">
+                    <div class="other-stat-cell">
+                        <span class="other-stat-icon">🏆</span>
+                        <div class="other-stat-detail">
+                            <span class="other-stat-label">برد</span>
+                            <span class="other-stat-figure" id="otherWinCount">۰</span>
+                        </div>
+                    </div>
+                    <div class="other-stat-cell">
+                        <span class="other-stat-icon">📊</span>
+                        <div class="other-stat-detail">
+                            <span class="other-stat-label">باخت</span>
+                            <span class="other-stat-figure" id="otherLoseCount">۰</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="other-stats-row">
+                    <div class="other-stat-cell">
+                        <span class="other-stat-icon">⏳</span>
+                        <div class="other-stat-detail">
+                            <span class="other-stat-label">ساعت بازی</span>
+                            <span class="other-stat-figure" id="otherHoursPlayed">۰</span>
+                        </div>
+                    </div>
+                    <div class="other-stat-cell">
+                        <span class="other-stat-icon">👁️</span>
+                        <div class="other-stat-detail">
+                            <span class="other-stat-label">ناظر</span>
+                            <span class="other-stat-figure" id="otherObserverCount">۰</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="other-rank-section">
+                    <div class="other-rank-info">
+                        <span class="other-rank-icon">👑</span>
+                        <div class="other-rank-detail">
+                            <span class="other-rank-label">مقام</span>
+                            <span class="other-rank-name" id="otherRankName">تازه‌وارد</span>
+                        </div>
+                    </div>
+                    <span class="other-rank-tag" id="otherRankTag">برنزی</span>
                 </div>
             </div>
         </div>
@@ -3484,6 +4165,7 @@ const App = {
             `;
         } else if (this.isLobbyCreator) {
             menuHTML = `
+                <div class="menu-item" onclick="app.openLobbyBannedList()">📋 لیست مسدود لابی</div>
                 <div class="menu-item" onclick="app.startGame()">🎮 شروع بازی</div>
                 <div class="menu-item danger" onclick="app.leaveLobby()">🚪 خروج از لابی</div>
             `;
@@ -3957,7 +4639,7 @@ const App = {
             await this.saveLobbiesToServer();
             this.renderLobbies();
             this.showNotification('✅ همه لابی‌ها حذف شدند');
-            this.closeAdminPanel();
+            this.closeGameCreatorPanel();
         }
     },
 
@@ -4041,6 +4723,7 @@ const App = {
 
         document.getElementById('lobby-page').style.display = 'none';
         document.getElementById('friendly-hall-page').style.display = 'block';
+        document.getElementById('lobbyBannedList').style.display = 'none';
 
         this.currentLobby = null;
         this.currentCreator = null;
@@ -4089,6 +4772,212 @@ const App = {
 
     openGameCreatorPanel() {
         document.getElementById('gameCreatorPanel').classList.add('visible');
+        this.updateCreatorStats();
+        this.updateCreatorReports();
+        this.updateCreatorBlacklist();
+    },
+
+    closeGameCreatorPanel() {
+        document.getElementById('gameCreatorPanel').classList.remove('visible');
+    },
+
+    switchCreatorTab(tab) {
+        const tabs = document.querySelectorAll('.creator-tab');
+        const contents = document.querySelectorAll('.creator-tab-content');
+
+        tabs.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+
+        if (tab === 'stats') {
+            tabs[0].classList.add('active');
+            document.getElementById('creator-stats-tab').classList.add('active');
+        } else if (tab === 'reports') {
+            tabs[1].classList.add('active');
+            document.getElementById('creator-reports-tab').classList.add('active');
+            this.updateCreatorReports();
+        } else if (tab === 'blacklist') {
+            tabs[2].classList.add('active');
+            document.getElementById('creator-blacklist-tab').classList.add('active');
+            this.updateCreatorBlacklist();
+        }
+    },
+
+    updateCreatorStats() {
+        document.getElementById('totalLobbiesCount').textContent = this.lobbies.length;
+        
+        let online = 0;
+        this.lobbies.forEach(lobby => {
+            online += lobby.players ? lobby.players.length : 0;
+        });
+        document.getElementById('onlineUsersCount').textContent = online;
+        document.getElementById('newReportsCount').textContent = this.reports.length;
+        document.getElementById('blacklistCount').textContent = this.blacklist.length + this.tempBannedUsers.length + this.adminBannedUsers.length;
+    },
+
+    updateCreatorReports() {
+        const container = document.getElementById('reportsList');
+        if (!container) return;
+
+        if (this.reports.length === 0) {
+            container.innerHTML = '<div style="color: white; text-align: center; padding: 20px;">گزارشی وجود ندارد</div>';
+            return;
+        }
+
+        let html = '';
+        this.reports.slice().reverse().forEach((report, index) => {
+            const reportDate = new Date(report.timestamp).toLocaleString('fa-IR');
+            html += `
+                <div class="report-item">
+                    <div class="report-header">
+                        <span>گزارش دهنده: ${report.reporterName}</span>
+                        <span>${reportDate}</span>
+                    </div>
+                    <div class="report-reason">🔴 ${report.reason}</div>
+                    <div class="report-description">${report.description}</div>
+                    <div class="report-actions">
+                        <button class="report-action-btn ban" onclick="app.banFromReport(${index})">🚫 بن</button>
+                        <button class="report-action-btn dismiss" onclick="app.dismissReport(${index})">✅ رد کردن</button>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    },
+
+    updateCreatorBlacklist() {
+        const container = document.getElementById('blacklistContainer');
+        if (!container) return;
+
+        let html = '<div class="banned-title">🚫 لیست سیاه دائمی:</div>';
+
+        if (this.blacklist.length === 0) {
+            html += '<div style="color: white; text-align: center; padding: 10px;">لیست سیاه دائمی خالی است</div>';
+        } else {
+            this.blacklist.forEach((id, index) => {
+                html += `
+                    <div class="banned-user-item">
+                        <span>کاربر ${id}</span>
+                        <button class="unban-small-btn" onclick="app.unbanUserFromList(${id})">رفع بن</button>
+                    </div>
+                `;
+            });
+        }
+
+        html += '<div class="banned-title" style="margin-top: 15px;">⏳ لیست سیاه موقت:</div>';
+
+        if (this.tempBannedUsers.length === 0) {
+            html += '<div style="color: white; text-align: center; padding: 10px;">لیست سیاه موقت خالی است</div>';
+        } else {
+            this.tempBannedUsers.forEach((ban, index) => {
+                const expiryDate = new Date(ban.expiry).toLocaleString('fa-IR');
+                html += `
+                    <div class="banned-user-item">
+                        <div style="flex: 1;">
+                            <div>کاربر ${ban.userId}</div>
+                            <div style="font-size: 10px; color: #ff9999;">${ban.reason}</div>
+                            <div style="font-size: 10px; color: #ffaa00;">تا ${expiryDate}</div>
+                        </div>
+                        <button class="unban-small-btn" onclick="app.unbanTempUserFromList(${ban.userId})">رفع بن</button>
+                    </div>
+                `;
+            });
+        }
+
+        html += '<div class="banned-title" style="margin-top: 15px;">🟫 لیست بن ادمین:</div>';
+
+        if (this.adminBannedUsers.length === 0) {
+            html += '<div style="color: white; text-align: center; padding: 10px;">لیست بن ادمین خالی است</div>';
+        } else {
+            this.adminBannedUsers.forEach((ban, index) => {
+                const expiryDate = new Date(ban.expiry).toLocaleString('fa-IR');
+                const durationText = ban.duration === 600 ? '۱۰ دقیقه' : 
+                                   ban.duration === 3600 ? '۱ ساعت' :
+                                   ban.duration === 86400 ? '۱ روز' :
+                                   ban.duration === 259200 ? '۳ روز' : '۷ روز';
+                html += `
+                    <div class="banned-user-item">
+                        <div style="flex: 1;">
+                            <div>کاربر ${ban.userName}</div>
+                            <div style="font-size: 10px; color: #ff9999;">${ban.reason}</div>
+                            <div style="font-size: 10px; color: #8B4513;">مدت: ${durationText}</div>
+                            <div style="font-size: 10px; color: #ffaa00;">تا ${expiryDate}</div>
+                            <div style="font-size: 10px; color: #8B4513;">توسط: ${ban.bannedByName}</div>
+                        </div>
+                        <button class="unban-small-btn" onclick="app.unbanAdminUserFromList(${ban.userId})">رفع بن</button>
+                    </div>
+                `;
+            });
+        }
+
+        container.innerHTML = html;
+    },
+
+    banFromReport(index) {
+        const report = this.reports[index];
+        if (!report) return;
+
+        this.selectedPlayerId = report.reportedId;
+        this.selectedPlayerData = {
+            id: report.reportedId,
+            name: report.reportedName,
+            avatar: 'avatar1'
+        };
+
+        this.closeGameCreatorPanel();
+        this.openBanModal();
+
+        setTimeout(() => {
+            this.dismissReport(index);
+        }, 1000);
+    },
+
+    dismissReport(index) {
+        this.reports.splice(index, 1);
+        this.saveReports();
+        this.saveLobbiesToServer();
+        this.updateCreatorReports();
+        this.showNotification('✅ گزارش رد شد');
+    },
+
+    refreshReports() {
+        this.loadFromServer();
+        this.updateCreatorReports();
+        this.showNotification('🔄 گزارش‌ها بروزرسانی شدند');
+    },
+
+    unbanUserFromList(userId) {
+        this.blacklist = this.blacklist.filter(id => id !== userId);
+        this.saveLobbiesToServer();
+        this.updateCreatorBlacklist();
+        this.showNotification(`✅ بن کاربر ${userId} لغو شد`);
+    },
+
+    unbanTempUserFromList(userId) {
+        this.tempBannedUsers = this.tempBannedUsers.filter(b => b.userId !== userId);
+        this.saveLobbiesToServer();
+        this.updateCreatorBlacklist();
+        this.showNotification(`✅ بن موقت کاربر ${userId} لغو شد`);
+    },
+
+    unbanAdminUserFromList(userId) {
+        this.adminBannedUsers = this.adminBannedUsers.filter(b => b.userId !== userId);
+        this.saveLobbiesToServer();
+        this.updateCreatorBlacklist();
+        this.showNotification(`✅ بن ادمین کاربر ${userId} لغو شد`);
+    },
+
+    unbanAdminPlayerFromCreator() {
+        if (!this.selectedPlayerId) return;
+
+        this.adminBannedUsers = this.adminBannedUsers.filter(b => b.userId !== this.selectedPlayerId);
+        await this.saveLobbiesToServer();
+        
+        this.closeAdminPanel();
+        this.showNotification(`✅ بن ادمین کاربر ${this.selectedPlayerData.name} لغو شد`);
+        
+        this.selectedPlayerId = null;
+        this.selectedPlayerData = null;
     },
 
     closeAdminPanel() {
@@ -4251,33 +5140,14 @@ const App = {
             }
         }
 
-        const rankName = document.getElementById('rankName');
-        const rankTag = document.getElementById('rankTag');
-        if (rankName && rankTag) {
-            if (this.userId === 1 || this.userRole === 'support') {
-                rankName.textContent = 'مدیریت';
-                rankTag.textContent = 'طلایی';
-            } else if (this.userRole === 'observer') {
-                rankName.textContent = 'ناظر';
-                rankTag.textContent = 'نارنجی';
-            } else if (this.userRole === 'admin') {
-                rankName.textContent = 'ادمین';
-                rankTag.textContent = 'قهوه‌ای';
-            } else {
-                rankName.textContent = this.userStats?.rank || 'تازه‌وارد';
-                rankTag.textContent = this.userStats?.rankTag || 'برنزی';
-            }
-        }
-
-        const winCount = document.getElementById('winCount');
-        const loseCount = document.getElementById('loseCount');
-        const hoursPlayed = document.getElementById('hoursPlayed');
-        const observerCount = document.getElementById('observerCount');
-
-        if (winCount) winCount.textContent = this.userStats?.wins || 0;
-        if (loseCount) loseCount.textContent = this.userStats?.losses || 0;
-        if (hoursPlayed) hoursPlayed.textContent = this.userStats?.totalHours || 0;
-        if (observerCount) observerCount.textContent = this.userStats?.observerCount || 0;
+        const userId = document.getElementById('userIdDisplay');
+        if (userId) userId.innerHTML = this.userId;
+        
+        const gem = document.getElementById('gemDisplay');
+        if (gem) gem.innerHTML = this.userGems;
+        
+        const coin = document.getElementById('coinDisplay');
+        if (coin) coin.innerHTML = this.userCoins;
 
         this.saveCompleteUserData();
     },
@@ -4300,14 +5170,14 @@ const App = {
         const tabs = document.querySelectorAll('.avatar-tab');
         const panels = document.querySelectorAll('.tab-panel');
 
-        tabs.forEach(t => t?.classList.remove('active'));
-        panels.forEach(p => p?.classList.remove('active'));
+        tabs.forEach(t => t.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
 
         if (tab === 'my') {
-            if (tabs[0]) tabs[0].classList.add('active');
+            tabs[0].classList.add('active');
             document.getElementById('myAvatarsPanel').classList.add('active');
         } else {
-            if (tabs[1]) tabs[1].classList.add('active');
+            tabs[1].classList.add('active');
             document.getElementById('shopPanel').classList.add('active');
             this.updateShopAvatars();
         }
@@ -4322,18 +5192,10 @@ const App = {
             { id: 'avatar1', num: '#۰۰۱', img: this.avatars.avatar1 },
             { id: 'avatar2', num: '#۰۰۲', img: this.avatars.avatar2 },
             { id: 'ninja', num: '#۰۰۳', img: this.avatars.ninja },
-            { id: 'samurai', num: '#۰۰۴', img: this.avatars.samurai },
-            { id: 'avatar5', num: '#۰۰۵', img: this.avatars.avatar5 },
-            { id: 'avatar6', num: '#۰۰۶', img: this.avatars.avatar6 },
-            { id: 'avatar7', num: '#۰۰۷', img: this.avatars.avatar7 },
-            { id: 'avatar8', num: '#۰۰۸', img: this.avatars.avatar8 },
-            { id: 'avatar9', num: '#۰۰۹', img: this.avatars.avatar9 },
-            { id: 'avatar10', num: '#۰۱۰', img: this.avatars.avatar10 },
-            { id: 'avatar11', num: '#۰۱۱', img: this.avatars.avatar11 },
-            { id: 'avatar12', num: '#۰۱۲', img: this.avatars.avatar12 }
+            { id: 'samurai', num: '#۰۰۴', img: this.avatars.samurai }
         ];
 
-        [...avatarsList, ...NEW_AVATARS].forEach(avatar => {
+        avatarsList.concat(NEW_AVATARS).forEach(avatar => {
             if (this.ownedAvatars.includes(avatar.id)) {
                 html += `
                     <div class="avatar-card ${this.currentAvatar === avatar.id ? 'selected' : ''}" onclick="app.selectAvatar('${avatar.id}')">
@@ -4798,18 +5660,6 @@ const App = {
         localStorage.setItem('mafiaSun_reports', JSON.stringify(this.reports));
     },
 
-    findUserNameById(userId) {
-        if (this.currentLobby && this.currentLobby.players) {
-            const player = this.currentLobby.players.find(p => p.id === userId);
-            if (player) return player.name;
-        }
-        const tempBan = this.tempBannedUsers.find(b => b.userId === userId);
-        if (tempBan && tempBan.userName) return tempBan.userName;
-        const adminBan = this.adminBannedUsers.find(b => b.userId === userId);
-        if (adminBan && adminBan.userName) return adminBan.userName;
-        return `کاربر ${userId}`;
-    },
-
     openBanModal() {
         const modal = document.getElementById('banModal');
         if (modal) {
@@ -4945,19 +5795,6 @@ const App = {
         await this.saveLobbiesToServer();
         this.closeAdminPanel();
         this.showNotification(`✅ بن موقت کاربر ${userName} لغو شد`);
-        
-        this.selectedPlayerId = null;
-        this.selectedPlayerData = null;
-    },
-
-    async unbanAdminPlayerFromCreator() {
-        if (!this.selectedPlayerId) return;
-
-        this.adminBannedUsers = this.adminBannedUsers.filter(b => b.userId !== this.selectedPlayerId);
-        await this.saveLobbiesToServer();
-        
-        this.closeAdminPanel();
-        this.showNotification(`✅ بن ادمین کاربر ${this.selectedPlayerData.name} لغو شد`);
         
         this.selectedPlayerId = null;
         this.selectedPlayerData = null;
